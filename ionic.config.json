@@ -1,0 +1,7 @@
+{
+  "name": "ionic-react-seed",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
