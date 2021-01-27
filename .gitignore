@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# IDE file
+.idea
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
