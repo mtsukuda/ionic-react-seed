@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "ionicreactseed1fb19c02": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
