@@ -106,6 +106,9 @@ dist
 # IDE file
 .idea
 
+# Firebase chache
+.firebase
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
