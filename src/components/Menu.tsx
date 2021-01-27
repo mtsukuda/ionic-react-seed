@@ -8,6 +8,7 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote, IonRouterOutlet,
+  IonBadge
 } from '@ionic/react';
 
 import React from 'react';
@@ -21,6 +22,7 @@ interface AppPage {
   iosIcon: string;
   mdIcon: string;
   title: string;
+  badge: number;
 }
 
 const appPages: AppPage[] = [
@@ -28,37 +30,43 @@ const appPages: AppPage[] = [
     title: 'Inbox',
     url: '/page/Inbox',
     iosIcon: mailOutline,
-    mdIcon: mailSharp
+    mdIcon: mailSharp,
+    badge: 0
   },
   {
     title: 'Outbox',
     url: '/page/Outbox',
     iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    mdIcon: paperPlaneSharp,
+    badge: 5
   },
   {
     title: 'Favorites',
     url: '/page/Favorites',
     iosIcon: heartOutline,
-    mdIcon: heartSharp
+    mdIcon: heartSharp,
+    badge: 0
   },
   {
     title: 'Archived',
     url: '/page/Archived',
     iosIcon: archiveOutline,
-    mdIcon: archiveSharp
+    mdIcon: archiveSharp,
+    badge: 8
   },
   {
     title: 'Trash',
     url: '/page/Trash',
     iosIcon: trashOutline,
-    mdIcon: trashSharp
+    mdIcon: trashSharp,
+    badge: 0
   },
   {
     title: 'Spam',
     url: '/page/Spam',
     iosIcon: warningOutline,
-    mdIcon: warningSharp
+    mdIcon: warningSharp,
+    badge: 0
   }
 ];
 
@@ -79,6 +87,9 @@ const Menu: React.FC = () => {
                 <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
                   <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
                   <IonLabel>{appPage.title}</IonLabel>
+                  {
+                    appPage.badge === 0 ? "" : <IonBadge slot="end">{appPage.badge}</IonBadge>
+                  }
                 </IonItem>
               </IonMenuToggle>
             );
