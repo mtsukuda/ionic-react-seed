@@ -7,15 +7,25 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote, IonRouterOutlet,
+  IonNote,
   IonBadge
 } from '@ionic/react';
 
+import {
+  bookmarkOutline,
+  mailOutline, mailSharp,
+  paperPlaneOutline, paperPlaneSharp,
+  heartOutline, heartSharp,
+  archiveOutline, archiveSharp,
+  trashOutline, trashSharp,
+  warningOutline, warningSharp,
+  logOutOutline, logOutSharp
+} from 'ionicons/icons';
+
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
-import {AmplifySignOut} from "@aws-amplify/ui-react";
+import { Auth } from 'aws-amplify';
 
 interface AppPage {
   url: string;
@@ -72,6 +82,14 @@ const appPages: AppPage[] = [
 
 const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
+const signOut = async () => {
+  try {
+    await Auth.signOut();
+  } catch (error) {
+    console.log('error signing out: ', error);
+  }
+}
+
 const Menu: React.FC = () => {
   const location = useLocation();
 
@@ -94,7 +112,10 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
-          <AmplifySignOut />
+          <IonItem button onClick={() => signOut()} lines="none" detail={false}>
+            <IonIcon slot="start" ios={logOutOutline} md={logOutSharp} />
+            <IonLabel>Sign Out</IonLabel>
+          </IonItem>
         </IonList>
 
         <IonList id="labels-list">
