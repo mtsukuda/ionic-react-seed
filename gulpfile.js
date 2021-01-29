@@ -1,6 +1,8 @@
 const _ = require('lodash');
+const chalk = require('chalk');
 const gulp = require('gulp');
 const FS = require('fs');
+const USER_COMPONENT_JSON = 'seed/user-components';
 const USER_COMPONENT_DIST = 'src/user-components';
 
 /**
@@ -8,8 +10,27 @@ const USER_COMPONENT_DIST = 'src/user-components';
  */
 gulp.task('create-user-components', function (done) {
   _cleanDirectories(USER_COMPONENT_DIST);
+  let userComponentsJSONFilePaths = _jsonFilePaths(USER_COMPONENT_JSON);
+  console.log(userComponentsJSONFilePaths);
+  if (userComponentsJSONFilePaths === null || userComponentsJSONFilePaths.length === 0) {
+    console.log(chalk.black.bgGreen("  There is no user component...  "));
+    done();
+    return;
+  }
   done();
 });
+
+let _jsonFilePaths = function (dirPath) {
+  let allFiles = FS.readdirSync(dirPath);
+  if (allFiles && _.isArray(allFiles)) {
+    let jsonFilePathList = allFiles.filter(function (filePath) {
+      return FS.statSync(`${dirPath}/${filePath}`).isFile() && /.*\.json$/.test(filePath);
+    });
+    jsonFilePathList = jsonFilePathList.map(filePath => `${dirPath}/${filePath}`);
+    return jsonFilePathList;
+  }
+  return null;
+}
 
 /**
  * Create User Pages
