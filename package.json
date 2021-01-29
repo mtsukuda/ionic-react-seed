@@ -30,6 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "buildndeploy": "react-scripts build && firebase deploy",
+    "gulp": "gulp",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -49,7 +50,9 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.4.6"
+    "@capacitor/cli": "2.4.6",
+    "gulp": "^4.0.2",
+    "prettier": "^2.2.1"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic + React seed project"
 }
