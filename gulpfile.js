@@ -6,6 +6,7 @@ const USER_COMPONENT_JSON = 'seed/user-components';
 const USER_COMPONENT_TEMPLATE_FILE_PATH = 'seed/user-components-templates/user-component-basic.js.tpl';
 const USER_COMPONENT_DIST = 'src/user-components';
 const USER_PAGE_JSON = 'seed/user-pages';
+const USER_PAGE_TEMPLATE_FILE_PATH = 'seed/user-pages-templates/user-page-basic.js.tpl'
 const USER_PAGE_DIST = 'src/user-pages';
 
 /**
@@ -21,24 +22,7 @@ gulp.task('create-user-components', function (done) {
     return;
   }
   let userComponents = [];
-  _.forEach(userComponentsJSONFilePaths, (userComponentJSONFilePath) => {
-    let userComponentJSON = _JSONdata(userComponentJSONFilePath);
-    let userComponentName = _componentName(userComponentJSON.componentName);
-    let tags = [];
-    _htmlTagRecursive(userComponentJSON, tags);
-    let componentMethods = [];
-    _componentMethodRecursiveWithOverlapCheck(userComponentJSON, componentMethods);
-    let userComponentSet = {};
-    userComponentSet['name'] = userComponentName;
-    userComponentSet['html'] = _tagToHtml(tags);
-    userComponentSet['import'] = userComponentJSON.import;
-    userComponentSet['methods'] = componentMethods;
-    userComponentSet['fetch'] = userComponentJSON.fetch;
-    userComponentSet['lifeCycleMethods'] = userComponentJSON.lifeCycleMethods;
-    userComponentSet['renderBeforeReturn'] = userComponentJSON.renderBeforeReturn;
-    userComponentSet['defaultProps'] = userComponentJSON.defaultProps;
-    userComponents.push(userComponentSet);
-  });
+  _componentBuild(userComponentsJSONFilePaths, userComponents);
   _createUserComponentFile(userComponents);
   done();
 });
@@ -55,6 +39,9 @@ gulp.task('create-user-pages', function (done){
     done();
     return;
   }
+  let userPages = [];
+  _componentBuild(userPagesJSONFilePaths, userPages);
+  _createUserPageFile(userPages);
   done();
 });
 
@@ -137,6 +124,27 @@ let _readWholeFile = function (targetPath) {
     return null;
   }
 };
+
+let _componentBuild = function (componentConfigJSONFilePaths, buildComponents) {
+  _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
+    let componentConfigJSON = _JSONdata(componentConfigJSONFilePath);
+    let componentName = _componentName(componentConfigJSON.componentName);
+    let tags = [];
+    _htmlTagRecursive(componentConfigJSON, tags);
+    let componentMethods = [];
+    _componentMethodRecursiveWithOverlapCheck(componentConfigJSON, componentMethods);
+    let userComponentSet = {};
+    userComponentSet['name'] = componentName;
+    userComponentSet['html'] = _tagToHtml(tags);
+    userComponentSet['import'] = componentConfigJSON.import;
+    userComponentSet['methods'] = componentMethods;
+    userComponentSet['fetch'] = componentConfigJSON.fetch;
+    userComponentSet['lifeCycleMethods'] = componentConfigJSON.lifeCycleMethods;
+    userComponentSet['renderBeforeReturn'] = componentConfigJSON.renderBeforeReturn;
+    userComponentSet['defaultProps'] = componentConfigJSON.defaultProps;
+    buildComponents.push(userComponentSet);
+  });
+}
 
 let _htmlTagRecursive = function (sauceJSON, tags, closeTag, type) {
   if (_.isUndefined(sauceJSON.tags) === false) {
@@ -346,41 +354,30 @@ let _importImportCssDeclaration = function (userPageDefaultImportComponents) {
 }
 
 let _createUserComponentFile = function (userComponents, prefix='') {
-  let orgFileBuffer = _readWholeFile(USER_COMPONENT_TEMPLATE_FILE_PATH);
-  userComponents.forEach((userComponentSet) => {
-    let componentFilePath = USER_COMPONENT_DIST + '/' + userComponentSet.name + '.js';
-    let fileBuffer = _replaceTag('COMOPNENT_NAME', userComponentSet.name, orgFileBuffer);
-    fileBuffer = _replaceTag('RENDER_HTML', userComponentSet.html, fileBuffer);
-    let userComponentImportComponents = [], userComponentDefaultImportComponents = [], userImportCss = [];
-    _.forEach(userComponentSet.import, (component) => {
-      _dedupeImportComponents(component, userComponentImportComponents);
-      _dedupeDefaultImportComponents(component, userComponentDefaultImportComponents);
-      _dedupeImportCss(component, userImportCss);
+  _createComponentFile(userComponents, USER_COMPONENT_TEMPLATE_FILE_PATH, USER_COMPONENT_DIST, prefix);
+}
+
+let _createUserPageFile = function (userComponents, prefix='') {
+  _createComponentFile(userComponents, USER_PAGE_TEMPLATE_FILE_PATH, USER_PAGE_DIST, prefix);
+}
+
+let _createComponentFile = function (targetComponents, templateFilePath, componentDist, prefix='') {
+  let orgFileBuffer = _readWholeFile(templateFilePath);
+  targetComponents.forEach((componentSet) => {
+    let componentFilePath = componentDist + '/' + componentSet.name + '.tsx';
+    let fileBuffer = _replaceTag('COMOPNENT_NAME', componentSet.name, orgFileBuffer);
+    fileBuffer = _replaceTag('RENDER_HTML', componentSet.html, fileBuffer);
+    let importComponents = [], defaultImportComponents = [], importCss = [];
+    _.forEach(componentSet.import, (component) => {
+      _dedupeImportComponents(component, importComponents);
+      _dedupeDefaultImportComponents(component, defaultImportComponents);
+      _dedupeImportCss(component, importCss);
     });
-    // let fetchData = _userPageIndexFetchData(userComponentSet);
-    // fileBuffer = _replaceTag('FETCH_DATA', fetchData, fileBuffer);
-    // let userComponentConstructor = _componentConstructor(
-    //   _componentState(userComponentSet.methods),
-    //   _componentBindFunction(userComponentSet.methods));
-    // if (fetchData.length > 0 && userComponentConstructor.length === 0) {
-    //   userComponentConstructor = _basicConstructor();
-    // }
-    // fileBuffer = _replaceTag('COMOPNENT_CONSTRUCTOR', userComponentConstructor, fileBuffer);
-    // let lifeCycleMethod = _userPageIndexLifeCycleMethod(userComponentSet);
-    // fileBuffer = _replaceTag('LIFE_CYCLE_METHOD', lifeCycleMethod, fileBuffer);
-    // let userComponentMethod = _componentMethod(userComponentSet.methods);
-    // fileBuffer = _replaceTag('COMOPNENT_FUNCTION', userComponentMethod, fileBuffer);
-    // let renderFetchDone = _userPageIndexFetchDone(userComponentSet);
-    // fileBuffer = _replaceTag('RENDER_FETCHDONE', renderFetchDone, fileBuffer);
-    // let renderBeforeReturn = _userPageIndexRenderBeforeReturn(userComponentSet);
-    // fileBuffer = _replaceTag('RENDER_BEFORE_RETURN', renderBeforeReturn, fileBuffer);
-    // let defaultProps = _userPageIndexDefaultProps(userComponentSet);
-    // fileBuffer = _replaceTag('DEFAULT_PROPS', defaultProps, fileBuffer);
-    let userComponentImportDeclaration = _importComponentDeclaration(userComponentImportComponents);
+    let userComponentImportDeclaration = _importComponentDeclaration(importComponents);
     fileBuffer = _replaceTag('IMPORT_COMPONENTS', userComponentImportDeclaration, fileBuffer);
-    let userComopnentDefaultImportDeclaration = _importDefaultImportComponentDeclaration(userComponentDefaultImportComponents);
+    let userComopnentDefaultImportDeclaration = _importDefaultImportComponentDeclaration(defaultImportComponents);
     fileBuffer = _replaceTag('DEFAULT_IMPORT_COMPONENTS', userComopnentDefaultImportDeclaration, fileBuffer);
-    let userImportCssDeclaration = _importImportCssDeclaration(userImportCss);
+    let userImportCssDeclaration = _importImportCssDeclaration(importCss);
     fileBuffer = _replaceTag('IMPORT_CSS', userImportCssDeclaration, fileBuffer);
     _writeDistFile(_distFilePath(componentFilePath), fileBuffer);
   });
