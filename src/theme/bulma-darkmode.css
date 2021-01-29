@@ -1,0 +1,8 @@
+@media (prefers-color-scheme: dark) {
+  .dm-text-a6a6a6 {
+    color: #a6a6a6;
+  }
+  .pagination.a {
+    background-color: #FFF;
+  }
+}
