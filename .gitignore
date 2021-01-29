@@ -109,6 +109,12 @@ dist
 # Firebase chache
 .firebase
 
+# user-pages
+src/user-components
+
+# user-pages
+src/user-pages
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
