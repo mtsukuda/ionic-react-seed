@@ -1,0 +1,133 @@
+{
+  "componentName": "SamplePage",
+  "import": [
+    {
+      "name": "IonPage",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonHeader",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonToolbar",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonButtons",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonMenuButton",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonTitle",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonContent",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "SampleComponent",
+      "from": "../user-components/SampleComponent",
+      "type": "default",
+      "props": []
+    }
+  ],
+  "tags": [
+    {
+      "tag": "IonPage",
+      "props": [],
+      "child": {
+        "tags": [
+          {
+            "tag": "IonHeader",
+            "props": [],
+            "child": {
+              "tags": [
+                {
+                  "tag": "IonToolbar",
+                  "props": [],
+                  "child": {
+                    "tags": [
+                      {
+                        "tag": "IonButtons",
+                        "props": ["slot=\"start\""],
+                        "child": {
+                          "tags": [
+                            {
+                              "tag": "IonMenuButton",
+                              "single": "yes",
+                              "props": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "IonTitle",
+                        "noCR": "yes",
+                        "props": [],
+                        "content": "Sample Page"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "tag": "IonContent",
+            "props": ["fullscreen"],
+            "child": {
+              "tags": [
+                {
+                  "tag": "IonHeader",
+                  "props": ["collapse=\"condense\""],
+                  "child": {
+                    "tags": [
+                      {
+                        "tag": "IonToolbar",
+                        "props": [],
+                        "child": {
+                          "tags": [
+                            {
+                              "tag": "IonTitle",
+                              "noCR": "yes",
+                              "props": ["size=\"large\""],
+                              "content": "Sample Page"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "tag": "SampleComponent",
+                  "props": [],
+                  "single": "yes"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
