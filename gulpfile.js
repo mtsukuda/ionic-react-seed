@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const gulp = require('gulp');
 const FS = require('fs');
 const USER_COMPONENT_JSON = 'seed/user-components';
+const USER_COMPONENT_TEMPLATE_FILE_PATH = 'seed/user-components-templates/user-component-basic.js.tpl';
 const USER_COMPONENT_DIST = 'src/user-components';
 const USER_PAGE_JSON = 'seed/user-pages';
 const USER_PAGE_DIST = 'src/user-pages';
@@ -19,6 +20,26 @@ gulp.task('create-user-components', function (done) {
     done();
     return;
   }
+  let userComponents = [];
+  _.forEach(userComponentsJSONFilePaths, (userComponentJSONFilePath) => {
+    let userComponentJSON = _JSONdata(userComponentJSONFilePath);
+    let userComponentName = _componentName(userComponentJSON.componentName);
+    let tags = [];
+    _htmlTagRecursive(userComponentJSON, tags);
+    let componentMethods = [];
+    _componentMethodRecursiveWithOverlapCheck(userComponentJSON, componentMethods);
+    let userComponentSet = {};
+    userComponentSet['name'] = userComponentName;
+    userComponentSet['html'] = _tagToHtml(tags);
+    userComponentSet['import'] = userComponentJSON.import;
+    userComponentSet['methods'] = componentMethods;
+    userComponentSet['fetch'] = userComponentJSON.fetch;
+    userComponentSet['lifeCycleMethods'] = userComponentJSON.lifeCycleMethods;
+    userComponentSet['renderBeforeReturn'] = userComponentJSON.renderBeforeReturn;
+    userComponentSet['defaultProps'] = userComponentJSON.defaultProps;
+    userComponents.push(userComponentSet);
+  });
+  _createUserComponentFile(userComponents);
   done();
 });
 
@@ -68,6 +89,16 @@ let _cleanDirectories = function (targetPath) {
   });
 }
 
+let _writeDistFile = function (distFilePath, buffer) {
+  try {
+    FS.writeFileSync(distFilePath, buffer);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+
 let _deleteDirectoryRecursive = function(path) {
   if(FS.existsSync(path)) {
     FS.readdirSync(path).forEach(function(file) {
@@ -80,4 +111,284 @@ let _deleteDirectoryRecursive = function(path) {
     });
     FS.rmdirSync(path);
   }
+};
+
+let _componentName = function (component) {
+  return component.charAt(0).toUpperCase() + _.camelCase(component).slice(1);
+};
+
+let _JSONdata = function (filePath) {
+  let fileBuffer = _readWholeFile(filePath);
+  if (fileBuffer === null) return '';
+  let jsonData = JSON.parse(fileBuffer);
+  console.log(jsonData);
+  return jsonData;
+};
+
+let _readWholeFile = function (targetPath) {
+  try {
+    return FS.readFileSync(targetPath, 'utf8');
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      console.log(`Could not find: "${targetPath}"`);
+      return null;
+    }
+    console.log(err);
+    return null;
+  }
+};
+
+let _htmlTagRecursive = function (sauceJSON, tags, closeTag, type) {
+  if (_.isUndefined(sauceJSON.tags) === false) {
+    _.forEach(sauceJSON.tags, (component) => {
+      let openTagSet = {"open": component.tag, "props": _componentProperties(component)};
+      let closeTag = component.tag;
+      if (_.isUndefined(component.type) === false) openTagSet['type'] = component.type;
+      if (_.isUndefined(component.close) === false) closeTag = component.close;
+      if (_.isUndefined(component.content) === false) openTagSet['content'] = component.content;
+      if (_.isUndefined(component.rawContent) === false) openTagSet['rawContent'] = component.rawContent;
+      if (_.isUndefined(component.single) === false) openTagSet['single'] = component.single;
+      tags.push(openTagSet);
+      if (_.isUndefined(component.child) === false) {
+        _htmlTagRecursive(component.child, tags, closeTag, component.type);
+      } else if (_.isUndefined(component.single) === true) {
+        let closeTagSet = {};
+        if (_.isUndefined(component.type) === false) closeTagSet['type'] = component.type;
+        if (_.isUndefined(component.tag) === false) closeTagSet['close'] = _.isUndefined(component.close) === false ? component.close : component.tag;
+        if (_.isUndefined(component.noCR) === false) closeTagSet['noCR'] = component.noCR;
+        if (_.isUndefined(component.contentAT) === false) closeTagSet['contentAfterTag'] = component.contentAT;
+        if (_.isUndefined(component.rawContent) === false) closeTagSet['rawContent'] = component.rawContent;
+        if (_.isEmpty(closeTagSet) === false) tags.push(closeTagSet);
+      }
+    });
+    let closeTagSet = {};
+    if (_.isUndefined(closeTag) === false) closeTagSet['close'] = closeTag;
+    if (_.isUndefined(type) === false) closeTagSet['type'] = type;
+    if (_.isEmpty(closeTagSet) === false) tags.push(closeTagSet);
+  }
+}
+
+let _componentProperties = function (component) {
+  let functionName = '_componentProperties()';
+  if (_isSet(component, 'props', functionName) === false) return '';
+  let props = '';
+  _.forEach(component.props, (prop) => {
+    props += ' ' + prop;
+  });
+  return props;
+}
+
+let _isSet = function (targetObject, propertyName, methodName, enableThrow=false) {
+  if (_.isUndefined(targetObject[propertyName])) {
+    let log = `There is no ${propertyName} object: ${methodName}`;
+    if (enableThrow) throw log;
+    // console.log(log);
+    return false;
+  }
+  return true;
+}
+
+let _distFilePath = function (templateFilePath){
+  let resultPath = templateFilePath.replace('seed', 'src');
+  resultPath = resultPath.replace('.tpl', '');
+  // console.log(resultPath);
+  return resultPath;
+}
+
+let _componentMethodRecursiveWithOverlapCheck = function (sauceJSON, componentMethods) {
+  if (_.isUndefined(sauceJSON.tags) === false) {
+    _.forEach(sauceJSON.tags, (component) => {
+      if (_.isUndefined(component.componentMethod) === false) {
+        _.forEach(componentMethods, (existComponentMethod) => {
+          _.forEach(existComponentMethod.states, (overlapCheckComponentStat) => {
+            if (_.find(component.componentMethod.states, (v) => { return v.name === overlapCheckComponentStat.name})) {
+              throw "Duplicate component function status name!";
+            }
+          });
+          _.forEach(existComponentMethod.methods, (overlapCheckComponentMethod) => {
+            if (_.find(component.componentMethod.methods, (v) => { return v.name === overlapCheckComponentMethod.name})) {
+              throw "Duplicate component function name!";
+            }
+          });
+        });
+        componentMethods.push(component.componentMethod);
+      }
+      if (_.isUndefined(component.child) === false) {
+        _componentMethodRecursiveWithOverlapCheck(component.child, componentMethods);
+      }
+    });
+  }
+}
+
+let _tagToHtml = function (tags) {
+  let result = '';
+  let beforeTag = "none";
+  let isBeforeSingle = undefined;
+  _.forEach(tags, (tag, i) => {
+    if (tag.open && _.isUndefined(isBeforeSingle)) {
+      beforeTag = "open";
+    }
+    if (tag.close) {
+      beforeTag = "close";
+    }
+    let cr = (i > 0 ? '\n' : '');
+    let space = _.isUndefined(tag.noCR) ? cr : '';
+    result += space + (tag.type === "raw" ? _rawTag(tag) : _htmlTag(tag));
+    isBeforeSingle = tag.single;
+  });
+  return result;
+}
+
+let _rawTag = function (tag) {
+  let result = '';
+  if (tag.open) {
+    result = `${tag.open}`;
+  } else if (tag.close) {
+    result = `${tag.close}`;
+  }
+  return result;
+}
+
+let _htmlTag = function (tag) {
+  let result = '';
+  if (tag.open) {
+    result = `<${tag.open}${tag.props}${(tag.single?' /':'')}>` + (tag.content?tag.content:'');
+  } else if (tag.close) {
+    result = (tag.single?'':`</${tag.close}>`) + (tag.contentAfterTag?tag.contentAfterTag:'');
+  }
+  return result;
+}
+
+let _typePackage = function (component) {
+  if (_.isUndefined(component.type) === false && component.type.toLowerCase() === "package") {
+    return true;
+  }
+  return false;
+}
+
+let _typeDefault = function (component) {
+  if (_.isUndefined(component.type) === false && component.type.toLowerCase() === "default") {
+    return true;
+  }
+  return false;
+}
+
+let _typeCss = function (component) {
+  if (_.isUndefined(component.type) === false && component.type.toLowerCase() === "css") {
+    return true;
+  }
+  return false;
+}
+
+let _dedupeImportComponents = function (component, userPageImportComponents) {
+  if (_typePackage(component) === false) return;
+  if (_.isUndefined(userPageImportComponents[component.from])) {
+    let componentName = [];
+    componentName.push(component.name);
+    userPageImportComponents[component.from] = componentName;
+  } else {
+    let existGroupComponents = userPageImportComponents[component.from];
+    if (_.isUndefined(existGroupComponents[component.name])) existGroupComponents.push(component.name);
+    userPageImportComponents[component.from] = existGroupComponents;
+  }
+}
+
+let _dedupeDefaultImportComponents = function (component, userPageDefaultImportComponents) {
+  if (_typeDefault(component) === false) return;
+  // if (_.isUndefined(component.type) || component.type !== "default") return;
+  let importSet = { name: component.name, from: component.from };
+  if (_.find(userPageDefaultImportComponents, (v) => { return (v.name === component.name) })) {
+    console.log(`Duplicate component: ${component.name}`);
+    return;
+  }
+  userPageDefaultImportComponents.push(importSet);
+}
+
+let _dedupeImportCss = function (component, userImportCss) {
+  if (_typeCss(component) === false) return;
+  let importSet = { name: component.name };
+  if (_.find(userImportCss, (v) => { return (v.name === component.name) })) {
+    console.log(`Duplicate css: ${component.name}`);
+    return;
+  }
+  userImportCss.push(importSet);
+}
+
+let _importComponentDeclaration = function (userPageImportComponents) {
+  let result = '';
+  for(let importFrom in userPageImportComponents) {
+    if(!userPageImportComponents.hasOwnProperty(importFrom)) continue;
+    let components = userPageImportComponents[importFrom];
+    let commaSeparatedComponents = '';
+    _.forEach(components, (component) => {
+      commaSeparatedComponents += (commaSeparatedComponents ? ' ,' : '') + component;
+    });
+    result += (result ? '\n' : '') + 'import { ' + commaSeparatedComponents + ' } from "' + importFrom + '";';
+  }
+  // console.log(result);
+  return result;
+}
+
+let _importDefaultImportComponentDeclaration = function (userPageDefaultImportComponents) {
+  let result = '';
+  _.forEach(userPageDefaultImportComponents, declaration => {
+    result += (result ? '\n' : '') + 'import ' + declaration.name + ' from "' + declaration.from + '";';
+  });
+  return result;
+}
+
+let _importImportCssDeclaration = function (userPageDefaultImportComponents) {
+  let result = '';
+  _.forEach(userPageDefaultImportComponents, declaration => {
+    result += (result ? '\n' : '') + 'import ' + declaration.name;
+  });
+  return result;
+}
+
+let _createUserComponentFile = function (userComponents, prefix='') {
+  let orgFileBuffer = _readWholeFile(USER_COMPONENT_TEMPLATE_FILE_PATH);
+  userComponents.forEach((userComponentSet) => {
+    let componentFilePath = USER_COMPONENT_DIST + '/' + userComponentSet.name + '.js';
+    let fileBuffer = _replaceTag('COMOPNENT_NAME', userComponentSet.name, orgFileBuffer);
+    fileBuffer = _replaceTag('RENDER_HTML', userComponentSet.html, fileBuffer);
+    let userComponentImportComponents = [], userComponentDefaultImportComponents = [], userImportCss = [];
+    _.forEach(userComponentSet.import, (component) => {
+      _dedupeImportComponents(component, userComponentImportComponents);
+      _dedupeDefaultImportComponents(component, userComponentDefaultImportComponents);
+      _dedupeImportCss(component, userImportCss);
+    });
+    // let fetchData = _userPageIndexFetchData(userComponentSet);
+    // fileBuffer = _replaceTag('FETCH_DATA', fetchData, fileBuffer);
+    // let userComponentConstructor = _componentConstructor(
+    //   _componentState(userComponentSet.methods),
+    //   _componentBindFunction(userComponentSet.methods));
+    // if (fetchData.length > 0 && userComponentConstructor.length === 0) {
+    //   userComponentConstructor = _basicConstructor();
+    // }
+    // fileBuffer = _replaceTag('COMOPNENT_CONSTRUCTOR', userComponentConstructor, fileBuffer);
+    // let lifeCycleMethod = _userPageIndexLifeCycleMethod(userComponentSet);
+    // fileBuffer = _replaceTag('LIFE_CYCLE_METHOD', lifeCycleMethod, fileBuffer);
+    // let userComponentMethod = _componentMethod(userComponentSet.methods);
+    // fileBuffer = _replaceTag('COMOPNENT_FUNCTION', userComponentMethod, fileBuffer);
+    // let renderFetchDone = _userPageIndexFetchDone(userComponentSet);
+    // fileBuffer = _replaceTag('RENDER_FETCHDONE', renderFetchDone, fileBuffer);
+    // let renderBeforeReturn = _userPageIndexRenderBeforeReturn(userComponentSet);
+    // fileBuffer = _replaceTag('RENDER_BEFORE_RETURN', renderBeforeReturn, fileBuffer);
+    // let defaultProps = _userPageIndexDefaultProps(userComponentSet);
+    // fileBuffer = _replaceTag('DEFAULT_PROPS', defaultProps, fileBuffer);
+    let userComponentImportDeclaration = _importComponentDeclaration(userComponentImportComponents);
+    fileBuffer = _replaceTag('IMPORT_COMPONENTS', userComponentImportDeclaration, fileBuffer);
+    let userComopnentDefaultImportDeclaration = _importDefaultImportComponentDeclaration(userComponentDefaultImportComponents);
+    fileBuffer = _replaceTag('DEFAULT_IMPORT_COMPONENTS', userComopnentDefaultImportDeclaration, fileBuffer);
+    let userImportCssDeclaration = _importImportCssDeclaration(userImportCss);
+    fileBuffer = _replaceTag('IMPORT_CSS', userImportCssDeclaration, fileBuffer);
+    _writeDistFile(_distFilePath(componentFilePath), fileBuffer);
+  });
+}
+
+let _replaceTag = function (tagString, replaceString, buffer, startWith='') {
+  tagString = new RegExp(startWith + '<!--@@' + tagString + '-->','g');
+  console.log('REPLACE: ' + tagString + ' ==> ' + replaceString);
+  // console.log(buffer);
+  return buffer.replace(tagString, replaceString);
 };
