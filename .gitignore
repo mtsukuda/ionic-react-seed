@@ -110,10 +110,10 @@ dist
 .firebase
 
 # user-pages
-src/user-components
+src/user-components/
 
 # user-pages
-src/user-pages
+src/user-pages/
 
 #amplify
 amplify/\#current-cloud-backend
