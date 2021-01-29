@@ -20,18 +20,6 @@ gulp.task('create-user-components', function (done) {
   done();
 });
 
-let _jsonFilePaths = function (dirPath) {
-  let allFiles = FS.readdirSync(dirPath);
-  if (allFiles && _.isArray(allFiles)) {
-    let jsonFilePathList = allFiles.filter(function (filePath) {
-      return FS.statSync(`${dirPath}/${filePath}`).isFile() && /.*\.json$/.test(filePath);
-    });
-    jsonFilePathList = jsonFilePathList.map(filePath => `${dirPath}/${filePath}`);
-    return jsonFilePathList;
-  }
-  return null;
-}
-
 /**
  * Create User Pages
  */
@@ -50,6 +38,18 @@ gulp.task('default',
     done();
   })
 );
+
+let _jsonFilePaths = function (dirPath) {
+  let allFiles = FS.readdirSync(dirPath);
+  if (allFiles && _.isArray(allFiles)) {
+    let jsonFilePathList = allFiles.filter(function (filePath) {
+      return FS.statSync(`${dirPath}/${filePath}`).isFile() && /.*\.json$/.test(filePath);
+    });
+    jsonFilePathList = jsonFilePathList.map(filePath => `${dirPath}/${filePath}`);
+    return jsonFilePathList;
+  }
+  return null;
+}
 
 let _cleanDirectories = function (targetPath) {
   _deleteDirectoryRecursive(targetPath);
