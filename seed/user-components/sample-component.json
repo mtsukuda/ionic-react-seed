@@ -47,13 +47,13 @@
                   "tag": "IonCardTitle",
                   "noCR": "yes",
                   "props": [],
-                  "content": "'Card Title'"
+                  "content": "Sample Card Title"
                 },
                 {
                   "tag": "IonCardSubtitle",
                   "noCR": "yes",
                   "props": [],
-                  "content": "'Card Subtitle'"
+                  "content": "Sample Card Subtitle"
                 }
               ]
             }
@@ -61,7 +61,7 @@
           {
             "tag": "IonCardContent",
             "props": [],
-            "content": "'Keep close to Nature\\'s heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean.'"
+            "content": "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean."
           }
         ]
       }
