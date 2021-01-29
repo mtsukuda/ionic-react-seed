@@ -1,0 +1,70 @@
+{
+  "componentName": "SampleComponent",
+  "import": [
+    {
+      "name": "IonCard",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonCardHeader",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonCardSubtitle",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonCardTitle",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
+      "name": "IonCardContent",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    }
+  ],
+  "tags": [
+    {
+      "tag": "IonCard",
+      "props": [],
+      "child": {
+        "tags": [
+          {
+            "tag": "IonCardHeader",
+            "props": [],
+            "child": {
+              "tags": [
+                {
+                  "tag": "IonCardTitle",
+                  "noCR": "yes",
+                  "props": [],
+                  "content": "'Card Title'"
+                },
+                {
+                  "tag": "IonCardSubtitle",
+                  "noCR": "yes",
+                  "props": [],
+                  "content": "'Card Subtitle'"
+                }
+              ]
+            }
+          },
+          {
+            "tag": "IonCardContent",
+            "props": [],
+            "content": "'Keep close to Nature\\'s heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean.'"
+          }
+        ]
+      }
+    }
+  ]
+}
