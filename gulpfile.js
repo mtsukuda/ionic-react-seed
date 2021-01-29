@@ -4,6 +4,8 @@ const gulp = require('gulp');
 const FS = require('fs');
 const USER_COMPONENT_JSON = 'seed/user-components';
 const USER_COMPONENT_DIST = 'src/user-components';
+const USER_PAGE_JSON = 'seed/user-pages';
+const USER_PAGE_DIST = 'src/user-pages';
 
 /**
  * Create User Components
@@ -24,6 +26,14 @@ gulp.task('create-user-components', function (done) {
  * Create User Pages
  */
 gulp.task('create-user-pages', function (done){
+  _cleanDirectories(USER_PAGE_DIST);
+  let userPagesJSONFilePaths = _jsonFilePaths(USER_PAGE_JSON);
+  console.log(userPagesJSONFilePaths);
+  if (userPagesJSONFilePaths === null || userPagesJSONFilePaths.length === 0) {
+    console.log(chalk.black.bgGreen("  There is no user pages...  "));
+    done();
+    return;
+  }
   done();
 });
 
