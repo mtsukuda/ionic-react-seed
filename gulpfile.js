@@ -128,7 +128,7 @@ let _readWholeFile = function (targetPath) {
 let _componentBuild = function (componentConfigJSONFilePaths, buildComponents) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
     let componentConfigJSON = _JSONdata(componentConfigJSONFilePath);
-    let componentName = _componentName(componentConfigJSON.componentName);
+    let componentName = _componentName(componentConfigJSON.name);
     let tags = [];
     _htmlTagRecursive(componentConfigJSON, tags);
     let componentMethods = [];
