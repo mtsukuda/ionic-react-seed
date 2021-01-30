@@ -1,5 +1,5 @@
 {
-  "componentName": "SamplePage",
+  "name": "SamplePage",
   "import": [
     {
       "name": "IonPage",

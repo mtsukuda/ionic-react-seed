@@ -1,5 +1,5 @@
 {
-  "componentName": "SampleComponent",
+  "name": "SampleComponent",
   "import": [
     {
       "name": "IonCard",
