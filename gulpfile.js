@@ -8,6 +8,8 @@ const USER_COMPONENT_DIST = 'src/user-components';
 const USER_PAGE_JSON = 'seed/user-pages';
 const USER_PAGE_TEMPLATE_FILE_PATH = 'seed/user-pages-templates/user-page-basic.js.tpl'
 const USER_PAGE_DIST = 'src/user-pages';
+const APP_TEMPLATE_PATH = 'seed/apps/App.tsx.tpl';
+const APP_DIST_PATH = 'src/App.tsx';
 
 /**
  * Create User Components
@@ -46,12 +48,22 @@ gulp.task('create-user-pages', function (done){
 });
 
 /**
+ * Create App script
+ */
+gulp.task('create-app-script', function (done){
+  let appTemplateFileBuffer = _readWholeFile(APP_TEMPLATE_PATH);
+  _writeDistFile(APP_DIST_PATH, appTemplateFileBuffer);
+  done();
+});
+
+/**
  * gulp default task
  */
 gulp.task('default',
   gulp.series(gulp.parallel(
     'create-user-components',
-    'create-user-pages'
+    'create-user-pages',
+    'create-app-script'
   ), function (done) {
     done();
   })
