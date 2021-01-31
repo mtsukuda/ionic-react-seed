@@ -51,9 +51,9 @@ gulp.task('create-user-pages', function (done){
 });
 
 /**
- * Create App script
+ * Create App
  */
-gulp.task('create-app-script', function (done){
+gulp.task('create-app', function (done){
   let appTemplateFileBuffer = _readWholeFile(APP_TEMPLATE_PATH);
   _writeDistFile(APP_DIST_PATH, appTemplateFileBuffer);
   done();
@@ -78,7 +78,7 @@ gulp.task('default',
   gulp.series(gulp.parallel(
     'create-user-components',
     'create-user-pages',
-    'create-app-script',
+    'create-app',
     'create-menu'
   ), function (done) {
     done();
