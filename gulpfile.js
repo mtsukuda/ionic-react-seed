@@ -8,7 +8,7 @@ const USER_COMPONENT_DIST = 'src/user-components';
 const USER_PAGE_JSON = 'seed/user-pages';
 const USER_PAGE_TEMPLATE_FILE_PATH = 'seed/user-pages-templates/user-page-basic.js.tpl'
 const USER_PAGE_DIST = 'src/user-pages';
-const APP_TEMPLATE_PATH = 'seed/apps/App.tsx.tpl';
+const APP_TEMPLATE_PATH = 'seed/app-templates/App.tsx.tpl';
 const APP_DIST_PATH = 'src/App.tsx';
 
 /**
