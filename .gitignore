@@ -118,6 +118,9 @@ src/user-pages/
 # app file
 src/App.tsx
 
+# component files
+src/components/Menu.*
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*

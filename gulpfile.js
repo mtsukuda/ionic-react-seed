@@ -10,6 +10,9 @@ const USER_PAGE_TEMPLATE_FILE_PATH = 'seed/user-pages-templates/user-page-basic.
 const USER_PAGE_DIST = 'src/user-pages';
 const APP_TEMPLATE_PATH = 'seed/app-templates/App.tsx.tpl';
 const APP_DIST_PATH = 'src/App.tsx';
+const MENU_TEMPLATE_PATH = 'seed/app-templates/Menu.tsx.tpl';
+const APP_CSS_DIR = 'seed/app-css/';
+const APP_COMPONENTS_DIST = 'src/components/';
 
 /**
  * Create User Components
@@ -57,13 +60,26 @@ gulp.task('create-app-script', function (done){
 });
 
 /**
+ * Create Menu
+ */
+gulp.task('create-menu', function (done){
+  const target = 'Menu';
+  let menuTemplateFileBuffer = _readWholeFile(MENU_TEMPLATE_PATH);
+  _writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
+  let menuCssFileBuffer = _readWholeFile(`${APP_CSS_DIR}${target}.css`);
+  _writeDistFile(`${APP_COMPONENTS_DIST}${target}.css`, menuCssFileBuffer);
+  done();
+});
+
+/**
  * gulp default task
  */
 gulp.task('default',
   gulp.series(gulp.parallel(
     'create-user-components',
     'create-user-pages',
-    'create-app-script'
+    'create-app-script',
+    'create-menu'
   ), function (done) {
     done();
   })
