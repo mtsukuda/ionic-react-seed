@@ -115,6 +115,9 @@ src/user-components/
 # user-pages
 src/user-pages/
 
+# app file
+src/App.tsx
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
