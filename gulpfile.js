@@ -9,7 +9,7 @@ const USER_PAGE_JSON = 'seed/user-pages';
 const USER_PAGE_TEMPLATE_FILE_PATH = 'seed/user-pages-templates/user-page-basic.js.tpl'
 const USER_PAGE_DIST = 'src/user-pages';
 const APP_TEMPLATE_PATH = 'seed/app-templates/App.tsx.tpl';
-const APP_DIST_PATH = 'src/App.tsx';
+const APP_DIST = 'src/';
 const MENU_TEMPLATE_PATH = 'seed/app-templates/Menu.tsx.tpl';
 const APP_CSS_DIR = 'seed/app-css/';
 const APP_COMPONENTS_DIST = 'src/components/';
@@ -54,8 +54,9 @@ gulp.task('create-user-pages', function (done){
  * Create App
  */
 gulp.task('create-app', function (done){
+  const target = 'App';
   let appTemplateFileBuffer = _readWholeFile(APP_TEMPLATE_PATH);
-  _writeDistFile(APP_DIST_PATH, appTemplateFileBuffer);
+  _writeDistFile(`${APP_DIST}${target}.tsx`, appTemplateFileBuffer);
   done();
 });
 
