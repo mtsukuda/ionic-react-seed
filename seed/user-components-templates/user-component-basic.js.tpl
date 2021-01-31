@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 <!--@@IMPORT_COMPONENTS-->
 <!--@@DEFAULT_IMPORT_COMPONENTS-->
 <!--@@IMPORT_CSS-->
+<!--@@IMPORT_OWN_CSS-->
 
 class <!--@@COMOPNENT_NAME--> extends Component {
   // <!--@@COMOPNENT_CONSTRUCTOR-->
