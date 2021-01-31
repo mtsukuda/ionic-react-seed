@@ -2,11 +2,14 @@ const _ = require('lodash');
 const chalk = require('chalk');
 const gulp = require('gulp');
 const FS = require('fs');
+const path = require('path')
 const USER_COMPONENT_JSON = 'seed/user-components';
 const USER_COMPONENT_TEMPLATE_FILE_PATH = 'seed/user-components-templates/user-component-basic.js.tpl';
+const USER_COMPONENT_OWN_CSS = 'seed/user-components-css';
 const USER_COMPONENT_DIST = 'src/user-components';
 const USER_PAGE_JSON = 'seed/user-pages';
 const USER_PAGE_TEMPLATE_FILE_PATH = 'seed/user-pages-templates/user-page-basic.js.tpl'
+const USER_PAGE_OWN_CSS = 'seed/user-pages-css';
 const USER_PAGE_DIST = 'src/user-pages';
 const APP_TEMPLATE_PATH = 'seed/app-templates/App.tsx.tpl';
 const APP_DIST = 'src/';
@@ -27,7 +30,7 @@ gulp.task('create-user-components', function (done) {
     return;
   }
   let userComponents = [];
-  _componentBuild(userComponentsJSONFilePaths, userComponents);
+  _componentBuild(userComponentsJSONFilePaths, USER_COMPONENT_OWN_CSS, USER_COMPONENT_DIST, userComponents);
   _createUserComponentFile(userComponents);
   done();
 });
@@ -45,7 +48,7 @@ gulp.task('create-user-pages', function (done){
     return;
   }
   let userPages = [];
-  _componentBuild(userPagesJSONFilePaths, userPages);
+  _componentBuild(userPagesJSONFilePaths, USER_PAGE_OWN_CSS, USER_PAGE_DIST, userPages);
   _createUserPageFile(userPages);
   done();
 });
@@ -154,7 +157,7 @@ let _readWholeFile = function (targetPath) {
   }
 };
 
-let _componentBuild = function (componentConfigJSONFilePaths, buildComponents) {
+let _componentBuild = function (componentConfigJSONFilePaths, cssSeedDirectory, cssDist, buildComponents) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
     let componentConfigJSON = _JSONdata(componentConfigJSONFilePath);
     let componentName = _componentName(componentConfigJSON.name);
@@ -166,6 +169,7 @@ let _componentBuild = function (componentConfigJSONFilePaths, buildComponents) {
     userComponentSet['name'] = componentName;
     userComponentSet['html'] = _tagToHtml(tags);
     userComponentSet['import'] = componentConfigJSON.import;
+    userComponentSet['ownCss'] = _ownCss(cssSeedDirectory, cssDist, path.basename(componentConfigJSONFilePath).replace("json", "css"), componentName);
     userComponentSet['methods'] = componentMethods;
     userComponentSet['fetch'] = componentConfigJSON.fetch;
     userComponentSet['lifeCycleMethods'] = componentConfigJSON.lifeCycleMethods;
@@ -173,6 +177,23 @@ let _componentBuild = function (componentConfigJSONFilePaths, buildComponents) {
     userComponentSet['defaultProps'] = componentConfigJSON.defaultProps;
     buildComponents.push(userComponentSet);
   });
+}
+
+let _ownCss = function (cssSeedDirectory, cssDist, configCssName, name) {
+  const path = `${cssSeedDirectory}/${configCssName}`;
+  const dist = `${cssDist}/${name}.css`;
+  const importCss = `import './${name}.css';`;
+  console.log(chalk.red(path));
+  if(FS.existsSync(path)) {
+    return { seed: path, dist: dist, import: importCss };
+  }
+  return null;
+}
+
+let _createOwnCss = function (ownCss) {
+  if (ownCss === null) return;
+  let cssFileBuffer = _readWholeFile(ownCss.seed);
+  _writeDistFile(ownCss.dist, cssFileBuffer);
 }
 
 let _htmlTagRecursive = function (sauceJSON, tags, closeTag, type) {
@@ -408,7 +429,10 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     fileBuffer = _replaceTag('DEFAULT_IMPORT_COMPONENTS', userComopnentDefaultImportDeclaration, fileBuffer);
     let userImportCssDeclaration = _importImportCssDeclaration(importCss);
     fileBuffer = _replaceTag('IMPORT_CSS', userImportCssDeclaration, fileBuffer);
+    let userImportOwnCssDeclaration = (componentSet.ownCss ? componentSet.ownCss.import : '');
+    fileBuffer = _replaceTag('IMPORT_OWN_CSS', userImportOwnCssDeclaration, fileBuffer);
     _writeDistFile(_distFilePath(componentFilePath), fileBuffer);
+    _createOwnCss(componentSet.ownCss);
   });
 }
 
