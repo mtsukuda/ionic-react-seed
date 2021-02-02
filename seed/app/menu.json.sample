@@ -38,5 +38,8 @@
       "strUrl": "/sample",
       "icon": "planet"
     }
-  ]
+  ],
+  "signOut": {
+    "strCaption": "Sign Out"
+  }
 }

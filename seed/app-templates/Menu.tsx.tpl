@@ -63,7 +63,7 @@ const Menu: React.FC = () => {
           })}
           <IonItem button onClick={() => signOut()} lines="none" detail={false}>
             <IonIcon slot="start" ios={logOutOutline} md={logOutSharp} />
-            <IonLabel>Sign Out</IonLabel>
+            <IonLabel><!--@@APP_MENU_SIGNOUT--></IonLabel>
           </IonItem>
         </IonList>
 
