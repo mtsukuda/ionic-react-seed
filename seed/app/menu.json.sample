@@ -1,38 +1,38 @@
 {
   "menu": [
     {
-      "title": "Inbox",
-      "url": "/page/Inbox",
+      "strTitle": "Inbox",
+      "strUrl": "/page/Inbox",
       "icon": "mail"
     },
     {
-      "title": "Outbox",
-      "url": "/page/Outbox",
-      "icon": "paper"
+      "strTitle": "Outbox",
+      "strUrl": "/page/Outbox",
+      "icon": "paperPlane"
     },
     {
-      "title": "Favorites",
-      "url": "/page/Favorites",
+      "strTitle": "Favorites",
+      "strUrl": "/page/Favorites",
       "icon": "heart"
     },
     {
-      "title": "Archived",
-      "url": "/page/Archived",
+      "strTitle": "Archived",
+      "strUrl": "/page/Archived",
       "icon": "archive"
     },
     {
-      "title": "Trash",
-      "url": "/page/Trash",
+      "strTitle": "Trash",
+      "strUrl": "/page/Trash",
       "icon": "trash"
     },
     {
-      "title": "Spam",
-      "url": "/page/Spam",
+      "strTitle": "Spam",
+      "strUrl": "/page/Spam",
       "icon": "warning"
     },
     {
-      "title": "Sample",
-      "url": "/sample",
+      "strTitle": "Sample",
+      "strUrl": "/sample",
       "icon": "planet"
     }
   ]

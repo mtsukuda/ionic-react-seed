@@ -13,6 +13,7 @@ const USER_PAGE_OWN_CSS = 'seed/user-pages-css';
 const USER_PAGE_DIST = 'src/user-pages';
 const APP_TEMPLATE_PATH = 'seed/app-templates/App.tsx.tpl';
 const APP_DIST = 'src/';
+const MENU_CONFIG_JSON = 'seed/app/menu.json';
 const MENU_TEMPLATE_PATH = 'seed/app-templates/Menu.tsx.tpl';
 const APP_CSS_DIR = 'seed/app-css/';
 const APP_COMPONENTS_DIST = 'src/components/';
@@ -67,12 +68,30 @@ gulp.task('create-app', function (done){
  * Create Menu
  */
 gulp.task('create-menu', function (done){
-  if(FS.existsSync(MENU_TEMPLATE_PATH) === false) {
+  console.log(chalk.bgRed('create-menu'));
+  const target = 'Menu';
+  if(FS.existsSync(MENU_TEMPLATE_PATH) === false || FS.existsSync(MENU_CONFIG_JSON) === false) {
+    FS.unlinkSync(`${APP_COMPONENTS_DIST}${target}.tsx`);
+    FS.unlinkSync(`${APP_COMPONENTS_DIST}${target}.css`);
     done();
     return;
   }
-  const target = 'Menu';
+  let menuConfigJSON = _JSONdata(MENU_CONFIG_JSON);
+  let buildMenu = [];
+  _.forEach(menuConfigJSON.menu, (menu) => {
+    menu['iosIcon'] = menu.icon + "Outline";
+    menu['mdIcon'] = menu.icon + "Sharp";
+    buildMenu.push(menu);
+    delete menu.icon;
+    _.forEach(menu, (value, key) => {
+      if (key.slice(0, 'str'.length) === 'str') {
+        menu[key] = `'${value}'`;
+      }
+    });
+  });
+  console.log(JSON.stringify(buildMenu));
   let menuTemplateFileBuffer = _readWholeFile(MENU_TEMPLATE_PATH);
+  menuTemplateFileBuffer = _replaceTag('APP_MENU', JSON.stringify(buildMenu).replace(/\"/g, ''), menuTemplateFileBuffer);
   _writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
   let menuCssFileBuffer = _readWholeFile(`${APP_CSS_DIR}${target}.css`);
   _writeDistFile(`${APP_COMPONENTS_DIST}${target}.css`, menuCssFileBuffer);

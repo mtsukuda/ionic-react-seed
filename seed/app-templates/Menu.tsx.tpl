@@ -29,64 +29,15 @@ import './Menu.css';
 import { Auth } from 'aws-amplify';
 
 interface AppPage {
-  url: string;
+  strUrl: string;
   iosIcon: string;
   mdIcon: string;
-  title: string;
-  badge: number;
+  strTitle: string;
 }
 
-const appPages: AppPage[] = [
-  {
-    title: 'Inbox',
-    url: '/page/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp,
-    badge: 0
-  },
-  {
-    title: 'Outbox',
-    url: '/page/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp,
-    badge: 5
-  },
-  {
-    title: 'Favorites',
-    url: '/page/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp,
-    badge: 0
-  },
-  {
-    title: 'Archived',
-    url: '/page/Archived',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp,
-    badge: 8
-  },
-  {
-    title: 'Trash',
-    url: '/page/Trash',
-    iosIcon: trashOutline,
-    mdIcon: trashSharp,
-    badge: 0
-  },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp,
-    badge: 0
-  },
-  {
-    title: 'Sample',
-    url: '/sample',
-    iosIcon: planetOutline,
-    mdIcon: planetSharp,
-    badge: 0
-  }
-];
+const appPages: AppPage[] =
+  <!--@@APP_MENU-->
+;
 
 const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
@@ -110,12 +61,9 @@ const Menu: React.FC = () => {
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
+                <IonItem className={location.pathname === appPage.strUrl ? 'selected' : ''} routerLink={appPage.strUrl} routerDirection="none" lines="none" detail={false}>
                   <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
-                  {
-                    appPage.badge === 0 ? "" : <IonBadge slot="end">{appPage.badge}</IonBadge>
-                  }
+                  <IonLabel>{appPage.strTitle}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );
