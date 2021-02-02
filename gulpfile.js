@@ -67,6 +67,10 @@ gulp.task('create-app', function (done){
  * Create Menu
  */
 gulp.task('create-menu', function (done){
+  if(FS.existsSync(MENU_TEMPLATE_PATH) === false) {
+    done();
+    return;
+  }
   const target = 'Menu';
   let menuTemplateFileBuffer = _readWholeFile(MENU_TEMPLATE_PATH);
   _writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
