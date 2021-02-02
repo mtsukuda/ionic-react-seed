@@ -118,6 +118,9 @@ src/user-pages/
 # app file
 src/App.tsx
 
+# app config json files
+seed/app/*.json
+
 # component files
 src/components/Menu.*
 

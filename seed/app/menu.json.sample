@@ -1,0 +1,39 @@
+{
+  "menu": [
+    {
+      "title": "Inbox",
+      "url": "/page/Inbox",
+      "icon": "mail"
+    },
+    {
+      "title": "Outbox",
+      "url": "/page/Outbox",
+      "icon": "paper"
+    },
+    {
+      "title": "Favorites",
+      "url": "/page/Favorites",
+      "icon": "heart"
+    },
+    {
+      "title": "Archived",
+      "url": "/page/Archived",
+      "icon": "archive"
+    },
+    {
+      "title": "Trash",
+      "url": "/page/Trash",
+      "icon": "trash"
+    },
+    {
+      "title": "Spam",
+      "url": "/page/Spam",
+      "icon": "warning"
+    },
+    {
+      "title": "Sample",
+      "url": "/sample",
+      "icon": "planet"
+    }
+  ]
+}
