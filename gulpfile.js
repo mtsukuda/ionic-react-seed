@@ -78,10 +78,13 @@ gulp.task('create-menu', function (done){
   }
   let menuConfigJSON = _JSONdata(MENU_CONFIG_JSON);
   let buildMenu = [];
+  let menuIcons = [];
   _.forEach(menuConfigJSON.menu, (menu) => {
     menu['iosIcon'] = menu.icon + "Outline";
     menu['mdIcon'] = menu.icon + "Sharp";
     buildMenu.push(menu);
+    menuIcons.push(menu.iosIcon);
+    menuIcons.push(menu.mdIcon);
     delete menu.icon;
     _.forEach(menu, (value, key) => {
       if (key.slice(0, 'str'.length) === 'str') {
@@ -91,6 +94,7 @@ gulp.task('create-menu', function (done){
   });
   let menuTemplateFileBuffer = _readWholeFile(MENU_TEMPLATE_PATH);
   menuTemplateFileBuffer = _replaceTag('APP_MENU', JSON.stringify(buildMenu).replace(/\"/g, ''), menuTemplateFileBuffer);
+  menuTemplateFileBuffer = _replaceTag('APP_MENU_ICONS', menuIcons.join(',') + ',', menuTemplateFileBuffer);
   _writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
   let menuCssFileBuffer = _readWholeFile(`${APP_CSS_DIR}${target}.css`);
   _writeDistFile(`${APP_COMPONENTS_DIST}${target}.css`, menuCssFileBuffer);
