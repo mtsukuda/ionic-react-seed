@@ -89,7 +89,6 @@ gulp.task('create-menu', function (done){
       }
     });
   });
-  console.log(JSON.stringify(buildMenu));
   let menuTemplateFileBuffer = _readWholeFile(MENU_TEMPLATE_PATH);
   menuTemplateFileBuffer = _replaceTag('APP_MENU', JSON.stringify(buildMenu).replace(/\"/g, ''), menuTemplateFileBuffer);
   _writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
