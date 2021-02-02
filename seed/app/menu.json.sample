@@ -1,4 +1,7 @@
 {
+  "header": {
+    "title": "My App"
+  },
   "menu": [
     {
       "strTitle": "Inbox",

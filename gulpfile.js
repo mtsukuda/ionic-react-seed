@@ -93,6 +93,8 @@ gulp.task('create-menu', function (done){
     });
   });
   let menuTemplateFileBuffer = _readWholeFile(MENU_TEMPLATE_PATH);
+  let menuHeaderTitle = (menuConfigJSON.header && menuConfigJSON.header.title) ? menuConfigJSON.header.title : 'Ionic Seed App';
+  menuTemplateFileBuffer = _replaceTag('APP_HEADER', menuHeaderTitle, menuTemplateFileBuffer);
   menuTemplateFileBuffer = _replaceTag('APP_MENU', JSON.stringify(buildMenu).replace(/\"/g, ''), menuTemplateFileBuffer);
   menuTemplateFileBuffer = _replaceTag('APP_MENU_ICONS', menuIcons.join(',') + ',', menuTemplateFileBuffer);
   _writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
