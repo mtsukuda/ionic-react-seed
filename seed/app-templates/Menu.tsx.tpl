@@ -7,19 +7,12 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
-  IonBadge
+  IonNote
 } from '@ionic/react';
 
 import {
   bookmarkOutline,
-  mailOutline, mailSharp,
-  paperPlaneOutline, paperPlaneSharp,
-  heartOutline, heartSharp,
-  archiveOutline, archiveSharp,
-  trashOutline, trashSharp,
-  warningOutline, warningSharp,
-  planetOutline, planetSharp,
+  <!--@@APP_MENU_ICONS-->
   logOutOutline, logOutSharp
 } from 'ionicons/icons';
 
