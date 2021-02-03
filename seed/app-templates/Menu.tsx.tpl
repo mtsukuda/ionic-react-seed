@@ -61,13 +61,16 @@ const Menu: React.FC = () => {
               </IonMenuToggle>
             );
           })}
+        </IonList>
+
+        <!--@@APP_MENU_BOTTOM-->
+
+        <IonList id="sign-out">
           <IonItem button onClick={() => signOut()} lines="none" detail={false}>
             <IonIcon slot="start" ios={logOutOutline} md={logOutSharp} />
             <IonLabel><!--@@APP_MENU_SIGNOUT--></IonLabel>
           </IonItem>
         </IonList>
-
-        <!--@@APP_MENU_BOTTOM-->
 
       </IonContent>
     </IonMenu>
