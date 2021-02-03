@@ -30,7 +30,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "buildndeploy": "react-scripts build && firebase deploy",
+    "deploy": "firebase deploy",
+    "buildndeploy": "npm run gulp && react-scripts build && npm run deploy",
     "gulp": "gulp && npm run src",
     "src": "prettier --write src/App.tsx && prettier --write src/components/** && prettier --write src/user-components/*.tsx && prettier --write src/user-pages/*.tsx",
     "test": "react-scripts test",
