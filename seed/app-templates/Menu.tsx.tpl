@@ -32,7 +32,7 @@ const appPages: AppPage[] =
   <!--@@APP_MENU-->
 ;
 
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+<!--@@APP_MENU_BOTTOM_PARAMETER-->
 
 const signOut = async () => {
   try {
@@ -67,15 +67,8 @@ const Menu: React.FC = () => {
           </IonItem>
         </IonList>
 
-        <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
+        <!--@@APP_MENU_BOTTOM-->
+
       </IonContent>
     </IonMenu>
   );

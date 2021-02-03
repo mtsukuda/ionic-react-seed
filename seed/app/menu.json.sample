@@ -41,5 +41,60 @@
   ],
   "signOut": {
     "strCaption": "Sign Out"
+  },
+  "menuBottom": {
+    "parameters": [
+      "const labels = [\"Family\", \"Friends\", \"Notes\", \"Work\", \"Travel\", \"Reminders\"];"
+    ],
+    "tags":[
+      {
+        "tag": "IonList",
+        "props": [
+          "id=\"labels-list\""
+        ],
+        "child": {
+          "tags": [
+            {
+              "tag": "IonListHeader",
+              "noCR": "yes",
+              "content": "Labels"
+            },
+            {
+              "tag": "{labels.map((label, index) => (",
+              "close": "))}",
+              "type": "raw",
+              "child": {
+                "tags": [
+                  {
+                    "tag": "IonItem",
+                    "props": [
+                      "lines=\"none\"",
+                      "key={index}"
+                    ],
+                    "child": {
+                      "tags": [
+                        {
+                          "tag": "IonIcon",
+                          "props": [
+                            "slot=\"start\"",
+                            "icon={bookmarkOutline}"
+                          ],
+                          "single": "yes"
+                        },
+                        {
+                          "tag": "IonLabel",
+                          "props": [],
+                          "content": "{label}"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
   }
 }

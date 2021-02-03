@@ -99,6 +99,11 @@ gulp.task('create-menu', function (done){
   menuTemplateFileBuffer = _replaceTag('APP_MENU_SIGNOUT', signOutCaption, menuTemplateFileBuffer);
   menuTemplateFileBuffer = _replaceTag('APP_MENU', JSON.stringify(buildMenu).replace(/\"/g, ''), menuTemplateFileBuffer);
   menuTemplateFileBuffer = _replaceTag('APP_MENU_ICONS', menuIcons.join(',') + ',', menuTemplateFileBuffer);
+  let menuBottomParameters = (menuConfigJSON.menuBottom && menuConfigJSON.menuBottom.parameters ? menuConfigJSON.menuBottom.parameters.join('\n'):'');
+  menuTemplateFileBuffer = _replaceTag('APP_MENU_BOTTOM_PARAMETER', menuBottomParameters, menuTemplateFileBuffer);
+  let tags = [];
+  if (menuConfigJSON.menuBottom) _htmlTagRecursive(menuConfigJSON.menuBottom, tags);
+  menuTemplateFileBuffer = _replaceTag('APP_MENU_BOTTOM', _tagToHtml(tags), menuTemplateFileBuffer);
   _writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
   let menuCssFileBuffer = _readWholeFile(`${APP_CSS_DIR}${target}.css`);
   _writeDistFile(`${APP_COMPONENTS_DIST}${target}.css`, menuCssFileBuffer);
