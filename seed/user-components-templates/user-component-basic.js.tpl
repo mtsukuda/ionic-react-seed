@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 
 class <!--@@COMOPNENT_NAME--> extends Component {
   // <!--@@COMOPNENT_CONSTRUCTOR-->
-  // <!--@@LIFE_CYCLE_METHOD-->
+  <!--@@LIFE_CYCLE_METHOD-->
   // <!--@@COMOPNENT_FUNCTION-->
   // <!--@@FETCH_DATA-->
   render() {

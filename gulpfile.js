@@ -458,6 +458,8 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
       _dedupeDefaultImportComponents(component, defaultImportComponents);
       _dedupeImportCss(component, importCss);
     });
+    let lifeCycleMethod = _componentLifeCycleMethod(targetComponents);
+    fileBuffer = _replaceTag('LIFE_CYCLE_METHOD', lifeCycleMethod, fileBuffer);
     let userComponentImportDeclaration = _importComponentDeclaration(importComponents);
     fileBuffer = _replaceTag('IMPORT_COMPONENTS', userComponentImportDeclaration, fileBuffer);
     let userComopnentDefaultImportDeclaration = _importDefaultImportComponentDeclaration(defaultImportComponents);
@@ -469,6 +471,16 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     _writeDistFile(_distFilePath(componentFilePath), fileBuffer);
     _createOwnCss(componentSet.ownCss);
   });
+}
+
+let _componentLifeCycleMethod = function (pageDataSet) {
+  let functionName = '_componentLifeCycleMethod()';
+  if (_isSet(pageDataSet, 'lifeCycleMethods', functionName) === false) return '';
+  let lifeCycleMethods = '';
+  _.forEach(pageDataSet.lifeCycleMethods, (lifeCycleMethod) => {
+    lifeCycleMethods += `${lifeCycleMethod.methodName}(){${lifeCycleMethod.code}}`;
+  });
+  return lifeCycleMethods;
 }
 
 let _replaceTag = function (tagString, replaceString, buffer, startWith='') {
