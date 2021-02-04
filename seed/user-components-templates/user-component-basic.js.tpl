@@ -11,7 +11,7 @@ class <!--@@COMOPNENT_NAME--> extends Component {
   // <!--@@FETCH_DATA-->
   render() {
     // <!--@@RENDER_FETCHDONE-->
-    // <!--@@RENDER_BEFORE_RETURN-->
+    <!--@@RENDER_BEFORE_RETURN-->
     return (
       <!--@@RENDER_HTML-->
     );

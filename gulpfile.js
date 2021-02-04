@@ -460,6 +460,8 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     });
     let lifeCycleMethod = _componentLifeCycleMethod(targetComponents);
     fileBuffer = _replaceTag('LIFE_CYCLE_METHOD', lifeCycleMethod, fileBuffer);
+    let renderBeforeReturn = _componentRenderBeforeReturn(targetComponents);
+    fileBuffer = _replaceTag('RENDER_BEFORE_RETURN', renderBeforeReturn, fileBuffer);
     let userComponentImportDeclaration = _importComponentDeclaration(importComponents);
     fileBuffer = _replaceTag('IMPORT_COMPONENTS', userComponentImportDeclaration, fileBuffer);
     let userComopnentDefaultImportDeclaration = _importDefaultImportComponentDeclaration(defaultImportComponents);
@@ -481,6 +483,16 @@ let _componentLifeCycleMethod = function (pageDataSet) {
     lifeCycleMethods += `${lifeCycleMethod.methodName}(){${lifeCycleMethod.code}}`;
   });
   return lifeCycleMethods;
+}
+
+let _componentRenderBeforeReturn = function (pageDataSet) {
+  let functionName = '_componentRenderBeforeReturn()';
+  if (_isSet(pageDataSet, 'renderBeforeReturn', functionName) === false) return '';
+  let renderBeforeReturn = '';
+  _.forEach(pageDataSet.renderBeforeReturn, (code) => {
+    renderBeforeReturn += (renderBeforeReturn?'\n': '') + code;
+  });
+  return renderBeforeReturn;
 }
 
 let _replaceTag = function (tagString, replaceString, buffer, startWith='') {
