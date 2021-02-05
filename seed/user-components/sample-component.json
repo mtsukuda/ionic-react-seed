@@ -32,6 +32,12 @@
       "props": []
     }
   ],
+  "lifeCycleMethods": [
+    {
+      "methodName": "componentDidMount",
+      "code": "console.log(\"componentDidMount()\")"
+    }
+  ],
   "tags": [
     {
       "tag": "IonCard",

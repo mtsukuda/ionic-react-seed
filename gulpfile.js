@@ -458,7 +458,7 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
       _dedupeDefaultImportComponents(component, defaultImportComponents);
       _dedupeImportCss(component, importCss);
     });
-    let lifeCycleMethod = _componentLifeCycleMethod(targetComponents);
+    let lifeCycleMethod = _componentLifeCycleMethod(componentSet);
     fileBuffer = _replaceTag('LIFE_CYCLE_METHOD', lifeCycleMethod, fileBuffer);
     let renderBeforeReturn = _componentRenderBeforeReturn(targetComponents);
     fileBuffer = _replaceTag('RENDER_BEFORE_RETURN', renderBeforeReturn, fileBuffer);
@@ -475,11 +475,11 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
   });
 }
 
-let _componentLifeCycleMethod = function (pageDataSet) {
+let _componentLifeCycleMethod = function (componentSet) {
   let functionName = '_componentLifeCycleMethod()';
-  if (_isSet(pageDataSet, 'lifeCycleMethods', functionName) === false) return '';
+  if (_isSet(componentSet, 'lifeCycleMethods', functionName) === false) return '';
   let lifeCycleMethods = '';
-  _.forEach(pageDataSet.lifeCycleMethods, (lifeCycleMethod) => {
+  _.forEach(componentSet.lifeCycleMethods, (lifeCycleMethod) => {
     lifeCycleMethods += `${lifeCycleMethod.methodName}(){${lifeCycleMethod.code}}`;
   });
   return lifeCycleMethods;
