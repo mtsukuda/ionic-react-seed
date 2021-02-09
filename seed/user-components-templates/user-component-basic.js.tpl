@@ -8,7 +8,7 @@ class <!--@@COMOPNENT_NAME--> extends Component {
   // <!--@@COMOPNENT_CONSTRUCTOR-->
   <!--@@LIFE_CYCLE_METHOD-->
   // <!--@@COMOPNENT_FUNCTION-->
-  // <!--@@FETCH_DATA-->
+  <!--@@FETCH_DATA-->
   render() {
     // <!--@@RENDER_FETCHDONE-->
     <!--@@RENDER_BEFORE_RETURN-->

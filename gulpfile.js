@@ -2,7 +2,8 @@ const _ = require('lodash');
 const chalk = require('chalk');
 const gulp = require('gulp');
 const FS = require('fs');
-const path = require('path')
+const path = require('path');
+const USER_COMMON_TEMPLATE = 'seed/user-common-templates';
 const USER_COMPONENT_JSON = 'seed/user-components';
 const USER_COMPONENT_TEMPLATE_FILE_PATH = 'seed/user-components-templates/user-component-basic.js.tpl';
 const USER_COMPONENT_OWN_CSS = 'seed/user-components-css';
@@ -458,6 +459,8 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
       _dedupeDefaultImportComponents(component, defaultImportComponents);
       _dedupeImportCss(component, importCss);
     });
+    let fetchData = _componentFetchData(componentSet);
+    fileBuffer = _replaceTag('FETCH_DATA', fetchData, fileBuffer);
     let lifeCycleMethod = _componentLifeCycleMethod(componentSet);
     fileBuffer = _replaceTag('LIFE_CYCLE_METHOD', lifeCycleMethod, fileBuffer);
     let renderBeforeReturn = _componentRenderBeforeReturn(componentSet);
@@ -473,6 +476,28 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     _writeDistFile(_distFilePath(componentFilePath), fileBuffer);
     _createOwnCss(componentSet.ownCss);
   });
+}
+
+let _componentFetchData = function (componentSet) {
+  let functionName = '_componentFetchData()';
+  if (_isSet(componentSet, 'fetch', functionName) === false) return '';
+  if (_isSet(componentSet.fetch, 'format', functionName) === false) return '';
+  if (_isSet(componentSet.fetch, 'apis', functionName) === false) return '';
+  let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/${componentSet.fetch.format}.ts.tpl`;
+  let fetchApi = '', associateArray = 'let state: { [key: string]: unknown; } = {};', setState = '';
+  let apiCount = 0;
+  _.forEach(componentSet.fetch.apis, (api, i) => {
+    fetchApi += (fetchApi?', ': '') + `() => fetch.get('${api.api}'${(api.init?', '+api.init:'')})`;
+    apiCount++;
+    associateArray += `state['${api.name}'] = results[${i}];`;
+    setState += `this.setState({${api.name}: results[${i}]});`;
+  });
+  let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
+  fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('ARRAY_MAP_ASSOCIATE_ARRAY', associateArray, fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('SET_STATE', setState, fetchDataBuffer);
+  return fetchDataBuffer;
 }
 
 let _componentLifeCycleMethod = function (componentSet) {
