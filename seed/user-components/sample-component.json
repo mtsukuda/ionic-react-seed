@@ -30,14 +30,33 @@
       "from": "@ionic/react",
       "type": "package",
       "props": []
+    },
+    {
+      "name": "* as fetch",
+      "from": "../components/fetch",
+      "type": "default",
+      "props": []
     }
   ],
   "lifeCycleMethods": [
     {
       "methodName": "componentDidMount",
-      "code": "console.log(\"componentDidMount()\")"
+      "code": "this.fetchAll();"
     }
   ],
+  "fetch": {
+    "format": "fetch-multi",
+    "apis": [
+      {
+        "name": "files",
+        "api": "https://api.mocklets.com/mock68049/files"
+      },
+      {
+        "name": "mtsukuda",
+        "api": "https://api.github.com/search/users?q=mtsukuda"
+      }
+    ]
+  },
   "tags": [
     {
       "tag": "IonCard",
