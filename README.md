@@ -26,6 +26,10 @@ Ionic React seed project.
     * props []
   * lifeCycleMethods
   * fetch
+    * format: `fetch-multi`
+    * name: `an api name`
+    * api: `uri of api`
+    * type: `type of response`
   * renderBeforeReturn []
   * defaultProps []
     * name
