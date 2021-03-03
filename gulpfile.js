@@ -7,6 +7,7 @@ const USER_COMMON_TEMPLATE = 'seed/user-common-templates';
 const USER_COMPONENT_JSON = 'seed/user-components';
 const USER_COMPONENT_TEMPLATE_FILE_PATH = 'seed/user-components-templates/user-component-basic.js.tpl';
 const USER_COMPONENT_OWN_CSS = 'seed/user-components-css';
+const USER_COMPONENT_METHOD = 'seed/user-component-method';
 const USER_COMPONENT_DIST = 'src/user-components';
 const USER_PAGE_JSON = 'seed/user-pages';
 const USER_PAGE_TEMPLATE_FILE_PATH = 'seed/user-pages-templates/user-page-basic.js.tpl'
@@ -23,6 +24,7 @@ const APP_COMPONENTS_DIST = 'src/components/';
  * Create User Components
  */
 gulp.task('create-user-components', function (done) {
+  console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-user-components ') + ' 🚀🚀🚀 ');
   _cleanDirectories(USER_COMPONENT_DIST);
   let userComponentsJSONFilePaths = _jsonFilePaths(USER_COMPONENT_JSON);
   console.log(userComponentsJSONFilePaths);
@@ -41,6 +43,7 @@ gulp.task('create-user-components', function (done) {
  * Create User Pages
  */
 gulp.task('create-user-pages', function (done){
+  console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-user-pages ') + ' 🚀🚀🚀 ');
   _cleanDirectories(USER_PAGE_DIST);
   let userPagesJSONFilePaths = _jsonFilePaths(USER_PAGE_JSON);
   console.log(userPagesJSONFilePaths);
@@ -59,8 +62,33 @@ gulp.task('create-user-pages', function (done){
  * Create App
  */
 gulp.task('create-app', function (done){
+  console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-app ') + ' 🚀🚀🚀 ');
   const target = 'App';
+  if(FS.existsSync(MENU_CONFIG_JSON) === false) {
+    done();
+    return;
+  }
+  let menuConfigJSON = _JSONdata(MENU_CONFIG_JSON);
+  let routeInfo = [];
+  let redirect = '';
+  _.forEach(menuConfigJSON.menu, (menu) => {
+    let route = [];
+    route['url'] = menu.strUrl;
+    route['component'] = menu.component;
+    if (menu.redirect && menu.redirect === "yes") {
+      redirect = menu.strUrl;
+    }
+    routeInfo.push(route);
+  });
+  if (redirect === '') {
+    redirect = routeInfo[0].url;
+  }
+  console.log(routeInfo);
   let appTemplateFileBuffer = _readWholeFile(APP_TEMPLATE_PATH);
+  let importPages = _importPages(routeInfo);
+  appTemplateFileBuffer = _replaceTag('IMPORT_PAGES', importPages, appTemplateFileBuffer);
+  let routeTags = _routeTags(routeInfo, redirect);
+  appTemplateFileBuffer = _replaceTag('ROUTER', routeTags, appTemplateFileBuffer);
   _writeDistFile(`${APP_DIST}${target}.tsx`, appTemplateFileBuffer);
   done();
 });
@@ -69,7 +97,7 @@ gulp.task('create-app', function (done){
  * Create Menu
  */
 gulp.task('create-menu', function (done){
-  console.log(chalk.bgRed('create-menu'));
+  console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-menu ') + ' 🚀🚀🚀 ');
   const target = 'Menu';
   if(FS.existsSync(MENU_TEMPLATE_PATH) === false || FS.existsSync(MENU_CONFIG_JSON) === false) {
     FS.unlinkSync(`${APP_COMPONENTS_DIST}${target}.tsx`);
@@ -87,6 +115,8 @@ gulp.task('create-menu', function (done){
     menuIcons.push(menu.iosIcon);
     menuIcons.push(menu.mdIcon);
     delete menu.icon;
+    delete menu.component;
+    delete menu.redirect;
     _.forEach(menu, (value, key) => {
       if (key.slice(0, 'str'.length) === 'str') {
         menu[key] = `'${value}'`;
@@ -447,6 +477,33 @@ let _createUserPageFile = function (userComponents, prefix='') {
   _createComponentFile(userComponents, USER_PAGE_TEMPLATE_FILE_PATH, USER_PAGE_DIST, prefix);
 }
 
+let _routeTags = function (routeInfo, redirect) {
+  let result = "";
+  let defaultExist = false;
+  _.forEach(routeInfo, (route) => {
+    if (route.component.toLowerCase() === 'default') {
+      if (defaultExist === false) {
+        result += (result ? '\n': '') + `<Route path="/page/:name" component={${route.component}} exact />`;
+        defaultExist = true;
+      }
+      return;
+    }
+    result += (result ? '\n': '') + `<Route path="${route.url}" component={${route.component}} exact />`
+  });
+  result += (result ? '\n': '') + `<Redirect from="/" to="${redirect}" exact />`;
+  return result;
+}
+
+let _importPages = function (routeInfo) {
+  let result = "";
+  _.forEach(routeInfo, (route) => {
+    console.log(route.component.toLowerCase());
+    if (route.component.toLowerCase() === "default") return;
+    result += (result ? '\n': '') + `import ${route.component} from "./user-pages/${route.component}";`;
+  });
+  return result;
+}
+
 let _createComponentFile = function (targetComponents, templateFilePath, componentDist, prefix='') {
   let orgFileBuffer = _readWholeFile(templateFilePath);
   targetComponents.forEach((componentSet) => {
@@ -462,6 +519,7 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     let fetchData = _componentFetchData(componentSet);
     if (fetchData === '') {
       fileBuffer = _replaceTag('FETCH_DATA', fetchData, fileBuffer);
+      fileBuffer = _replaceTag('FETCH_DATA_TYPE', '', fileBuffer);
     } else {
       fileBuffer = _replaceTag('FETCH_DATA_TYPE', fetchData.type, fileBuffer);
       fileBuffer = _replaceTag('FETCH_DATA', fetchData.data, fileBuffer);
@@ -471,6 +529,8 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     fileBuffer = _replaceTag('FETCH_LOADING', fetchLoading, fileBuffer);
     let lifeCycleMethod = _componentLifeCycleMethod(componentSet);
     fileBuffer = _replaceTag('LIFE_CYCLE_METHOD', lifeCycleMethod, fileBuffer);
+    let componentMethod = _componentMethod(componentSet);
+    fileBuffer = _replaceTag('COMPONENT_METHOD', componentMethod, fileBuffer);
     let renderFetchDone = _componentRenderFetchDone(componentSet);
     fileBuffer = _replaceTag('RENDER_FETCH_DONE', renderFetchDone, fileBuffer);
     let renderBeforeReturn = _componentRenderBeforeReturn(componentSet);
@@ -542,6 +602,51 @@ let _componentLifeCycleMethod = function (componentSet) {
     lifeCycleMethods += `${lifeCycleMethod.methodName}(){${lifeCycleMethod.code}}`;
   });
   return lifeCycleMethods;
+}
+
+let _componentMethod = function (componentSet) {
+  let functionName = '_componentMethod()';
+  if (_isSet(componentSet, 'methods', functionName) === false) return '';
+  let result = ""
+  _.forEach(componentSet.methods, (componentMethod) => {
+    if (_isSet(componentMethod, 'methods', functionName) === false) return '';
+    _.forEach(componentMethod.methods, (eachComponentMethod) => {
+      result += _userFunction(eachComponentMethod.methodType, eachComponentMethod);
+    });
+  });
+  return result;
+}
+let _userFunction = function (template, componentMethod) {
+  let methodParams = _readWholeFile(`${USER_COMPONENT_METHOD}/${template}.param`);
+  console.log(`${USER_COMPONENT_METHOD}/${template}.param`);
+  if (methodParams === null) {
+    throw `Could not find method params file: ${template}`;
+  }
+  let methodTemplate = _readWholeFile(`${USER_COMPONENT_METHOD}/${template}.method.tpl`);
+  if (methodTemplate === null) {
+    throw `Could not find method template: ${template}`;
+  }
+  methodParams = methodParams.split('\n').filter(v => v);
+  methodTemplate = _replaceTag('args', _userMethodArgs(componentMethod.args), methodTemplate);
+  _.forEach(methodParams, methodParam => {
+    _isSet(componentMethod, methodParam, `${template}()`, true);
+    methodTemplate = _replaceTag(methodParam, componentMethod[methodParam], methodTemplate);
+  });
+  return methodTemplate;
+}
+
+let _userMethodArgs = function (methodArgs) {
+  let result = "";
+  if (methodArgs === undefined) return result;
+  if (methodArgs.length === 0) return result;
+  let duplicate = methodArgs.filter(function (x, i, self) {
+    return self.indexOf(x) !== self.lastIndexOf(x);
+  });
+  if (duplicate.length) {
+    throw `Function argument '${duplicate[0]}' has duplicated.`;
+  }
+  result = methodArgs.join(',');
+  return result;
 }
 
 let _componentRenderFetchDone = function (componentSet) {
