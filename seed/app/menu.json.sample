@@ -7,36 +7,50 @@
       "strTitle": "Inbox",
       "strUrl": "/page/Inbox",
       "icon": "mail"
+      "component": "Default",
+      "redirect": "yes"
     },
     {
       "strTitle": "Outbox",
       "strUrl": "/page/Outbox",
-      "icon": "paperPlane"
+      "icon": "paperPlane",
+      "component": "Default"
     },
     {
       "strTitle": "Favorites",
       "strUrl": "/page/Favorites",
-      "icon": "heart"
+      "icon": "heart",
+      "component": "Default"
     },
     {
       "strTitle": "Archived",
       "strUrl": "/page/Archived",
-      "icon": "archive"
+      "icon": "archive",
+      "component": "Default"
     },
     {
       "strTitle": "Trash",
       "strUrl": "/page/Trash",
-      "icon": "trash"
+      "icon": "trash",
+      "component": "Default"
     },
     {
       "strTitle": "Spam",
       "strUrl": "/page/Spam",
-      "icon": "warning"
+      "icon": "warning",
+      "component": "Default"
     },
     {
       "strTitle": "Sample",
       "strUrl": "/sample",
-      "icon": "planet"
+      "icon": "planet",
+      "component": "SamplePage"
+    },
+    {
+      "strTitle": "Sample2",
+      "strUrl": "/sample2",
+      "icon": "basketball",
+      "component": "SamplePage2"
     }
   ],
   "signOut": {
