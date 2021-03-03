@@ -6,12 +6,9 @@ import React from 'react';
 
 const <!--@@COMOPNENT_NAME-->: React.FC = () => {
   // <!--@@COMOPNENT_CONSTRUCTOR-->
-  // <!--@@LIFE_CYCLE_METHOD-->
-  // <!--@@COMOPNENT_FUNCTION-->
-  // <!--@@FETCH_DATA-->
+  <!--@@LIFE_CYCLE_METHOD--> <!--@@COMPONENT_METHOD--> <!--@@FETCH_DATA-->
   // <!--@@RENDER_FETCHDONE-->
-  // <!--@@RENDER_BEFORE_RETURN-->
-  return (
+  <!--@@RENDER_BEFORE_RETURN--> return (
     <!--@@RENDER_HTML-->
   );
 }
