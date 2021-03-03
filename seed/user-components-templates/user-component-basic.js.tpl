@@ -11,7 +11,7 @@ class <!--@@COMOPNENT_NAME--> extends Component <!--@@INTERFACE--> {
   <!--@@FETCH_LOADING-->
   // <!--@@COMOPNENT_CONSTRUCTOR-->
   <!--@@LIFE_CYCLE_METHOD-->
-  // <!--@@COMOPNENT_FUNCTION-->
+  <!--@@COMPONENT_METHOD-->
   <!--@@FETCH_DATA-->
   render() {
     <!--@@RENDER_FETCH_DONE--> <!--@@RENDER_BEFORE_RETURN--> return (
