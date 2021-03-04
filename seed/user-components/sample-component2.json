@@ -32,7 +32,7 @@
       "props": []
     },
     {
-      "name": "IonImg",
+      "name": "IonButton",
       "from": "@ionic/react",
       "type": "package",
       "props": []
@@ -84,6 +84,47 @@
                   "tag": "IonCardContent",
                   "props": [],
                   "content": "Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods. Wash your spirit clean."
+                }
+              ]
+            }
+          },
+          {
+            "tag": "IonCard",
+            "props": [],
+            "child": {
+              "tags": [
+                {
+                  "tag": "IonCardHeader",
+                  "props": [],
+                  "child": {
+                    "tags": [
+                      {
+                        "tag": "IonCardTitle",
+                        "noCR": "yes",
+                        "props": [],
+                        "content": "Sample Button"
+                      },
+                      {
+                        "tag": "IonCardSubtitle",
+                        "noCR": "yes",
+                        "props": [],
+                        "content": "This is POST button"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "tag": "IonCardHeader",
+                  "props": [],
+                  "child": {
+                    "tags": [
+                      {
+                        "tag": "IonButton",
+                        "props": ["shape=\"round\"", "fill=\"outline\"", "expand=\"full\""],
+                        "content": "Button"
+                      }
+                    ]
+                  }
                 }
               ]
             }
