@@ -577,13 +577,24 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
 let _componentFetchData = function (componentSet) {
   let functionName = '_componentFetchData()';
   if (_isSet(componentSet, 'fetch', functionName) === false) return '';
-  if (_isSet(componentSet.fetch, 'format', functionName) === false) return '';
-  if (_isSet(componentSet.fetch, 'apis', functionName) === false) return '';
-  let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${componentSet.fetch.format}.ts.tpl`;
+  let componentFetchData = '';
+  _.forEach(componentSet.fetch, (fetch) => {
+    if (_isSet(fetch, 'format', functionName) === false) return '';
+    if (_isSet(fetch, 'apis', functionName) === false) return '';
+    if (fetch.format === 'get') {
+      componentFetchData += _componentFetchGet(componentSet.name, fetch)
+    }
+  });
+  return componentFetchData;
+}
+
+let _componentFetchGet = function (componentName, fetch) {
+  let functionName = '_componentFetchGet()';
+  let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.format}.ts.tpl`;
   let type = '', stateInterface = '';
   let fetchApi = '', setState = '';
   let returnType = '', apiCount = 0;
-  _.forEach(componentSet.fetch.apis, (api, i) => {
+  _.forEach(fetch.apis, (api, i) => {
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     stateInterface += `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;},`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
@@ -591,8 +602,8 @@ let _componentFetchData = function (componentSet) {
     apiCount++;
     setState += (setState?', ': '') + `${api.responseTypeName}: {\nisLoading: false,\ndata: results[${i}] as ${api.responseTypeName}\n}`;
   });
-  _appendTemp(componentSet.name, TEMP_EXT_TYPE, type);
-  _appendTemp(componentSet.name, TEMP_EXT_STATE_INTERFACE, stateInterface);
+  _appendTemp(componentName, TEMP_EXT_TYPE, type);
+  _appendTemp(componentName, TEMP_EXT_STATE_INTERFACE, stateInterface);
   let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('RETURN_TYPE', returnType?`<${returnType}>`:'', fetchDataBuffer);
@@ -604,12 +615,14 @@ let _componentFetchData = function (componentSet) {
 let _componentFetchLoading = function (componentSet) {
   let functionName = '_componentFetchLoading()';
   if (_isSet(componentSet, 'fetch', functionName) === false) return '';
-  if (_isSet(componentSet.fetch, 'apis', functionName) === false) return '';
-  let fetchLoading = '';
-  _.forEach(componentSet.fetch.apis, (api) => {
-    fetchLoading += `${api.responseTypeName}: {isLoading: true},`;
+  _.forEach(componentSet.fetch, (fetch) => {
+    if (_isSet(fetch, 'apis', functionName) === false) return '';
+    let fetchLoading = '';
+    _.forEach(fetch.apis, (api) => {
+      fetchLoading += `${api.responseTypeName}: {isLoading: true},`;
+    });
+    _appendTemp(componentSet.name, TEMP_EXT_STATE_INIT, fetchLoading);
   });
-  _appendTemp(componentSet.name, TEMP_EXT_STATE_INIT, fetchLoading);
 }
 
 let _componentLifeCycleMethod = function (componentSet) {
