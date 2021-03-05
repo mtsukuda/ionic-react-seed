@@ -1,2 +1,0 @@
-<!--@@TYPE-->
-<!--@@STATE_INTERFACE-->
