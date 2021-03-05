@@ -124,6 +124,9 @@ seed/app/*.json
 # component files
 src/components/Menu.*
 
+# temp directory
+.temp
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
