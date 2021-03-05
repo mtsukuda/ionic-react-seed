@@ -266,6 +266,7 @@ let _componentBuild = function (componentConfigJSONFilePaths, cssSeedDirectory, 
     userComponentSet['import'] = componentConfigJSON.import;
     userComponentSet['ownCss'] = _ownCss(cssSeedDirectory, cssDist, path.basename(componentConfigJSONFilePath).replace("json", "css"), componentName);
     userComponentSet['methods'] = componentMethods;
+    userComponentSet['state'] = componentConfigJSON.state;
     userComponentSet['fetch'] = componentConfigJSON.fetch;
     userComponentSet['lifeCycleMethods'] = componentConfigJSON.lifeCycleMethods;
     userComponentSet['renderBeforeReturn'] = componentConfigJSON.renderBeforeReturn;
@@ -546,6 +547,7 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     let fetchData = _componentFetchData(componentSet);
     fileBuffer = _replaceTag('FETCH_DATA', fetchData, fileBuffer);
     _componentFetchLoading(componentSet);
+    _componentState(componentSet);
     let lifeCycleMethod = _componentLifeCycleMethod(componentSet);
     fileBuffer = _replaceTag('LIFE_CYCLE_METHOD', lifeCycleMethod, fileBuffer);
     let componentMethod = _componentMethod(componentSet);
@@ -653,6 +655,26 @@ let _componentFetchLoading = function (componentSet) {
       fetchLoading += `${api.responseTypeName}: {isLoading: true},`;
     });
     _appendTemp(componentSet.name, TEMP_EXT_STATE_INIT, fetchLoading);
+  });
+}
+
+let _componentState = function (componentSet) {
+  let functionName = '_componentState()';
+  if (_isSet(componentSet, 'state', functionName) === false) return '';
+  _.forEach(componentSet.state, (state) => {
+    let params = ''
+    let init = '';
+    _.forEach(state.params, (param) => {
+      params += `${param.name}: ${param.type},`;
+      init += `${param.name}: ${param.init},`;
+      console.log(param.name);
+    });
+    if (params) {
+      _appendTemp(componentSet.name, TEMP_EXT_STATE_INTERFACE, `${state.name}: {${params}};`);
+    }
+    if (init) {
+      _appendTemp(componentSet.name, TEMP_EXT_STATE_INIT, `${state.name}: {${init}},`);
+    }
   });
 }
 
