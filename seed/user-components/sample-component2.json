@@ -38,16 +38,47 @@
       "props": []
     },
     {
+      "name": "IonModal",
+      "from": "@ionic/react",
+      "type": "package",
+      "props": []
+    },
+    {
       "name": "* as fetch",
       "from": "../components/fetch",
       "type": "default",
       "props": []
     }
   ],
-  "lifeCycleMethods": [
+  "state": [
     {
-      "methodName": "componentDidMount",
-      "code": "console.log('componentDidMount()');"
+      "name": "modal",
+      "params": [
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "init": "false"
+        }
+      ]
+    }
+  ],
+  "fetch": [
+    {
+      "format": "post",
+      "name": "postMessage",
+      "args": "message: string",
+      "codeFirst": "console.log('This is it.')",
+      "codeLast": "this.setState({modal: {isOpen: true}})",
+      "apis": [
+        {
+          "api": "https://api.mocklets.com/mock68049/update1",
+          "postTypeName": "bodyPostMessage",
+          "postType": "msg: string",
+          "postBody": "{msg: message}",
+          "responseTypeName": "resultPostMessage",
+          "responseType": "result: string"
+        }
+      ]
     }
   ],
   "tags": [
@@ -119,8 +150,25 @@
                   "child": {
                     "tags": [
                       {
+                        "tag": "IonModal",
+                        "props": ["isOpen={this.state.modal.isOpen}"],
+                        "child": {
+                          "tags": [
+                            {
+                              "tag": "p",
+                              "content": "This is modal content"
+                            },
+                            {
+                              "tag": "IonButton",
+                              "props": ["onClick={() => this.setState({modal: {isOpen: false}})}"],
+                              "content": "Close Modal"
+                            }
+                          ]
+                        }
+                      },
+                      {
                         "tag": "IonButton",
-                        "props": ["shape=\"round\"", "fill=\"outline\"", "expand=\"full\""],
+                        "props": ["shape=\"round\"", "fill=\"outline\"", "expand=\"full\"", "onClick={ () => this.postMessage(\"HOGE\")}"],
                         "content": "Button"
                       }
                     ]
