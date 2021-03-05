@@ -18,18 +18,18 @@ Ionic React seed project.
 
 ## User Component / User Page JSON Configration
 
-  * name `user component name/user page name`
+  * name `user component name | user page name`
   * import
     * name
     * from
-    * type `default/package`
+    * type `default | package`
     * props []
   * lifeCycleMethods
   * fetch
-    * format: `fetch-multi`
-    * name: `an api name`
+    * format: `get | post`
     * api: `uri of api`
-    * type: `type of response`
+    * responseTypeName: `name of response type`
+    * responseType: `type of response`
   * renderBeforeReturn []
   * defaultProps []
     * name
