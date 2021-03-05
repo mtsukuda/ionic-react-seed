@@ -559,12 +559,12 @@ let _componentFetchData = function (componentSet) {
   let fetchApi = '', setState = '';
   let returnType = '', apiCount = 0;
   _.forEach(componentSet.fetch.apis, (api, i) => {
-    type += (type?'\n': '') + `type ${api.name} = {${api.type}}`;
-    stateInterface += (stateInterface?',': '') + `${api.name}:{isLoading: false;data: ${api.name};} | {isLoading: true;}`;
-    fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.name}>('${api.api}'${(api.init?', '+api.init:'')})`;
-    returnType += (returnType?'|': '') + api.name;
+    type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.type}}`;
+    stateInterface += (stateInterface?',': '') + `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;}`;
+    fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
+    returnType += (returnType?'|': '') + api.responseTypeName;
     apiCount++;
-    setState += (setState?', ': '') + `${api.name}: {\nisLoading: false,\ndata: results[${i}] as ${api.name}\n}`;
+    setState += (setState?', ': '') + `${api.responseTypeName}: {\nisLoading: false,\ndata: results[${i}] as ${api.responseTypeName}\n}`;
   });
   let fetchDataTypeBuffer = _readWholeFile(templateFetchDataTypeFilePath);
   fetchDataTypeBuffer = _replaceTag('TYPE', type, fetchDataTypeBuffer);
@@ -583,7 +583,7 @@ let _componentFetchLoading = function (componentSet) {
   if (_isSet(componentSet.fetch, 'apis', functionName) === false) return '';
   let fetchLoading = '';
   _.forEach(componentSet.fetch.apis, (api) => {
-    fetchLoading += (fetchLoading?',': '') + `${api.name}: {isLoading: true}`;
+    fetchLoading += (fetchLoading?',': '') + `${api.responseTypeName}: {isLoading: true}`;
   });
   let fetchLoadingState = `state: State = {${fetchLoading}};`;
   return fetchLoadingState;
@@ -650,7 +650,7 @@ let _componentRenderFetchDone = function (componentSet) {
   if (_isSet(componentSet.fetch, 'apis', functionName) === false) return '';
   let fetchDoneCondition = '';
   _.forEach(componentSet.fetch.apis, (api) => {
-    fetchDoneCondition += (fetchDoneCondition?' || ': '') + `this.state.${api.name}.isLoading`;
+    fetchDoneCondition += (fetchDoneCondition?' || ': '') + `this.state.${api.responseTypeName}.isLoading`;
   });
   let fetchDone = `if (${fetchDoneCondition}) { return <React.Fragment />;}`;
   return fetchDone;
