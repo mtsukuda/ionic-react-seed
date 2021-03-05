@@ -186,6 +186,16 @@ let _writeDistFile = function (distFilePath, buffer) {
   }
 }
 
+let _appendDistFile = function (distFilePath, buffer) {
+  try {
+    FS.appendFileSync(distFilePath, buffer);
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+
 let _deleteDirectoryRecursive = function(path) {
   if(FS.existsSync(path)) {
     FS.readdirSync(path).forEach(function(file) {
@@ -224,6 +234,20 @@ let _readWholeFile = function (targetPath) {
     return null;
   }
 };
+
+let _appendTemp = function (name, ext, buffer) {
+  let tempStateFilePath = `${TEMP_DIR}/${name}.${ext}`;
+  _appendDistFile(tempStateFilePath, buffer);
+}
+
+let _readTemp = function (name, ext) {
+  let tempStateFilePath = `${TEMP_DIR}/${name}.${ext}`;
+  if(FS.existsSync(tempStateFilePath) === false) {
+    return ''
+  }
+  let tempBuffer = _readWholeFile(tempStateFilePath);
+  return tempBuffer;
+}
 
 let _componentBuild = function (componentConfigJSONFilePaths, cssSeedDirectory, cssDist, buildComponents) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
@@ -421,7 +445,6 @@ let _dedupeImportComponents = function (component, userPageImportComponents) {
 
 let _dedupeDefaultImportComponents = function (component, userPageDefaultImportComponents) {
   if (_typeDefault(component) === false) return;
-  // if (_.isUndefined(component.type) || component.type !== "default") return;
   let importSet = { name: component.name, from: component.from };
   if (_.find(userPageDefaultImportComponents, (v) => { return (v.name === component.name) })) {
     console.log(`Duplicate component: ${component.name}`);
@@ -451,7 +474,6 @@ let _importComponentDeclaration = function (userPageImportComponents) {
     });
     result += (result ? '\n' : '') + 'import { ' + commaSeparatedComponents + ' } from "' + importFrom + '";';
   }
-  // console.log(result);
   return result;
 }
 
@@ -519,16 +541,8 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
       _dedupeImportCss(component, importCss);
     });
     let fetchData = _componentFetchData(componentSet);
-    if (fetchData === '') {
-      fileBuffer = _replaceTag('FETCH_DATA', fetchData, fileBuffer);
-      fileBuffer = _replaceTag('FETCH_DATA_TYPE', '', fileBuffer);
-    } else {
-      fileBuffer = _replaceTag('FETCH_DATA_TYPE', fetchData.type, fileBuffer);
-      fileBuffer = _replaceTag('FETCH_DATA', fetchData.data, fileBuffer);
-    }
-    fileBuffer = _replaceTag('INTERFACE', (fetchData?'<{}, State>':''), fileBuffer);
-    let fetchLoading = _componentFetchLoading(componentSet);
-    fileBuffer = _replaceTag('FETCH_LOADING', fetchLoading, fileBuffer);
+    fileBuffer = _replaceTag('FETCH_DATA', fetchData, fileBuffer);
+    _componentFetchLoading(componentSet);
     let lifeCycleMethod = _componentLifeCycleMethod(componentSet);
     fileBuffer = _replaceTag('LIFE_CYCLE_METHOD', lifeCycleMethod, fileBuffer);
     let componentMethod = _componentMethod(componentSet);
@@ -545,6 +559,13 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     fileBuffer = _replaceTag('IMPORT_CSS', userImportCssDeclaration, fileBuffer);
     let userImportOwnCssDeclaration = (componentSet.ownCss ? componentSet.ownCss.import : '');
     fileBuffer = _replaceTag('IMPORT_OWN_CSS', userImportOwnCssDeclaration, fileBuffer);
+    let stateInterface = _readTemp(componentSet.name, 'state-interface');
+    fileBuffer = _replaceTag('STATE_INTERFACE', stateInterface?`interface State {${stateInterface}}`:'', fileBuffer);
+    let dataType = _readTemp(componentSet.name, 'type');
+    fileBuffer = _replaceTag('DATA_TYPE', dataType, fileBuffer);
+    let stateInit = _readTemp(componentSet.name, 'state-init');
+    fileBuffer = _replaceTag('STATE_INIT', stateInit?`state: State = {${stateInit}};`:'', fileBuffer);
+    fileBuffer = _replaceTag('INTERFACE', (fetchData?'<{}, State>':''), fileBuffer);
     _writeDistFile(_distFilePath(componentFilePath), fileBuffer);
     _createOwnCss(componentSet.ownCss);
   });
@@ -555,28 +576,26 @@ let _componentFetchData = function (componentSet) {
   if (_isSet(componentSet, 'fetch', functionName) === false) return '';
   if (_isSet(componentSet.fetch, 'format', functionName) === false) return '';
   if (_isSet(componentSet.fetch, 'apis', functionName) === false) return '';
-  let templateFetchDataTypeFilePath = `${USER_COMMON_TEMPLATE}/fetch-${componentSet.fetch.format}-type.ts.tpl`;
   let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${componentSet.fetch.format}.ts.tpl`;
   let type = '', stateInterface = '';
   let fetchApi = '', setState = '';
   let returnType = '', apiCount = 0;
   _.forEach(componentSet.fetch.apis, (api, i) => {
-    type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}}`;
-    stateInterface += (stateInterface?',': '') + `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;}`;
+    type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
+    stateInterface += `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;},`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
     returnType += (returnType?'|': '') + api.responseTypeName;
     apiCount++;
     setState += (setState?', ': '') + `${api.responseTypeName}: {\nisLoading: false,\ndata: results[${i}] as ${api.responseTypeName}\n}`;
   });
-  let fetchDataTypeBuffer = _readWholeFile(templateFetchDataTypeFilePath);
-  fetchDataTypeBuffer = _replaceTag('TYPE', type, fetchDataTypeBuffer);
-  fetchDataTypeBuffer = _replaceTag('STATE_INTERFACE', stateInterface?`interface State {${stateInterface}}`:'', fetchDataTypeBuffer);
+  _appendTemp(componentSet.name, 'type', type);
+  _appendTemp(componentSet.name, 'state-interface', stateInterface);
   let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('RETURN_TYPE', returnType?`<${returnType}>`:'', fetchDataBuffer);
   fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('SET_STATE', setState, fetchDataBuffer);
-  return {'type': fetchDataTypeBuffer, 'data': fetchDataBuffer};
+  return fetchDataBuffer;
 }
 
 let _componentFetchLoading = function (componentSet) {
@@ -585,10 +604,9 @@ let _componentFetchLoading = function (componentSet) {
   if (_isSet(componentSet.fetch, 'apis', functionName) === false) return '';
   let fetchLoading = '';
   _.forEach(componentSet.fetch.apis, (api) => {
-    fetchLoading += (fetchLoading?',': '') + `${api.responseTypeName}: {isLoading: true}`;
+    fetchLoading += `${api.responseTypeName}: {isLoading: true},`;
   });
-  let fetchLoadingState = `state: State = {${fetchLoading}};`;
-  return fetchLoadingState;
+  _appendTemp(componentSet.name, 'state-init', fetchLoading);
 }
 
 let _componentLifeCycleMethod = function (componentSet) {
