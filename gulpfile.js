@@ -553,16 +553,14 @@ let _componentFetchData = function (componentSet) {
   if (_isSet(componentSet, 'fetch', functionName) === false) return '';
   if (_isSet(componentSet.fetch, 'format', functionName) === false) return '';
   if (_isSet(componentSet.fetch, 'apis', functionName) === false) return '';
-  let templateFetchDataTypeFilePath = `${USER_COMMON_TEMPLATE}/${componentSet.fetch.format}-type.ts.tpl`;
-  let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/${componentSet.fetch.format}.ts.tpl`;
-  let type = '', privateMembers = '', returnMembers = '', stateInterface = '';
+  let templateFetchDataTypeFilePath = `${USER_COMMON_TEMPLATE}/fetch-${componentSet.fetch.format}-type.ts.tpl`;
+  let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${componentSet.fetch.format}.ts.tpl`;
+  let type = '', stateInterface = '';
   let fetchApi = '', setState = '';
   let returnType = '', apiCount = 0;
   _.forEach(componentSet.fetch.apis, (api, i) => {
     type += (type?'\n': '') + `type ${api.name} = {${api.type}}`;
     stateInterface += (stateInterface?',': '') + `${api.name}:{isLoading: false;data: ${api.name};} | {isLoading: true;}`;
-    // privateMembers += (privateMembers?', ': '') + `private fetched${_.capitalize(api.name)}: ${api.name}`;
-    // returnMembers += `${api.name}() {return this.fetched${_.capitalize(api.name)}}`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.name}>('${api.api}'${(api.init?', '+api.init:'')})`;
     returnType += (returnType?'|': '') + api.name;
     apiCount++;
