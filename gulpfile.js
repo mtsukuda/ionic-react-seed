@@ -569,13 +569,10 @@ let _componentFetchData = function (componentSet) {
   let fetchDataTypeBuffer = _readWholeFile(templateFetchDataTypeFilePath);
   fetchDataTypeBuffer = _replaceTag('TYPE', type, fetchDataTypeBuffer);
   fetchDataTypeBuffer = _replaceTag('STATE_INTERFACE', stateInterface?`interface State {${stateInterface}}`:'', fetchDataTypeBuffer);
-  //fetchDataTypeBuffer = _replaceTag('PRIVATE_MEMBERS', privateMembers, fetchDataTypeBuffer);
-  //fetchDataTypeBuffer = _replaceTag('RETURN_MEMBERS', returnMembers, fetchDataTypeBuffer);
   let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('RETURN_TYPE', returnType?`<${returnType}>`:'', fetchDataBuffer);
   fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
-  // fetchDataBuffer = _replaceTag('ARRAY_MAP_ASSOCIATE_ARRAY', associateArray, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('SET_STATE', setState, fetchDataBuffer);
   return {'type': fetchDataTypeBuffer, 'data': fetchDataBuffer};
 }
