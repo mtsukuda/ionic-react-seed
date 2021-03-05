@@ -25,16 +25,17 @@ Ionic React seed project.
     * type `default | package`
     * props []
   * lifeCycleMethods
-  * fetch
+  * fetch []
     * format: `get | post`
-    * api: `uri of api`
-    * responseTypeName: `name of response type`
-    * responseType: `type of response`
+    * apis: []
+        * api: `uri of api`
+        * responseTypeName: `name of response type`
+        * responseType: `type of response`
   * renderBeforeReturn []
   * defaultProps []
     * name
     * initial
-  * tags
+  * tags []
     * tag
     * componentMethod
       * states []

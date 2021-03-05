@@ -50,21 +50,23 @@
       "code": "this.fetchAll();"
     }
   ],
-  "fetch": {
-    "format": "get",
-    "apis": [
-      {
-        "api": "https://api.mocklets.com/mock68049/files",
-        "responseTypeName": "files",
-        "responseType": "files: Array<{link: string,name: string,size: string,}>"
-      },
-      {
-        "api": "https://api.github.com/search/users?q=edeng23",
-        "responseTypeName": "github",
-        "responseType": "incomplete_results: boolean,total_count: number,items: Array<{avatar_url: string,events_url: string,followers_url: string,url: string}>"
-      }
-    ]
-  },
+  "fetch": [
+    {
+      "format": "get",
+      "apis": [
+        {
+          "api": "https://api.mocklets.com/mock68049/files",
+          "responseTypeName": "files",
+          "responseType": "files: Array<{link: string,name: string,size: string,}>"
+        },
+        {
+          "api": "https://api.github.com/search/users?q=edeng23",
+          "responseTypeName": "github",
+          "responseType": "incomplete_results: boolean,total_count: number,items: Array<{avatar_url: string,events_url: string,followers_url: string,url: string}>"
+        }
+      ]
+    }
+  ],
   "tags": [
     {
       "tag": "div",
@@ -131,11 +133,11 @@
                 {
                   "tag": "IonCardContent",
                   "props": [],
-                  "content": "{this.state.github.data.items[0].url}"
+                  "content": "{!(this.state.github.isLoading) ? this.state.github.data.items[0].url:''}"
                 },
                 {
                   "tag": "IonImg",
-                  "props": ["src={this.state.github.data.items[0].avatar_url}"]
+                  "props": ["src={!(this.state.github.isLoading) ? this.state.github.data.items[0].avatar_url:''}"]
                 }
               ]
             }
