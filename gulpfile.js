@@ -19,12 +19,14 @@ const MENU_CONFIG_JSON = 'seed/app/menu.json';
 const MENU_TEMPLATE_PATH = 'seed/app-templates/Menu.tsx.tpl';
 const APP_CSS_DIR = 'seed/app-css/';
 const APP_COMPONENTS_DIST = 'src/components/';
+const TEMP_DIR = ".temp";
 
 /**
  * Create User Components
  */
 gulp.task('create-user-components', function (done) {
   console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-user-components ') + ' 🚀🚀🚀 ');
+  _cleanDirectories(TEMP_DIR);
   _cleanDirectories(USER_COMPONENT_DIST);
   let userComponentsJSONFilePaths = _jsonFilePaths(USER_COMPONENT_JSON);
   console.log(userComponentsJSONFilePaths);
