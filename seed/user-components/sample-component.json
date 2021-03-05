@@ -51,7 +51,7 @@
     }
   ],
   "fetch": {
-    "format": "fetch-multi",
+    "format": "get",
     "apis": [
       {
         "name": "files",
