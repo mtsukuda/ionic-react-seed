@@ -20,6 +20,9 @@ const MENU_TEMPLATE_PATH = 'seed/app-templates/Menu.tsx.tpl';
 const APP_CSS_DIR = 'seed/app-css/';
 const APP_COMPONENTS_DIST = 'src/components/';
 const TEMP_DIR = ".temp";
+const TEMP_EXT_STATE_INIT = "state-init";
+const TEMP_EXT_STATE_INTERFACE = "state-interface";
+const TEMP_EXT_TYPE = "type";
 
 /**
  * Create User Components
@@ -559,11 +562,11 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     fileBuffer = _replaceTag('IMPORT_CSS', userImportCssDeclaration, fileBuffer);
     let userImportOwnCssDeclaration = (componentSet.ownCss ? componentSet.ownCss.import : '');
     fileBuffer = _replaceTag('IMPORT_OWN_CSS', userImportOwnCssDeclaration, fileBuffer);
-    let stateInterface = _readTemp(componentSet.name, 'state-interface');
+    let stateInterface = _readTemp(componentSet.name, TEMP_EXT_STATE_INTERFACE);
     fileBuffer = _replaceTag('STATE_INTERFACE', stateInterface?`interface State {${stateInterface}}`:'', fileBuffer);
-    let dataType = _readTemp(componentSet.name, 'type');
+    let dataType = _readTemp(componentSet.name, TEMP_EXT_TYPE);
     fileBuffer = _replaceTag('DATA_TYPE', dataType, fileBuffer);
-    let stateInit = _readTemp(componentSet.name, 'state-init');
+    let stateInit = _readTemp(componentSet.name, TEMP_EXT_STATE_INIT);
     fileBuffer = _replaceTag('STATE_INIT', stateInit?`state: State = {${stateInit}};`:'', fileBuffer);
     fileBuffer = _replaceTag('INTERFACE', (fetchData?'<{}, State>':''), fileBuffer);
     _writeDistFile(_distFilePath(componentFilePath), fileBuffer);
@@ -588,8 +591,8 @@ let _componentFetchData = function (componentSet) {
     apiCount++;
     setState += (setState?', ': '') + `${api.responseTypeName}: {\nisLoading: false,\ndata: results[${i}] as ${api.responseTypeName}\n}`;
   });
-  _appendTemp(componentSet.name, 'type', type);
-  _appendTemp(componentSet.name, 'state-interface', stateInterface);
+  _appendTemp(componentSet.name, TEMP_EXT_TYPE, type);
+  _appendTemp(componentSet.name, TEMP_EXT_STATE_INTERFACE, stateInterface);
   let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('RETURN_TYPE', returnType?`<${returnType}>`:'', fetchDataBuffer);
@@ -606,7 +609,7 @@ let _componentFetchLoading = function (componentSet) {
   _.forEach(componentSet.fetch.apis, (api) => {
     fetchLoading += `${api.responseTypeName}: {isLoading: true},`;
   });
-  _appendTemp(componentSet.name, 'state-init', fetchLoading);
+  _appendTemp(componentSet.name, TEMP_EXT_STATE_INIT, fetchLoading);
 }
 
 let _componentLifeCycleMethod = function (componentSet) {
