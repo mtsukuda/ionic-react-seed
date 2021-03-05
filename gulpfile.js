@@ -559,7 +559,7 @@ let _componentFetchData = function (componentSet) {
   let fetchApi = '', setState = '';
   let returnType = '', apiCount = 0;
   _.forEach(componentSet.fetch.apis, (api, i) => {
-    type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.type}}`;
+    type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}}`;
     stateInterface += (stateInterface?',': '') + `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;}`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
     returnType += (returnType?'|': '') + api.responseTypeName;
