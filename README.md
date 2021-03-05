@@ -28,8 +28,8 @@ Ionic React seed project.
   * fetch []
     * format `get | post`
     * args `post format only: fetch method arguments`
-    * codeFirst: `insert code`
-    * codeLast: `insert code`
+    * codeFirst `insert code`
+    * codeLast `insert code`
     * apis []
         * api `uri of api`
         * postTypeName `post format only: name of post type`
