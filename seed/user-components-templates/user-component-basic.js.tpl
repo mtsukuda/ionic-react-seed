@@ -5,10 +5,10 @@ import React, { Component } from 'react';
 <!--@@IMPORT_CSS-->
 <!--@@IMPORT_OWN_CSS-->
 // Type and Interface
-<!--@@FETCH_DATA_TYPE-->
+<!--@@DATA_TYPE--> <!--@@STATE_INTERFACE-->
 // Class: <!--@@COMOPNENT_NAME-->
 class <!--@@COMOPNENT_NAME--> extends Component <!--@@INTERFACE--> {
-  <!--@@FETCH_LOADING-->
+  <!--@@STATE_INIT-->
   // <!--@@COMOPNENT_CONSTRUCTOR-->
   <!--@@LIFE_CYCLE_METHOD-->
   <!--@@COMPONENT_METHOD-->
