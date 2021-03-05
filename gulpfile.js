@@ -613,6 +613,8 @@ let _componentFetchGet = function (componentName, fetch) {
   fetchDataBuffer = _replaceTag('RETURN_TYPE', responseType?`<${responseType}>`:'', fetchDataBuffer);
   fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('SET_STATE', setState, fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
   return fetchDataBuffer;
 }
 
@@ -642,6 +644,8 @@ let _componentFetchPost = function (componentName, fetch) {
   fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('POST_BODY', postBody, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('SET_STATE', setState, fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
   return fetchDataBuffer;
 }
 
