@@ -26,11 +26,17 @@ Ionic React seed project.
     * props []
   * lifeCycleMethods
   * fetch []
-    * format: `get | post`
-    * apis: []
-        * api: `uri of api`
-        * responseTypeName: `name of response type`
-        * responseType: `type of response`
+    * format `get | post`
+    * args `post format only: fetch method arguments`
+    * codeFirst: `insert code`
+    * codeLast: `insert code`
+    * apis []
+        * api `uri of api`
+        * postTypeName `post format only: name of post type`
+        * postType `post format only: type of post`
+        * postBody `post format only: body of post data`
+        * responseTypeName `name of response type`
+        * responseType `type of response`
   * renderBeforeReturn []
   * defaultProps []
     * name
