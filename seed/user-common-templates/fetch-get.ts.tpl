@@ -1,4 +1,4 @@
-  fetchAll = async () => {
+  <!--@@METHOD_NAME--> = async () => {
 　   <!--@@CODE_FIRST-->; const promises = [<!--@@FETCH-->]
     const results = await fetch.concurrentPromise<!--@@RETURN_TYPE-->(promises, <!--@@API_COUNT-->);
     this.setState({

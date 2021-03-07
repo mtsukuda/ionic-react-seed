@@ -53,6 +53,7 @@
   "fetch": [
     {
       "format": "get",
+      "name": "fetchAll",
       "apis": [
         {
           "api": "https://api.mocklets.com/mock68049/files",
