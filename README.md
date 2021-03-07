@@ -27,6 +27,7 @@ Ionic React seed project.
   * lifeCycleMethods
   * fetch []
     * format `get | post`
+    * name `fetch method name`
     * args `post format only: fetch method arguments`
     * codeFirst `insert code`
     * codeLast `insert code`
