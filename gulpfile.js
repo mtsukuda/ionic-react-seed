@@ -636,6 +636,7 @@ let _componentFetchGet = function (componentName, fetch) {
   _appendTemp(componentName, TEMP_EXT_TYPE, type);
   _appendTemp(componentName, TEMP_EXT_STATE_INTERFACE, stateInterface);
   let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
+  fetchDataBuffer = _replaceTag('METHOD_NAME', fetch.name, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('RETURN_TYPE', responseType?`<${responseType}>`:'', fetchDataBuffer);
   fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
