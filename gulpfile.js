@@ -295,7 +295,7 @@ let _createOwnCss = function (ownCss) {
 let _htmlTagRecursive = function (sauceJSON, tags, closeTag, type) {
   if (_.isUndefined(sauceJSON.tags) === false) {
     _.forEach(sauceJSON.tags, (component) => {
-      let openTagSet = {"open": component.tag, "props": _componentProperties(component)};
+      let openTagSet = {"open": component.tag, "props": _componentProperties(component) + " " + _componentEvents(component)};
       let closeTag = component.tag;
       if (_.isUndefined(component.type) === false) openTagSet['type'] = component.type;
       if (_.isUndefined(component.close) === false) closeTag = component.close;
@@ -330,6 +330,33 @@ let _componentProperties = function (component) {
     props += ' ' + prop;
   });
   return props;
+}
+
+let _componentEvents = function (component) {
+  let functionName = '_componentEvents()';
+  if (_isSet(component, 'events', functionName) === false) return '';
+  let events = '';
+  _.forEach(component.events, (event) => {
+    let templateEventFilePath = `${USER_COMMON_TEMPLATE}/event-${event.eventName}.tpl`;
+    if(FS.existsSync(templateEventFilePath) === false) {
+      throw `Could not find ${templateEventFilePath} for ${event.eventName}`;
+    }
+    let eventBuffer = _readWholeFile(templateEventFilePath);
+    let eventCode = _componentEventCallFunction(event);
+    eventBuffer = _replaceTag('EVENT_CODE', eventCode, eventBuffer);
+    events += eventBuffer;
+  });
+  return events;
+}
+
+let _componentEventCallFunction = function (event) {
+  let functionName = '_componentEventCallFunction()';
+  let functionArgs = '';
+  if (_isSet(event, 'call', functionName) === false) return '';
+  _.forEach(event.args, (arg) => {
+    functionArgs += (functionArgs?', ':'') + arg;
+  });
+  return `this.${event.call}(${functionArgs})`;
 }
 
 let _isSet = function (targetObject, propertyName, methodName, enableThrow=false) {
