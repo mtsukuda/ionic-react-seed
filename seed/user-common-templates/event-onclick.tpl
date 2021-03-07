@@ -1,0 +1,1 @@
+onClick={() => <!--@@EVENT_CODE-->}

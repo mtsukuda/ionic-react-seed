@@ -160,7 +160,16 @@
                             },
                             {
                               "tag": "IonButton",
-                              "props": ["onClick={() => this.setState({modal: {isOpen: false}})}"],
+                              "props": [],
+                              "events": [
+                                {
+                                  "eventName": "onclick",
+                                  "call": "setState",
+                                  "args": [
+                                    "{modal: {isOpen: false}}"
+                                  ]
+                                }
+                              ],
                               "content": "Close Modal"
                             }
                           ]
@@ -168,7 +177,16 @@
                       },
                       {
                         "tag": "IonButton",
-                        "props": ["shape=\"round\"", "fill=\"outline\"", "expand=\"full\"", "onClick={ () => this.postMessage(\"HOGE\")}"],
+                        "props": ["shape=\"round\"", "fill=\"outline\"", "expand=\"full\""],
+                        "events": [
+                          {
+                            "eventName": "onclick",
+                            "call": "postMessage",
+                            "args": [
+                              "'HOGE'"
+                            ]
+                          }
+                        ],
                         "content": "Button"
                       }
                     ]
