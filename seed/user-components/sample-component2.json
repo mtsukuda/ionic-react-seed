@@ -71,7 +71,7 @@
       "apis": [
         {
           "api": "https://api.mocklets.com/mock68049/update1",
-          "args": "message: string",
+          "args": ["message: string"],
           "postTypeName": "bodyPostMessage",
           "postType": "msg: string",
           "postBody": "{msg: message}",
