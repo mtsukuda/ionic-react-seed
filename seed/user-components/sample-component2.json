@@ -66,12 +66,12 @@
     {
       "format": "post",
       "name": "postMessage",
-      "args": "message: string",
       "codeFirst": "console.log('This is it.')",
       "codeLast": "this.setState({modal: {isOpen: true}})",
       "apis": [
         {
           "api": "https://api.mocklets.com/mock68049/update1",
+          "args": "message: string",
           "postTypeName": "bodyPostMessage",
           "postType": "msg: string",
           "postBody": "{msg: message}",
