@@ -773,8 +773,7 @@ let _componentRenderFetchDone = function (componentSet) {
   _.forEach(componentSet.fetch.apis, (api) => {
     fetchDoneCondition += (fetchDoneCondition?' || ': '') + `this.state.${api.responseTypeName}.isLoading`;
   });
-  let fetchDone = `if (${fetchDoneCondition}) { return <React.Fragment />;}`;
-  return fetchDone;
+  return `if (${fetchDoneCondition}) { return <React.Fragment />;}`;
 }
 
 let _componentRenderBeforeReturn = function (componentSet) {
