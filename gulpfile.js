@@ -626,7 +626,7 @@ let _componentFetchGet = function (componentName, fetch) {
   let methodArgs = '', fetchApi = '', setState = '';
   let responseType = '', apiCount = 0;
   _.forEach(fetch.apis, (api, i) => {
-    methodArgs += (methodArgs?', ': '') + (api.args ? api.args : '');
+    methodArgs += (methodArgs?', ': '') + _componentFetchArgs(api);
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     stateInterface += `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;},`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
@@ -655,7 +655,7 @@ let _componentFetchPost = function (componentName, fetch) {
   let methodArgs = '', fetchApi = '', setState = '';
   let postType = '', postBody = '', responseType = '', apiCount = 0;
   _.forEach(fetch.apis, (api, i) => {
-    methodArgs += (methodArgs?', ': '') + (api.args ? api.args : '');
+    methodArgs += (methodArgs?', ': '') + _componentFetchArgs(api);
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     stateInterface += `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;},`;
@@ -678,6 +678,15 @@ let _componentFetchPost = function (componentName, fetch) {
   fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
   return fetchDataBuffer;
+}
+
+let _componentFetchArgs = function (api) {
+  if (api.args === undefined) return '';
+  let result = '';
+  _.forEach(api.args, (args) => {
+    result += args;
+  });
+  return result;
 }
 
 let _componentFetchLoading = function (componentSet) {
