@@ -659,7 +659,7 @@ let _componentFetchPost = function (componentName, fetch) {
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     stateInterface += `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;},`;
-    fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')}, ${api.postBody})`;
+    fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')}, ${_componentFetchPostBody(api)})`;
     postType += (postType?'|': '') + api.postTypeName;
     responseType += (responseType?'|': '') + api.responseTypeName;
     apiCount++;
@@ -673,7 +673,7 @@ let _componentFetchPost = function (componentName, fetch) {
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('TEMPLATE_TYPE', responseType?`<${responseType}>`:'', fetchDataBuffer);
   fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('POST_BODY', postBody, fetchDataBuffer);
+  // fetchDataBuffer = _replaceTag('POST_BODY', postBody, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('SET_STATE', setState, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
@@ -687,6 +687,15 @@ let _componentFetchArgs = function (api) {
     result += (result ? ',': '') + args;
   });
   return result;
+}
+
+let _componentFetchPostBody = function (api) {
+  if (api.postBody === undefined) return '';
+  let result = '';
+  _.forEach(api.postBody, (postBody) => {
+    result += (result ? ',': '') + postBody;
+  });
+  return `{${result}}`;
 }
 
 let _componentFetchLoading = function (componentSet) {
