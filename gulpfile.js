@@ -684,7 +684,7 @@ let _componentFetchArgs = function (api) {
   if (api.args === undefined) return '';
   let result = '';
   _.forEach(api.args, (args) => {
-    result += args;
+    result += (result ? ',': '') + args;
   });
   return result;
 }
