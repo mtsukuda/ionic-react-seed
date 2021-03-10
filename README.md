@@ -35,7 +35,7 @@ Ionic React seed project.
         * api `uri of api`
         * postTypeName `post format only: name of post type`
         * postType `post format only: type of post`
-        * postBody `post format only: body of post data`
+        * postBody [] `post format only: body of post data`
         * responseTypeName `name of response type`
         * responseType `type of response`
   * renderBeforeReturn []
