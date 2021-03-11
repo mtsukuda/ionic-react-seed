@@ -624,7 +624,7 @@ let _componentFetchGet = function (componentName, fetch) {
   let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.format}.ts.tpl`;
   let type = '';
   let fetchApi = '';
-  _.forEach(fetch.apis, (api, i) => {
+  _.forEach(fetch.apis, (api) => {
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
   });
@@ -638,7 +638,7 @@ let _componentFetchPost = function (componentName, fetch) {
   let type = '';
   let fetchApi = '';
   let postType = '';
-  _.forEach(fetch.apis, (api, i) => {
+  _.forEach(fetch.apis, (api) => {
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')}, ${_componentFetchPostBody(api)})`;
