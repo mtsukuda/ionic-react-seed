@@ -628,8 +628,7 @@ let _componentFetchGet = function (componentName, fetch) {
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
   });
-  _appendTemp(componentName, TEMP_EXT_TYPE, type);
-  _appendTemp(componentName, TEMP_EXT_STATE_INTERFACE, _componentFetchStateInterface(fetch));
+  _componentFetchAppendTemp(componentName, type, fetch);
   return _componentFetchDataReplacement(templateFetchDataFilePath, fetchApi, fetch);
 }
 
@@ -645,9 +644,13 @@ let _componentFetchPost = function (componentName, fetch) {
     fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')}, ${_componentFetchPostBody(api)})`;
     postType += (postType?'|': '') + api.postTypeName;
   });
+  _componentFetchAppendTemp(componentName, type, fetch);
+  return _componentFetchDataReplacement(templateFetchDataFilePath, fetchApi, fetch);
+}
+
+let _componentFetchAppendTemp = function (componentName, type, fetch) {
   _appendTemp(componentName, TEMP_EXT_TYPE, type);
   _appendTemp(componentName, TEMP_EXT_STATE_INTERFACE, _componentFetchStateInterface(fetch));
-  return _componentFetchDataReplacement(templateFetchDataFilePath, fetchApi, fetch);
 }
 
 let _componentFetchDataReplacement = function (templateFetchDataFilePath, fetchApi, fetch) {
