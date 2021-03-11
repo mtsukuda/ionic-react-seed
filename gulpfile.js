@@ -696,11 +696,7 @@ let _componentFetchPostBody = function (api) {
 }
 
 let _componentFetchApiCount = function (fetch) {
-  let apiCount = 0;
-  _.forEach(fetch.apis, (api, i) => {
-    apiCount++;
-  });
-  return apiCount;
+  return fetch.apis.length;
 }
 
 let _componentFetchLoading = function (componentSet) {
