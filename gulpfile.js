@@ -653,7 +653,7 @@ let _componentFetchPost = function (componentName, fetch) {
   let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.format}.ts.tpl`;
   let type = '', stateInterface = '';
   let methodArgs = '', fetchApi = '', setState = '';
-  let postType = '', postBody = '', responseType = '', apiCount = 0;
+  let postType = '', responseType = '', apiCount = 0;
   _.forEach(fetch.apis, (api, i) => {
     methodArgs += (methodArgs?', ': '') + _componentFetchArgs(api);
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
@@ -673,7 +673,6 @@ let _componentFetchPost = function (componentName, fetch) {
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('TEMPLATE_TYPE', responseType?`<${responseType}>`:'', fetchDataBuffer);
   fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
-  // fetchDataBuffer = _replaceTag('POST_BODY', postBody, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('SET_STATE', setState, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
