@@ -623,10 +623,9 @@ let _componentFetchGet = function (componentName, fetch) {
   let functionName = '_componentFetchGet()';
   let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.format}.ts.tpl`;
   let type = '';
-  let methodArgs = '', fetchApi = '', setState = '';
+  let fetchApi = '', setState = '';
   let responseType = '';
   _.forEach(fetch.apis, (api, i) => {
-    methodArgs += (methodArgs?', ': '') + _componentFetchArgs(api);
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
     responseType += (responseType?'|': '') + api.responseTypeName;
@@ -636,7 +635,7 @@ let _componentFetchGet = function (componentName, fetch) {
   _appendTemp(componentName, TEMP_EXT_STATE_INTERFACE, _componentFetchStateInterface(fetch));
   let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
   fetchDataBuffer = _replaceTag('METHOD_NAME', fetch.name, fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('ARGS', methodArgs, fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('ARGS', _componentFetchMethodArgs(fetch), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('RETURN_TYPE', responseType?`<${responseType}>`:'', fetchDataBuffer);
   fetchDataBuffer = _replaceTag('API_COUNT', _componentFetchApiCount(fetch), fetchDataBuffer);
@@ -650,10 +649,9 @@ let _componentFetchPost = function (componentName, fetch) {
   let functionName = '_componentFetchPost()';
   let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.format}.ts.tpl`;
   let type = '';
-  let methodArgs = '', fetchApi = '', setState = '';
+  let fetchApi = '', setState = '';
   let postType = '', responseType = '';
   _.forEach(fetch.apis, (api, i) => {
-    methodArgs += (methodArgs?', ': '') + _componentFetchArgs(api);
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')}, ${_componentFetchPostBody(api)})`;
@@ -665,7 +663,7 @@ let _componentFetchPost = function (componentName, fetch) {
   _appendTemp(componentName, TEMP_EXT_STATE_INTERFACE, _componentFetchStateInterface(fetch));
   let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
   fetchDataBuffer = _replaceTag('METHOD_NAME', fetch.name, fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('ARGS', methodArgs, fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('ARGS', _componentFetchMethodArgs(fetch), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('TEMPLATE_TYPE', responseType?`<${responseType}>`:'', fetchDataBuffer);
   fetchDataBuffer = _replaceTag('API_COUNT', _componentFetchApiCount(fetch), fetchDataBuffer);
@@ -673,15 +671,6 @@ let _componentFetchPost = function (componentName, fetch) {
   fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
   return fetchDataBuffer;
-}
-
-let _componentFetchArgs = function (api) {
-  if (api.args === undefined) return '';
-  let result = '';
-  _.forEach(api.args, (args) => {
-    result += (result ? ',': '') + args;
-  });
-  return result;
 }
 
 let _componentFetchPostBody = function (api) {
@@ -699,6 +688,23 @@ let _componentFetchStateInterface = function (fetch) {
     stateInterface += `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;},`;
   });
   return stateInterface;
+}
+
+let _componentFetchMethodArgs = function (fetch) {
+  let methodArgs = '';
+  _.forEach(fetch.apis, (api, i) => {
+    methodArgs += (methodArgs?', ': '') + _componentFetchArgs(api);
+  });
+  return methodArgs;
+}
+
+let _componentFetchArgs = function (api) {
+  if (api.args === undefined) return '';
+  let result = '';
+  _.forEach(api.args, (args) => {
+    result += (result ? ',': '') + args;
+  });
+  return result;
 }
 
 let _componentFetchApiCount = function (fetch) {
