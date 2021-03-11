@@ -630,16 +630,7 @@ let _componentFetchGet = function (componentName, fetch) {
   });
   _appendTemp(componentName, TEMP_EXT_TYPE, type);
   _appendTemp(componentName, TEMP_EXT_STATE_INTERFACE, _componentFetchStateInterface(fetch));
-  let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
-  fetchDataBuffer = _replaceTag('METHOD_NAME', fetch.name, fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('ARGS', _componentFetchMethodArgs(fetch), fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('RETURN_TYPE', _componentFetchResponseType(fetch), fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('API_COUNT', _componentFetchApiCount(fetch), fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('SET_STATE', _componentFetchSetState(fetch), fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
-  return fetchDataBuffer;
+  return _componentFetchDataReplacement(templateFetchDataFilePath, fetchApi, fetch);
 }
 
 let _componentFetchPost = function (componentName, fetch) {
@@ -656,6 +647,10 @@ let _componentFetchPost = function (componentName, fetch) {
   });
   _appendTemp(componentName, TEMP_EXT_TYPE, type);
   _appendTemp(componentName, TEMP_EXT_STATE_INTERFACE, _componentFetchStateInterface(fetch));
+  return _componentFetchDataReplacement(templateFetchDataFilePath, fetchApi, fetch);
+}
+
+let _componentFetchDataReplacement = function (templateFetchDataFilePath, fetchApi, fetch) {
   let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
   fetchDataBuffer = _replaceTag('METHOD_NAME', fetch.name, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('ARGS', _componentFetchMethodArgs(fetch), fetchDataBuffer);
