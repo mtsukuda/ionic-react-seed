@@ -624,14 +624,13 @@ let _componentFetchGet = function (componentName, fetch) {
   let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.format}.ts.tpl`;
   let type = '', stateInterface = '';
   let methodArgs = '', fetchApi = '', setState = '';
-  let responseType = '', apiCount = 0;
+  let responseType = '';
   _.forEach(fetch.apis, (api, i) => {
     methodArgs += (methodArgs?', ': '') + _componentFetchArgs(api);
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     stateInterface += `${api.responseTypeName}:{isLoading: false;data: ${api.responseTypeName};} | {isLoading: true;},`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
     responseType += (responseType?'|': '') + api.responseTypeName;
-    apiCount++;
     setState += (setState?', ': '') + `${api.responseTypeName}: {\nisLoading: false,\ndata: results[${i}] as ${api.responseTypeName}\n}`;
   });
   _appendTemp(componentName, TEMP_EXT_TYPE, type);
@@ -641,7 +640,7 @@ let _componentFetchGet = function (componentName, fetch) {
   fetchDataBuffer = _replaceTag('ARGS', methodArgs, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('RETURN_TYPE', responseType?`<${responseType}>`:'', fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('API_COUNT', _componentFetchApiCount(fetch), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('SET_STATE', setState, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
@@ -653,7 +652,7 @@ let _componentFetchPost = function (componentName, fetch) {
   let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.format}.ts.tpl`;
   let type = '', stateInterface = '';
   let methodArgs = '', fetchApi = '', setState = '';
-  let postType = '', responseType = '', apiCount = 0;
+  let postType = '', responseType = '';
   _.forEach(fetch.apis, (api, i) => {
     methodArgs += (methodArgs?', ': '') + _componentFetchArgs(api);
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
@@ -662,7 +661,6 @@ let _componentFetchPost = function (componentName, fetch) {
     fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')}, ${_componentFetchPostBody(api)})`;
     postType += (postType?'|': '') + api.postTypeName;
     responseType += (responseType?'|': '') + api.responseTypeName;
-    apiCount++;
     setState += (setState?', ': '') + `${api.responseTypeName}: {\nisLoading: false,\ndata: results[${i}] as ${api.responseTypeName}\n}`;
   });
   _appendTemp(componentName, TEMP_EXT_TYPE, type);
@@ -672,7 +670,7 @@ let _componentFetchPost = function (componentName, fetch) {
   fetchDataBuffer = _replaceTag('ARGS', methodArgs, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('TEMPLATE_TYPE', responseType?`<${responseType}>`:'', fetchDataBuffer);
-  fetchDataBuffer = _replaceTag('API_COUNT', apiCount, fetchDataBuffer);
+  fetchDataBuffer = _replaceTag('API_COUNT', _componentFetchApiCount(fetch), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('SET_STATE', setState, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
@@ -695,6 +693,14 @@ let _componentFetchPostBody = function (api) {
     result += (result ? ',': '') + postBody;
   });
   return `{${result}}`;
+}
+
+let _componentFetchApiCount = function (fetch) {
+  let apiCount = 0;
+  _.forEach(fetch.apis, (api, i) => {
+    apiCount++;
+  });
+  return apiCount;
 }
 
 let _componentFetchLoading = function (componentSet) {
