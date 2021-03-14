@@ -18,7 +18,7 @@ gulp.task('copy-menu', function (done){
   FS.copyFileSync(MENU_SAMPLE_CONFIG_JSON, MENU_CONFIG_JSON);
   done();
 });
-git
+
 /**
  * Copy Sample Pages
  */
