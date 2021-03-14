@@ -35,7 +35,8 @@
     "gulp": "gulp && npm run src",
     "src": "prettier --write src/App.tsx && prettier --write src/components/** && prettier --write src/user-components/*.tsx && prettier --write src/user-pages/*.tsx",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "createsample": "gulp -f gulpfile-createsample.js"
   },
   "eslintConfig": {
     "extends": "react-app"
