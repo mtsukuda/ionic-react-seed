@@ -4,17 +4,27 @@ Ionic React seed project.
 
 ## Prerequisites
 
-### install ionic
+### Clone this repository
+
+`clone https://github.com/mtsukuda/ionic-react-seed.git`
+
+### Install ionic
 
 `npm install -g @ionic/cli`
 
-### install Amplify CLI
+### Install Amplify CLI
 
 `npm install -g @aws-amplify/cli`
+
+#### Run npm install
+
+`npm install`
 
 #### Configure General Amplify
 
 `amplify configure`
+
+- make configure with ci and web browser.
 
 ## User Component / User Page JSON Configration
 
