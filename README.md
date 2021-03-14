@@ -36,6 +36,10 @@ Ionic React seed project.
 
 `npm run createsample`
 
+#### Then Build and Deploy Sample Apps!!
+
+`npm run buildndeploy`
+
 ## User Component / User Page JSON Configration
 
   * name `user component name | user page name`
