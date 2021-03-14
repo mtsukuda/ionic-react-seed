@@ -32,6 +32,10 @@ Ionic React seed project.
 
 - aws-exports file will be created.
 
+#### Run Npm Command to Create Sample Apps
+
+`npm run createsample`
+
 ## User Component / User Page JSON Configration
 
   * name `user component name | user page name`
