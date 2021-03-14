@@ -70,7 +70,7 @@ gulp.task('create-app', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-app ') + ' 🚀🚀🚀 ');
   const target = 'App';
   if(FS.existsSync(MENU_CONFIG_JSON) === false) {
-    done();
+    done(`Could not find ${MENU_CONFIG_JSON}.`);
     return;
   }
   let menuConfigJSON = _JSONdata(MENU_CONFIG_JSON);
@@ -105,8 +105,8 @@ gulp.task('create-menu', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-menu ') + ' 🚀🚀🚀 ');
   const target = 'Menu';
   if(FS.existsSync(MENU_TEMPLATE_PATH) === false || FS.existsSync(MENU_CONFIG_JSON) === false) {
-    FS.unlinkSync(`${APP_COMPONENTS_DIST}${target}.tsx`);
-    FS.unlinkSync(`${APP_COMPONENTS_DIST}${target}.css`);
+    if (FS.existsSync(`${APP_COMPONENTS_DIST}${target}.tsx`)) FS.unlinkSync(`${APP_COMPONENTS_DIST}${target}.tsx`);
+    if (FS.existsSync(`${APP_COMPONENTS_DIST}${target}.css`)) FS.unlinkSync(`${APP_COMPONENTS_DIST}${target}.css`);
     done();
     return;
   }

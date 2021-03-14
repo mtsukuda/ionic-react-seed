@@ -1,43 +1,25 @@
 {
   "header": {
-    "strTitle": "My App"
+    "strTitle": "Ionic Admin Panel"
   },
   "menu": [
     {
-      "strTitle": "Inbox",
-      "strUrl": "/page/Inbox",
-      "icon": "mail"
+      "strTitle": "ダッシュボード",
+      "strUrl": "/page/Dashboard",
+      "icon": "extensionPuzzle",
       "component": "Default",
       "redirect": "yes"
     },
     {
-      "strTitle": "Outbox",
-      "strUrl": "/page/Outbox",
-      "icon": "paperPlane",
+      "strTitle": "BASE アプリ",
+      "strUrl": "/page/Base",
+      "icon": "storefront",
       "component": "Default"
     },
     {
-      "strTitle": "Favorites",
-      "strUrl": "/page/Favorites",
-      "icon": "heart",
-      "component": "Default"
-    },
-    {
-      "strTitle": "Archived",
-      "strUrl": "/page/Archived",
-      "icon": "archive",
-      "component": "Default"
-    },
-    {
-      "strTitle": "Trash",
-      "strUrl": "/page/Trash",
-      "icon": "trash",
-      "component": "Default"
-    },
-    {
-      "strTitle": "Spam",
-      "strUrl": "/page/Spam",
-      "icon": "warning",
+      "strTitle": "その他",
+      "strUrl": "/page/Others",
+      "icon": "layers",
       "component": "Default"
     },
     {
@@ -54,11 +36,11 @@
     }
   ],
   "signOut": {
-    "strCaption": "Sign Out"
+    "strCaption": "ログアウト"
   },
   "menuBottom": {
     "parameters": [
-      "const labels = [\"Family\", \"Friends\", \"Notes\", \"Work\", \"Travel\", \"Reminders\"];"
+      "const labels = [\"ToDo\", \"大事なこと\", \"友達\", \"家族\", \"旅行\"];"
     ],
     "tags":[
       {
@@ -71,7 +53,7 @@
             {
               "tag": "IonListHeader",
               "noCR": "yes",
-              "content": "Labels"
+              "content": "ラベル"
             },
             {
               "tag": "{labels.map((label, index) => (",
