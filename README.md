@@ -26,6 +26,12 @@ Ionic React seed project.
 
 - make configure with ci and web browser.
 
+#### Init Amplify
+
+`amplify init`
+
+- aws-exports file will be created.
+
 ## User Component / User Page JSON Configration
 
   * name `user component name | user page name`
