@@ -109,6 +109,10 @@ dist
 # Firebase chache
 .firebase
 
+# sample-page and sample-component
+seed/user-pages/sample-page*.json
+seed/user-components/sample-component*.json
+
 # user-pages
 src/user-components/
 
