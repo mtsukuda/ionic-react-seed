@@ -261,16 +261,12 @@ let _componentBuild = function (componentConfigJSONFilePaths, cssSeedDirectory, 
     let componentMethods = [];
     _componentMethodRecursiveWithOverlapCheck(componentConfigJSON, componentMethods);
     let userComponentSet = {};
-    userComponentSet['name'] = componentName;
+    _.forEach(componentConfigJSON, (value, key) => {
+      userComponentSet[key] = value;
+    });
     userComponentSet['html'] = _tagToHtml(tags);
-    userComponentSet['import'] = componentConfigJSON.import;
     userComponentSet['ownCss'] = _ownCss(cssSeedDirectory, cssDist, path.basename(componentConfigJSONFilePath).replace("json", "css"), componentName);
     userComponentSet['methods'] = componentMethods;
-    userComponentSet['state'] = componentConfigJSON.state;
-    userComponentSet['fetch'] = componentConfigJSON.fetch;
-    userComponentSet['lifeCycleMethods'] = componentConfigJSON.lifeCycleMethods;
-    userComponentSet['renderBeforeReturn'] = componentConfigJSON.renderBeforeReturn;
-    userComponentSet['defaultProps'] = componentConfigJSON.defaultProps;
     buildComponents.push(userComponentSet);
   });
 }
