@@ -2,6 +2,11 @@
 
 Ionic React seed project.
 
+## Requirement Cloud Account
+
+- AWS (Cognito)
+- Firebase
+
 ## Prerequisites
 
 ### Clone this repository
