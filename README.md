@@ -61,7 +61,7 @@ Ionic React seed project.
     * codeLast `insert code`
     * apis []
         * args [] `fetch method arguments`
-        * api `uri of api`
+        * uri `uri of api`
         * postTypeName `post format only: name of post type`
         * postType `post format only: type of post`
         * postBody [] `post format only: body of post data`

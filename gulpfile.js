@@ -549,7 +549,7 @@ let _componentFetchGet = function (componentName, fetch) {
   let fetchApi = '';
   _.forEach(fetch.apis, (api) => {
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
-    fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')})`;
+    fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.uri}'${(api.init?', '+api.init:'')})`;
   });
   _componentFetchAppendTemp(componentName, type, fetch);
   return _componentFetchDataReplacement(templateFetchDataFilePath, fetchApi, fetch);
@@ -564,7 +564,7 @@ let _componentFetchPost = function (componentName, fetch) {
   _.forEach(fetch.apis, (api) => {
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
-    fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.api}'${(api.init?', '+api.init:'')}, ${_componentFetchPostBody(api)})`;
+    fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.uri}'${(api.init?', '+api.init:'')}, ${_componentFetchPostBody(api)})`;
     postType += (postType?'|': '') + api.postTypeName;
   });
   _componentFetchAppendTemp(componentName, type, fetch);

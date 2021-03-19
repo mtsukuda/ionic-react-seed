@@ -52,7 +52,7 @@ let _createApiData = function (fetchData) {
   _.forEach(fetchData, (fetch) => {
     console.log(fetch.format);
     _.forEach(fetch.apis, (api) => {
-      console.log(api.api);
+      console.log(api.uri);
     });
   });
 }

@@ -70,7 +70,7 @@
       "codeLast": "this.setState({modal: {isOpen: true}})",
       "apis": [
         {
-          "api": "https://api.mocklets.com/mock68049/update1",
+          "uri": "https://api.mocklets.com/mock68049/update1",
           "args": ["message: string", "something: string"],
           "postTypeName": "bodyPostMessage",
           "postType": "msg: string",
