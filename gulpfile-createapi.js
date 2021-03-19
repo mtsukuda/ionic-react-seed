@@ -1,5 +1,5 @@
+const _ = require('lodash');
 const gulp = require('gulp');
-const FS = require('fs');
 const chalk = require('chalk');
 const gulpfs = require('./gulplib/gulpfs');
 const USER_PAGE_JSON = 'seed/user-pages';
@@ -11,9 +11,28 @@ const USER_COMPONENT_JSON = 'seed/user-components';
 gulp.task('create-api', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' create-api ') + ' 🚀🚀🚀 ');
   let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
+  let userComponents = [];
+  if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
+    _componentApiBuild(userPagesJSONFilePaths, userComponents);
+  }
   let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
+  if (userComponentsJSONFilePaths !== null && userComponentsJSONFilePaths.length > 0) {
+    _componentApiBuild(userComponentsJSONFilePaths, userComponents);
+  }
+  console.log(userComponents);
   done();
 });
+
+let _componentApiBuild = function (componentConfigJSONFilePaths, buildComponents) {
+  _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
+    let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath);
+    _.forEach(componentConfigJSON, (value, key) => {
+      if (key === 'fetch') {
+        buildComponents.push(value);
+      }
+    });
+  });
+}
 
 /**
  * gulp default task
