@@ -90,7 +90,7 @@ gulp.task('create-app', function (done){
     redirect = routeInfo[0].url;
   }
   console.log(routeInfo);
-  let appTemplateFileBuffer = _readWholeFile(APP_TEMPLATE_PATH);
+  let appTemplateFileBuffer = gulpfs.readWholeFile(APP_TEMPLATE_PATH);
   let importPages = _importPages(routeInfo);
   appTemplateFileBuffer = _replaceTag('IMPORT_PAGES', importPages, appTemplateFileBuffer);
   let routeTags = _routeTags(routeInfo, redirect);
@@ -129,7 +129,7 @@ gulp.task('create-menu', function (done){
       }
     });
   });
-  let menuTemplateFileBuffer = _readWholeFile(MENU_TEMPLATE_PATH);
+  let menuTemplateFileBuffer = gulpfs.readWholeFile(MENU_TEMPLATE_PATH);
   let menuHeaderTitle = (menuConfigJSON.header && menuConfigJSON.header.strTitle) ? menuConfigJSON.header.strTitle : 'Ionic Seed App';
   menuTemplateFileBuffer = _replaceTag('APP_HEADER', menuHeaderTitle, menuTemplateFileBuffer);
   let signOutCaption = (menuConfigJSON.signOut && menuConfigJSON.signOut.strCaption) ? menuConfigJSON.signOut.strCaption : 'Sign Out';
@@ -142,7 +142,7 @@ gulp.task('create-menu', function (done){
   if (menuConfigJSON.menuBottom) _htmlTagRecursive(menuConfigJSON.menuBottom, tags);
   menuTemplateFileBuffer = _replaceTag('APP_MENU_BOTTOM', _tagToHtml(tags), menuTemplateFileBuffer);
   gulpfs.writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
-  let menuCssFileBuffer = _readWholeFile(`${APP_CSS_DIR}${target}.css`);
+  let menuCssFileBuffer = gulpfs.readWholeFile(`${APP_CSS_DIR}${target}.css`);
   gulpfs.writeDistFile(`${APP_COMPONENTS_DIST}${target}.css`, menuCssFileBuffer);
   done();
 });
@@ -166,24 +166,11 @@ let _componentName = function (component) {
 };
 
 let _JSONdata = function (filePath) {
-  let fileBuffer = _readWholeFile(filePath);
+  let fileBuffer = gulpfs.readWholeFile(filePath);
   if (fileBuffer === null) return '';
   let jsonData = JSON.parse(fileBuffer);
   console.log(jsonData);
   return jsonData;
-};
-
-let _readWholeFile = function (targetPath) {
-  try {
-    return FS.readFileSync(targetPath, 'utf8');
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      console.log(`Could not find: "${targetPath}"`);
-      return null;
-    }
-    console.log(err);
-    return null;
-  }
 };
 
 let _appendTemp = function (name, ext, buffer) {
@@ -196,7 +183,7 @@ let _readTemp = function (name, ext) {
   if(FS.existsSync(tempStateFilePath) === false) {
     return ''
   }
-  let tempBuffer = _readWholeFile(tempStateFilePath);
+  let tempBuffer = gulpfs.readWholeFile(tempStateFilePath);
   return tempBuffer;
 }
 
@@ -232,7 +219,7 @@ let _ownCss = function (cssSeedDirectory, cssDist, configCssName, name) {
 
 let _createOwnCss = function (ownCss) {
   if (ownCss === null) return;
-  let cssFileBuffer = _readWholeFile(ownCss.seed);
+  let cssFileBuffer = gulpfs.readWholeFile(ownCss.seed);
   gulpfs.writeDistFile(ownCss.dist, cssFileBuffer);
 }
 
@@ -285,7 +272,7 @@ let _componentEvents = function (component) {
     if(FS.existsSync(templateEventFilePath) === false) {
       throw `Could not find ${templateEventFilePath} for ${event.eventName}`;
     }
-    let eventBuffer = _readWholeFile(templateEventFilePath);
+    let eventBuffer = gulpfs.readWholeFile(templateEventFilePath);
     let eventCode = _componentEventCallFunction(event);
     eventBuffer = _replaceTag('EVENT_CODE', eventCode, eventBuffer);
     events += eventBuffer;
@@ -504,7 +491,7 @@ let _importPages = function (routeInfo) {
 }
 
 let _createComponentFile = function (targetComponents, templateFilePath, componentDist, prefix='') {
-  let orgFileBuffer = _readWholeFile(templateFilePath);
+  let orgFileBuffer = gulpfs.readWholeFile(templateFilePath);
   targetComponents.forEach((componentSet) => {
     let componentFilePath = componentDist + '/' + componentSet.name + '.tsx';
     let fileBuffer = _replaceTag('COMOPNENT_NAME', componentSet.name, orgFileBuffer);
@@ -598,7 +585,7 @@ let _componentFetchAppendTemp = function (componentName, type, fetch) {
 }
 
 let _componentFetchDataReplacement = function (templateFetchDataFilePath, fetchApi, fetch) {
-  let fetchDataBuffer = _readWholeFile(templateFetchDataFilePath);
+  let fetchDataBuffer = gulpfs.readWholeFile(templateFetchDataFilePath);
   fetchDataBuffer = _replaceTag('METHOD_NAME', fetch.name, fetchDataBuffer);
   fetchDataBuffer = _replaceTag('ARGS', _componentFetchMethodArgs(fetch), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('FETCH', fetchApi, fetchDataBuffer);
@@ -720,12 +707,12 @@ let _componentMethod = function (componentSet) {
   return result;
 }
 let _userFunction = function (template, componentMethod) {
-  let methodParams = _readWholeFile(`${USER_COMPONENT_METHOD}/${template}.param`);
+  let methodParams = gulpfs.readWholeFile(`${USER_COMPONENT_METHOD}/${template}.param`);
   console.log(`${USER_COMPONENT_METHOD}/${template}.param`);
   if (methodParams === null) {
     throw `Could not find method params file: ${template}`;
   }
-  let methodTemplate = _readWholeFile(`${USER_COMPONENT_METHOD}/${template}.method.tpl`);
+  let methodTemplate = gulpfs.readWholeFile(`${USER_COMPONENT_METHOD}/${template}.method.tpl`);
   if (methodTemplate === null) {
     throw `Could not find method template: ${template}`;
   }

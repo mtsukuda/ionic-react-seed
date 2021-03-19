@@ -51,3 +51,16 @@ exports.deleteDirectoryRecursive = (path) => {
     FS.rmdirSync(path);
   }
 }
+
+exports.readWholeFile = (targetPath) => {
+  try {
+    return FS.readFileSync(targetPath, 'utf8');
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      console.log(`Could not find: "${targetPath}"`);
+      return null;
+    }
+    console.log(err);
+    return null;
+  }
+}
