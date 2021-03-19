@@ -35,13 +35,13 @@ gulp.task('default',
   })
 );
 
-let _extractFetchData = function (componentConfigJSONFilePaths, buildComponents) {
+let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
     let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath);
     _.forEach(componentConfigJSON, (value, key) => {
       if (key === 'fetch') {
         _.forEach(value, (fetch) => {
-          buildComponents.push(fetch);
+          fetchData.push(fetch);
         });
       }
     });
