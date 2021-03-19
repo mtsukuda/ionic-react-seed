@@ -13,17 +13,17 @@ gulp.task('create-api', function (done){
   let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
   let userComponents = [];
   if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
-    _componentApiBuild(userPagesJSONFilePaths, userComponents);
+    _extractFetchData(userPagesJSONFilePaths, userComponents);
   }
   let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
   if (userComponentsJSONFilePaths !== null && userComponentsJSONFilePaths.length > 0) {
-    _componentApiBuild(userComponentsJSONFilePaths, userComponents);
+    _extractFetchData(userComponentsJSONFilePaths, userComponents);
   }
   console.log(userComponents);
   done();
 });
 
-let _componentApiBuild = function (componentConfigJSONFilePaths, buildComponents) {
+let _extractFetchData = function (componentConfigJSONFilePaths, buildComponents) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
     let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath);
     _.forEach(componentConfigJSON, (value, key) => {
