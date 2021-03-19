@@ -23,17 +23,6 @@ gulp.task('create-api', function (done){
   done();
 });
 
-let _extractFetchData = function (componentConfigJSONFilePaths, buildComponents) {
-  _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
-    let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath);
-    _.forEach(componentConfigJSON, (value, key) => {
-      if (key === 'fetch') {
-        buildComponents.push(value);
-      }
-    });
-  });
-}
-
 /**
  * gulp default task
  */
@@ -44,3 +33,14 @@ gulp.task('default',
     done();
   })
 );
+
+let _extractFetchData = function (componentConfigJSONFilePaths, buildComponents) {
+  _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
+    let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath);
+    _.forEach(componentConfigJSON, (value, key) => {
+      if (key === 'fetch') {
+        buildComponents.push(value);
+      }
+    });
+  });
+}
