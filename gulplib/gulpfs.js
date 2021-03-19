@@ -64,3 +64,11 @@ exports.readWholeFile = (targetPath) => {
     return null;
   }
 }
+
+exports.JSONdata = (filePath) => {
+  let fileBuffer = this.readWholeFile(filePath);
+  if (fileBuffer === null) return '';
+  let jsonData = JSON.parse(fileBuffer);
+  console.log(jsonData);
+  return jsonData;
+};

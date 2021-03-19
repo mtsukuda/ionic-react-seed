@@ -74,7 +74,7 @@ gulp.task('create-app', function (done){
     done(`Could not find ${MENU_CONFIG_JSON}.`);
     return;
   }
-  let menuConfigJSON = _JSONdata(MENU_CONFIG_JSON);
+  let menuConfigJSON = gulpfs.JSONdata(MENU_CONFIG_JSON);
   let routeInfo = [];
   let redirect = '';
   _.forEach(menuConfigJSON.menu, (menu) => {
@@ -111,7 +111,7 @@ gulp.task('create-menu', function (done){
     done();
     return;
   }
-  let menuConfigJSON = _JSONdata(MENU_CONFIG_JSON);
+  let menuConfigJSON = gulpfs.JSONdata(MENU_CONFIG_JSON);
   let buildMenu = [];
   let menuIcons = [];
   _.forEach(menuConfigJSON.menu, (menu) => {
@@ -165,14 +165,6 @@ let _componentName = function (component) {
   return component.charAt(0).toUpperCase() + _.camelCase(component).slice(1);
 };
 
-let _JSONdata = function (filePath) {
-  let fileBuffer = gulpfs.readWholeFile(filePath);
-  if (fileBuffer === null) return '';
-  let jsonData = JSON.parse(fileBuffer);
-  console.log(jsonData);
-  return jsonData;
-};
-
 let _appendTemp = function (name, ext, buffer) {
   let tempStateFilePath = `${TEMP_DIR}/${name}.${ext}`;
   gulpfs.appendDistFile(tempStateFilePath, buffer);
@@ -189,7 +181,7 @@ let _readTemp = function (name, ext) {
 
 let _componentBuild = function (componentConfigJSONFilePaths, cssSeedDirectory, cssDist, buildComponents) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
-    let componentConfigJSON = _JSONdata(componentConfigJSONFilePath);
+    let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath);
     let componentName = _componentName(componentConfigJSON.name);
     let tags = [];
     _htmlTagRecursive(componentConfigJSON, tags);
