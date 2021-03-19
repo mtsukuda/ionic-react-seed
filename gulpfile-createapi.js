@@ -11,15 +11,15 @@ const USER_COMPONENT_JSON = 'seed/user-components';
 gulp.task('create-api', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' create-api ') + ' 🚀🚀🚀 ');
   let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
-  let userComponents = [];
+  let apiData = [];
   if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
-    _extractFetchData(userPagesJSONFilePaths, userComponents);
+    _extractFetchData(userPagesJSONFilePaths, apiData);
   }
   let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
   if (userComponentsJSONFilePaths !== null && userComponentsJSONFilePaths.length > 0) {
-    _extractFetchData(userComponentsJSONFilePaths, userComponents);
+    _extractFetchData(userComponentsJSONFilePaths, apiData);
   }
-  console.log(userComponents);
+  console.log(apiData);
   done();
 });
 
