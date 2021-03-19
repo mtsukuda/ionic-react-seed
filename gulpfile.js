@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const gulp = require('gulp');
 const FS = require('fs');
 const path = require('path');
+const gulpfs = require('./gulplib/gulpfs');
 const USER_COMMON_TEMPLATE = 'seed/user-common-templates';
 const USER_COMPONENT_JSON = 'seed/user-components';
 const USER_COMPONENT_TEMPLATE_FILE_PATH = 'seed/user-components-templates/user-component-basic.js.tpl';
@@ -29,9 +30,9 @@ const TEMP_EXT_TYPE = "type";
  */
 gulp.task('create-user-components', function (done) {
   console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-user-components ') + ' 🚀🚀🚀 ');
-  _cleanDirectories(TEMP_DIR);
-  _cleanDirectories(USER_COMPONENT_DIST);
-  let userComponentsJSONFilePaths = _jsonFilePaths(USER_COMPONENT_JSON);
+  gulpfs.cleanDirectories(TEMP_DIR);
+  gulpfs.cleanDirectories(USER_COMPONENT_DIST);
+  let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
   console.log(userComponentsJSONFilePaths);
   if (userComponentsJSONFilePaths === null || userComponentsJSONFilePaths.length === 0) {
     console.log(chalk.black.bgGreen("  There is no user component...  "));
@@ -49,8 +50,8 @@ gulp.task('create-user-components', function (done) {
  */
 gulp.task('create-user-pages', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-user-pages ') + ' 🚀🚀🚀 ');
-  _cleanDirectories(USER_PAGE_DIST);
-  let userPagesJSONFilePaths = _jsonFilePaths(USER_PAGE_JSON);
+  gulpfs.cleanDirectories(USER_PAGE_DIST);
+  let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
   console.log(userPagesJSONFilePaths);
   if (userPagesJSONFilePaths === null || userPagesJSONFilePaths.length === 0) {
     console.log(chalk.black.bgGreen("  There is no user pages...  "));
@@ -94,7 +95,7 @@ gulp.task('create-app', function (done){
   appTemplateFileBuffer = _replaceTag('IMPORT_PAGES', importPages, appTemplateFileBuffer);
   let routeTags = _routeTags(routeInfo, redirect);
   appTemplateFileBuffer = _replaceTag('ROUTER', routeTags, appTemplateFileBuffer);
-  _writeDistFile(`${APP_DIST}${target}.tsx`, appTemplateFileBuffer);
+  gulpfs.writeDistFile(`${APP_DIST}${target}.tsx`, appTemplateFileBuffer);
   done();
 });
 
@@ -140,9 +141,9 @@ gulp.task('create-menu', function (done){
   let tags = [];
   if (menuConfigJSON.menuBottom) _htmlTagRecursive(menuConfigJSON.menuBottom, tags);
   menuTemplateFileBuffer = _replaceTag('APP_MENU_BOTTOM', _tagToHtml(tags), menuTemplateFileBuffer);
-  _writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
+  gulpfs.writeDistFile(`${APP_COMPONENTS_DIST}${target}.tsx`, menuTemplateFileBuffer);
   let menuCssFileBuffer = _readWholeFile(`${APP_CSS_DIR}${target}.css`);
-  _writeDistFile(`${APP_COMPONENTS_DIST}${target}.css`, menuCssFileBuffer);
+  gulpfs.writeDistFile(`${APP_COMPONENTS_DIST}${target}.css`, menuCssFileBuffer);
   done();
 });
 
@@ -159,59 +160,6 @@ gulp.task('default',
     done();
   })
 );
-
-let _jsonFilePaths = function (dirPath) {
-  let allFiles = FS.readdirSync(dirPath);
-  if (allFiles && _.isArray(allFiles)) {
-    let jsonFilePathList = allFiles.filter(function (filePath) {
-      return FS.statSync(`${dirPath}/${filePath}`).isFile() && /.*\.json$/.test(filePath);
-    });
-    jsonFilePathList = jsonFilePathList.map(filePath => `${dirPath}/${filePath}`);
-    return jsonFilePathList;
-  }
-  return null;
-}
-
-let _cleanDirectories = function (targetPath) {
-  _deleteDirectoryRecursive(targetPath);
-  FS.mkdirSync(targetPath, (err) =>{
-    console.log(err);
-  });
-}
-
-let _writeDistFile = function (distFilePath, buffer) {
-  try {
-    FS.writeFileSync(distFilePath, buffer);
-    return true;
-  } catch (err) {
-    console.log(err);
-    return false;
-  }
-}
-
-let _appendDistFile = function (distFilePath, buffer) {
-  try {
-    FS.appendFileSync(distFilePath, buffer);
-    return true;
-  } catch (err) {
-    console.log(err);
-    return false;
-  }
-}
-
-let _deleteDirectoryRecursive = function(path) {
-  if(FS.existsSync(path)) {
-    FS.readdirSync(path).forEach(function(file) {
-      let curPath = path + "/" + file;
-      if(FS.lstatSync(curPath).isDirectory()) { // recurse
-        _deleteDirectoryRecursive(curPath);
-      } else { // delete file
-        FS.unlinkSync(curPath);
-      }
-    });
-    FS.rmdirSync(path);
-  }
-};
 
 let _componentName = function (component) {
   return component.charAt(0).toUpperCase() + _.camelCase(component).slice(1);
@@ -240,7 +188,7 @@ let _readWholeFile = function (targetPath) {
 
 let _appendTemp = function (name, ext, buffer) {
   let tempStateFilePath = `${TEMP_DIR}/${name}.${ext}`;
-  _appendDistFile(tempStateFilePath, buffer);
+  gulpfs.appendDistFile(tempStateFilePath, buffer);
 }
 
 let _readTemp = function (name, ext) {
@@ -285,7 +233,7 @@ let _ownCss = function (cssSeedDirectory, cssDist, configCssName, name) {
 let _createOwnCss = function (ownCss) {
   if (ownCss === null) return;
   let cssFileBuffer = _readWholeFile(ownCss.seed);
-  _writeDistFile(ownCss.dist, cssFileBuffer);
+  gulpfs.writeDistFile(ownCss.dist, cssFileBuffer);
 }
 
 let _htmlTagRecursive = function (sauceJSON, tags, closeTag, type) {
@@ -594,7 +542,7 @@ let _createComponentFile = function (targetComponents, templateFilePath, compone
     let stateInit = _readTemp(componentSet.name, TEMP_EXT_STATE_INIT);
     fileBuffer = _replaceTag('STATE_INIT', stateInit?`state: State = {${stateInit}};`:'', fileBuffer);
     fileBuffer = _replaceTag('INTERFACE', (fetchData?'<{}, State>':''), fileBuffer);
-    _writeDistFile(_distFilePath(componentFilePath), fileBuffer);
+    gulpfs.writeDistFile(_distFilePath(componentFilePath), fileBuffer);
     _createOwnCss(componentSet.ownCss);
   });
 }
