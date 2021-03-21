@@ -60,6 +60,8 @@ Ionic React seed project.
     * codeFirst `insert code`
     * codeLast `insert code`
     * apis []
+      * config `config of own api`
+        * path `inner function name of own api`
       * args [] `fetch method arguments`
       * uri `uri of api`
       * postTypeName `post format only: name of post type`
