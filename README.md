@@ -62,7 +62,7 @@ Ionic React seed project.
     * apis []
       * config `config of own api`
         * path `inner function name of own api`
-        * properties [] `property for post body`
+        * properties [] `property for post body -> post format required`
           * key `key of property`
           * require `yes`
       * args [] `fetch method arguments`
