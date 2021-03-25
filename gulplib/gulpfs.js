@@ -72,3 +72,7 @@ exports.JSONdata = (filePath) => {
   console.log(jsonData);
   return jsonData;
 };
+
+exports.fileExists = (filePath) => {
+  return FS.existsSync(filePath);
+};
