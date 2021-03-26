@@ -7,9 +7,9 @@ const USER_PAGE_JSON = 'seed/user-pages';
 const USER_COMPONENT_JSON = 'seed/user-components';
 
 /**
- * Copy Menu
+ * API update
  */
-gulp.task('create-api', function (done){
+gulp.task('api-update', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' create-api ') + ' 🚀🚀🚀 ');
   let apiId = _getApiId();
   console.log(apiId);
@@ -32,7 +32,7 @@ gulp.task('create-api', function (done){
  */
 gulp.task('default',
   gulp.series(gulp.parallel(
-    'create-api',
+    'api-update',
   ), function (done) {
     done();
   })
