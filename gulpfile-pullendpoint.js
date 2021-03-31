@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('./gulplib/gulpfs');
 const SLS_CONFIG_JSON_PATH = 'seed/app/sls-config.json';
-const SLS_STACK_PATH = '.serverless/stack.json';
+const SLS_STACK_JSON_PATH = '.serverless/stack.json';
 
 /**
  * API update
@@ -36,10 +36,10 @@ let _checkSlsPath = function () {
     // eslint-disable-next-line no-throw-literal
     throw new Error(`Require SLS path -> ${SLS_CONFIG_JSON_PATH}`);
   }
-  if(gulpfs.fileExists(`${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`) === false) {
-    throw new Error(`Could not find SLS stack -> ${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`);
+  if(gulpfs.fileExists(`${slsPath.OwnSlsApiPath}/${SLS_STACK_JSON_PATH}`) === false) {
+    throw new Error(`Could not find SLS stack -> ${slsPath.OwnSlsApiPath}/${SLS_STACK_JSON_PATH}`);
   }
-  let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`));
+  let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.OwnSlsApiPath}/${SLS_STACK_JSON_PATH}`));
   if (!slsStackJSON.ServiceEndpoint) {
     throw new Error("Require ServiceEndpoint in stack file");
   }
