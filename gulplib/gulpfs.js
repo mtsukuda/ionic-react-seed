@@ -65,11 +65,11 @@ exports.readWholeFile = (targetPath) => {
   }
 }
 
-exports.JSONdata = (filePath) => {
+exports.JSONdata = (filePath, log=true) => {
   let fileBuffer = this.readWholeFile(filePath);
   if (fileBuffer === null) return '';
   let jsonData = JSON.parse(fileBuffer);
-  console.log(jsonData);
+  if (log) console.log(jsonData);
   return jsonData;
 };
 
