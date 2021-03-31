@@ -26,20 +26,23 @@ gulp.task('default',
 
 let _checkSlsPath = function () {
   if(gulpfs.fileExists(SLS_PATH) === false) {
-    let slsPath = {OwnSlsApiPath: ""};
+    let slsPath = { OwnSlsApiPath: "", ServiceEndpoint: ""};
     gulpfs.writeDistFile(SLS_PATH, JSON.stringify(slsPath, null, 2));
-    return;
+    throw new Error("Require SLS path -> seed/app/slspath");
   }
   let slsPath = JSON.parse(gulpfs.readWholeFile(SLS_PATH));
   console.log(slsPath.OwnSlsApiPath);
   if (!slsPath.OwnSlsApiPath) {
-    throw "Require SLS path -> seed/app/slspath";
+    // eslint-disable-next-line no-throw-literal
+    throw new Error("Require SLS path -> seed/app/slspath");
   }
   if(gulpfs.fileExists(`${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`) === false) {
-    throw `Could not find SLS stack -> ${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`;
+    throw new Error(`Could not find SLS stack -> ${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`);
   }
   let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`));
   if (!slsStackJSON.ServiceEndpoint) {
-    throw "Require ServiceEndpoint in stack file";
+    throw new Error("Require ServiceEndpoint in stack file");
   }
+  slsPath['ServiceEndpoint'] = slsStackJSON.ServiceEndpoint;
+  gulpfs.writeDistFile(SLS_PATH, JSON.stringify(slsPath, null, 2));
 };
