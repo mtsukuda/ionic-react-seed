@@ -2,7 +2,6 @@ const _ = require('lodash');
 const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('./gulplib/gulpfs');
-const API_ID = 'seed/app/api-id'
 const USER_PAGE_JSON = 'seed/user-pages';
 const USER_COMPONENT_JSON = 'seed/user-components';
 
@@ -11,8 +10,6 @@ const USER_COMPONENT_JSON = 'seed/user-components';
  */
 gulp.task('api-update', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' create-api ') + ' 🚀🚀🚀 ');
-  let apiId = _getApiId();
-  console.log(apiId);
   let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
   let fetchData = [];
   if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
@@ -37,17 +34,6 @@ gulp.task('default',
     done();
   })
 );
-
-let _getApiId = function () {
-  if(gulpfs.fileExists(API_ID) === false) {
-    let packageJSON = gulpfs.JSONdata('package.json');
-    console.log(packageJSON.name);
-    let apiId = `${packageJSON.name}-${Math.random().toString(32).substring(2)}`;
-    gulpfs.writeDistFile(API_ID, `${apiId}`);
-  } else {
-    return gulpfs.readWholeFile(API_ID);
-  }
-};
 
 let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
