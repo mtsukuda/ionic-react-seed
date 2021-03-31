@@ -149,4 +149,4 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
-seed/app/api-id
+seed/app/slspath
