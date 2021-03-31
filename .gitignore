@@ -109,6 +109,9 @@ dist
 # Firebase chache
 .firebase
 
+# Mac cache
+.DS_Store
+
 # sample-page and sample-component
 seed/user-pages/sample-page*.json
 seed/user-components/sample-component*.json
