@@ -34,6 +34,7 @@
     "buildndeploy": "npm run gulp && react-scripts build && npm run deploy",
     "gulp": "gulp && npm run src",
     "src": "prettier --write src/App.tsx && prettier --write src/components/** && prettier --write src/user-components/*.tsx && prettier --write src/user-pages/*.tsx",
+    "createfrontapi": "gulp -f gulpfile-createfrontapi.js",
     "pullendpoint": "gulp -f gulpfile-pullendpoint.js",
     "apiupdate": "gulp -f gulpfile-apiupdate.js",
     "test": "react-scripts test",
@@ -58,6 +59,7 @@
   "devDependencies": {
     "@capacitor/cli": "2.4.6",
     "chalk": "^4.1.0",
+    "exec-sh": "^0.3.4",
     "gulp": "^4.0.2",
     "lodash": "^4.17.20",
     "prettier": "^2.2.1"
