@@ -1,8 +1,8 @@
 const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('./gulplib/gulpfs');
-const SLSPATH = 'seed/app/slspath';
-const SLSSTACKPATH = '.serverless/stack.json';
+const SLS_PATH = 'seed/app/slspath';
+const SLS_STACK_PATH = '.serverless/stack.json';
 
 /**
  * API update
@@ -25,20 +25,20 @@ gulp.task('default',
 );
 
 let _checkSlsPath = function () {
-  if(gulpfs.fileExists(SLSPATH) === false) {
+  if(gulpfs.fileExists(SLS_PATH) === false) {
     let slsPath = {OwnSlsApiPath: ""};
-    gulpfs.writeDistFile(SLSPATH, JSON.stringify(slsPath, null, 2));
+    gulpfs.writeDistFile(SLS_PATH, JSON.stringify(slsPath, null, 2));
     return;
   }
-  let slsPath = JSON.parse(gulpfs.readWholeFile(SLSPATH));
+  let slsPath = JSON.parse(gulpfs.readWholeFile(SLS_PATH));
   console.log(slsPath.OwnSlsApiPath);
   if (!slsPath.OwnSlsApiPath) {
     throw "Require SLS path -> seed/app/slspath";
   }
-  if(gulpfs.fileExists(`${slsPath.OwnSlsApiPath}/${SLSSTACKPATH}`) === false) {
-    throw `Could not find SLS stack -> ${slsPath.OwnSlsApiPath}/${SLSSTACKPATH}`;
+  if(gulpfs.fileExists(`${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`) === false) {
+    throw `Could not find SLS stack -> ${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`;
   }
-  let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.OwnSlsApiPath}/${SLSSTACKPATH}`));
+  let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.OwnSlsApiPath}/${SLS_STACK_PATH}`));
   if (!slsStackJSON.ServiceEndpoint) {
     throw "Require ServiceEndpoint in stack file";
   }
