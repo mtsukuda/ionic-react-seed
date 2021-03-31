@@ -39,5 +39,7 @@ let _checkSlsPath = function () {
     throw `Could not find SLS stack -> ${slsPath.OwnSlsApiPath}/${SLSSTACKPATH}`;
   }
   let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.OwnSlsApiPath}/${SLSSTACKPATH}`));
-  console.log(slsStackJSON);
+  if (!slsStackJSON.ServiceEndpoint) {
+    throw "Require ServiceEndpoint in stack file";
+  }
 };
