@@ -203,18 +203,18 @@ let _componentBuild = function (componentConfigJSONFilePaths, cssSeedDirectory, 
 }
 
 let _replaceFrontApi = function (targetComponents) {
-  let serviceEndPoint = _frontApiEndPointExist();
+  let frontApiEndPoint = _frontApiEndPointExist();
   targetComponents.forEach((componentSet) => {
     if (!componentSet.fetch) return;
     componentSet.fetch.forEach((fetch) => {
       if (!fetch.apis) return;
       fetch.apis.forEach((api) => {
-        if (api.uri && api.uri === SLS_FRONT_API_URI && serviceEndPoint === false) {
+        if (api.uri && api.uri === SLS_FRONT_API_URI && frontApiEndPoint === false) {
           throw new Error("Front API required! Should command: npm run create-front-api.")
         }
         if (api.uri === SLS_FRONT_API_URI) {
           if (api.config && api.config.path) {
-            api.uri = `${serviceEndPoint}/${api.config.path}`;
+            api.uri = `${frontApiEndPoint}/${api.config.path}`;
           } else {
             throw new Error("Could not find fetch -> apis[] -> config -> path.");
           }
@@ -229,10 +229,10 @@ let _frontApiEndPointExist = function () {
     return false;
   }
   let slsPath = JSON.parse(gulpfs.readWholeFile(pullEndPoint.slsConfigJsonPath()));
-  if (!slsPath.ServiceEndpoint) {
+  if (!slsPath.FrontApiEndPoint) {
     return false;
   }
-  return slsPath.ServiceEndpoint;
+  return slsPath.FrontApiEndPoint;
 }
 
 let _ownCss = function (cssSeedDirectory, cssDist, configCssName, name) {
