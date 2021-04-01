@@ -48,3 +48,7 @@ let _checkSlsPath = function (defaultApiPath) {
     throw new Error(`Require SLS path -> ${SLS_CONFIG_JSON_PATH}`);
   }
 };
+
+exports.slsConfigJsonPath = () => {
+  return SLS_CONFIG_JSON_PATH.replace('../', '');
+}
