@@ -203,7 +203,7 @@ let _componentBuild = function (componentConfigJSONFilePaths, cssSeedDirectory, 
 }
 
 let _replaceFrontApi = function (targetComponents) {
-  let serviceEndPoint = _serviceEndPointExist();
+  let serviceEndPoint = _frontApiEndPointExist();
   targetComponents.forEach((componentSet) => {
     if (!componentSet.fetch) return;
     componentSet.fetch.forEach((fetch) => {
@@ -224,7 +224,7 @@ let _replaceFrontApi = function (targetComponents) {
   });
 }
 
-let _serviceEndPointExist = function () {
+let _frontApiEndPointExist = function () {
   if(gulpfs.fileExists(pullEndPoint.slsConfigJsonPath()) === false) {
     return false;
   }
