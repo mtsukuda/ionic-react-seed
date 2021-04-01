@@ -30,15 +30,15 @@ gulp.task('default',
 
 let _checkSlsPath = function (defaultApiPath) {
   if(gulpfs.fileExists(SLS_CONFIG_JSON_PATH) === false) {
-    let slsPath = { OwnSlsApiPath: defaultApiPath, FrontApiEndPoint: ""};
+    let slsPath = { FrontApiProjectPath: defaultApiPath, FrontApiEndPoint: ""};
     gulpfs.writeDistFile(SLS_CONFIG_JSON_PATH, JSON.stringify(slsPath, null, 2));
   }
   let slsPath = JSON.parse(gulpfs.readWholeFile(SLS_CONFIG_JSON_PATH));
-  if (slsPath.OwnSlsApiPath) {
-    if (gulpfs.fileExists(`${slsPath.OwnSlsApiPath}/${SLS_STACK_JSON_PATH}`) === false) {
-      throw new Error(`Could not find SLS stack -> ${slsPath.OwnSlsApiPath}/${SLS_STACK_JSON_PATH}`);
+  if (slsPath.FrontApiProjectPath) {
+    if (gulpfs.fileExists(`${slsPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`) === false) {
+      throw new Error(`Could not find SLS stack -> ${slsPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`);
     }
-    let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.OwnSlsApiPath}/${SLS_STACK_JSON_PATH}`));
+    let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`));
     if (!slsStackJSON.FrontApiEndPoint) {
       throw new Error("Require FrontApiEndPoint in stack file");
     }
