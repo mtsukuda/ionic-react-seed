@@ -23,8 +23,9 @@ gulp.task('rename-project', async function (done){
   let newProjectPackageJSON = gulpfs.JSONdata(newProjectPackageJSONPath, false);
   newProjectPackageJSON.name = newProjectName;
   gulpfs.writeDistFile(newProjectPackageJSONPath, JSON.stringify(newProjectPackageJSON, null, 2));
-  let appTemplateFileBuffer = gulpfs.readWholeFile(serverlessTsPath);
-//  appTemplateFileBuffer = _replaceTag(DEFAULT_SERVICE_NAME, newProjectName, appTemplateFileBuffer);
+  let appTsFileBuffer = gulpfs.readWholeFile(serverlessTsPath);
+  appTsFileBuffer = _replaceString(DEFAULT_SERVICE_NAME, `'${newProjectName}'`, appTsFileBuffer);
+  gulpfs.writeDistFile(serverlessTsPath, appTsFileBuffer);
   done();
 });
 
@@ -38,4 +39,10 @@ gulp.task('default',
     done();
   })
 );
+
+let _replaceString = function (targetString, replacedString, buffer) {
+  targetString = new RegExp(targetString,'g');
+  console.log('REPLACE: ' + targetString + ' ==> ' + replacedString);
+  return buffer.replace(targetString, replacedString);
+};
 
