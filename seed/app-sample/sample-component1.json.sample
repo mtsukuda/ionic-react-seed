@@ -72,11 +72,11 @@
       "name": "fetchOther",
       "apis": [
         {
-          "uri": "https://myorignalapi.com/",
-          "responseTypeName": "myorignalapi",
+          "uri": "https://sls-front-api.io/",
+          "responseTypeName": "slsFrontApi",
           "responseType": "res1: string, res2: string",
           "config": {
-            "path": "goodbye"
+            "path": "hello"
           }
         }
       ]
