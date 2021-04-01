@@ -4,6 +4,7 @@ const gulp = require('gulp');
 const FS = require('fs');
 const path = require('path');
 const gulpfs = require('./gulplib/gulpfs');
+const pullEndPoint = require('./gulpcmd/cmd-pull-endpoint');
 const USER_COMMON_TEMPLATE = 'seed/user-common-templates';
 const USER_COMPONENT_JSON = 'seed/user-components';
 const USER_COMPONENT_TEMPLATE_FILE_PATH = 'seed/user-components-templates/user-component-basic.js.tpl';
@@ -24,6 +25,7 @@ const TEMP_DIR = ".temp";
 const TEMP_EXT_STATE_INIT = "state-init";
 const TEMP_EXT_STATE_INTERFACE = "state-interface";
 const TEMP_EXT_TYPE = "type";
+const SLS_FRONT_API_URI = "https://sls-front-api.io/";
 
 /**
  * Create User Components
@@ -41,6 +43,7 @@ gulp.task('create-user-components', function (done) {
   }
   let userComponents = [];
   _componentBuild(userComponentsJSONFilePaths, USER_COMPONENT_OWN_CSS, USER_COMPONENT_DIST, userComponents);
+  _replaceFrontApi(userComponents);
   _createUserComponentFile(userComponents);
   done();
 });
@@ -60,6 +63,7 @@ gulp.task('create-user-pages', function (done){
   }
   let userPages = [];
   _componentBuild(userPagesJSONFilePaths, USER_PAGE_OWN_CSS, USER_PAGE_DIST, userPages);
+  _replaceFrontApi(userPages);
   _createUserPageFile(userPages);
   done();
 });
@@ -196,6 +200,39 @@ let _componentBuild = function (componentConfigJSONFilePaths, cssSeedDirectory, 
     userComponentSet['methods'] = componentMethods;
     buildComponents.push(userComponentSet);
   });
+}
+
+let _replaceFrontApi = function (targetComponents) {
+  let serviceEndPoint = _serviceEndPointExist();
+  targetComponents.forEach((componentSet) => {
+    if (!componentSet.fetch) return;
+    componentSet.fetch.forEach((fetch) => {
+      if (!fetch.apis) return;
+      fetch.apis.forEach((api) => {
+        if (api.uri && api.uri === SLS_FRONT_API_URI && serviceEndPoint === false) {
+          throw new Error("Front API required! Should command: npm run create-front-api.")
+        }
+        if (api.uri === SLS_FRONT_API_URI) {
+          if (api.config && api.config.path) {
+            api.uri = `${serviceEndPoint}/${api.config.path}`;
+          } else {
+            throw new Error("Could not find fetch -> apis[] -> config -> path.");
+          }
+        }
+      });
+    });
+  });
+}
+
+let _serviceEndPointExist = function () {
+  if(gulpfs.fileExists(pullEndPoint.slsConfigJsonPath()) === false) {
+    return false;
+  }
+  let slsPath = JSON.parse(gulpfs.readWholeFile(pullEndPoint.slsConfigJsonPath()));
+  if (!slsPath.ServiceEndpoint) {
+    return false;
+  }
+  return slsPath.ServiceEndpoint;
 }
 
 let _ownCss = function (cssSeedDirectory, cssDist, configCssName, name) {
