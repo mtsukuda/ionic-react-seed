@@ -11,7 +11,9 @@ gulp.task('git-clone', async function (done){
   let packageJSON = gulpfs.JSONdata('../package.json', false);
   let clonedName = `${packageJSON.name}-api`;
   if(gulpfs.fileExists(`../../${clonedName}`)) {
-    throw new Error(`Already exist front API -> ${clonedName}`);
+    console.log(chalk.red(`Already exist front API -> ${clonedName}`));
+    done();
+    return;
   }
   let out;
   try {
