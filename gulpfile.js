@@ -225,10 +225,10 @@ let _replaceFrontApi = function (targetComponents) {
 }
 
 let _frontApiEndPointExist = function () {
-  if(gulpfs.fileExists(pullEndPoint.slsConfigJsonPath()) === false) {
+  if(gulpfs.fileExists(pullEndPoint.frontApiConfigJsonPath()) === false) {
     return false;
   }
-  let slsPath = JSON.parse(gulpfs.readWholeFile(pullEndPoint.slsConfigJsonPath()));
+  let slsPath = JSON.parse(gulpfs.readWholeFile(pullEndPoint.frontApiConfigJsonPath()));
   if (!slsPath.FrontApiEndPoint) {
     return false;
   }

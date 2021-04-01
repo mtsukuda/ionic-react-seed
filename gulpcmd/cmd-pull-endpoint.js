@@ -49,6 +49,6 @@ let _checkSlsPath = function (defaultApiPath) {
   }
 };
 
-exports.slsConfigJsonPath = () => {
+exports.frontApiConfigJsonPath = () => {
   return FRONT_API_CONFIG_JSON_PATH.replace('../', '');
 }
