@@ -39,10 +39,10 @@ let _checkSlsPath = function (defaultApiPath) {
       throw new Error(`Could not find SLS stack -> ${slsPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`);
     }
     let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`));
-    if (!slsStackJSON.FrontApiEndPoint) {
-      throw new Error("Require FrontApiEndPoint in stack file");
+    if (!slsStackJSON.ServiceEndpoint) {
+      throw new Error("Require ServiceEndpoint in stack file");
     }
-    slsPath['FrontApiEndPoint'] = slsStackJSON.FrontApiEndPoint;
+    slsPath['FrontApiEndPoint'] = slsStackJSON.ServiceEndpoint;
     gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(slsPath, null, 2));
   } else {
     throw new Error(`Require SLS path -> ${FRONT_API_CONFIG_JSON_PATH}`);
