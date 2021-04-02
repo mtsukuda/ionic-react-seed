@@ -20,7 +20,9 @@ gulp.task('api-update', function (done){
   if (userComponentsJSONFilePaths !== null && userComponentsJSONFilePaths.length > 0) {
     _extractFetchData(userComponentsJSONFilePaths, fetchData);
   }
-  _createApiData(fetchData);
+  let functionJSON = { functions: [] };
+  _createApiData(fetchData, functionJSON);
+  console.log(functionJSON);
   done();
 });
 
@@ -48,12 +50,15 @@ let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
   });
 }
 
-let _createApiData = function (fetchData) {
+let _createApiData = function (fetchData, functionJSON) {
   _.forEach(fetchData, (fetch) => {
     _.forEach(fetch.apis, (api) => {
       if (gulpconst.slsFrontApiUri() === api.uri) {
+        if (api.config.path === undefined) throw new Error("Could not find 'api.config.path'!");
+        let functionConfig = { method: fetch.format, path: api.config.path }
         console.log(fetch.format);
         console.log(api.config)
+        functionJSON.functions.push(functionConfig);
       }
     });
   });
