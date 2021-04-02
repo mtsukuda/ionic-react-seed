@@ -4,6 +4,7 @@ const gulp = require('gulp');
 const FS = require('fs');
 const path = require('path');
 const gulpfs = require('./gulplib/gulpfs');
+const gulpconst = require('./gulplib/gulpconst');
 const pullEndPoint = require('./gulpcmd/cmd-pull-endpoint');
 const USER_COMMON_TEMPLATE = 'seed/user-common-templates';
 const USER_COMPONENT_JSON = 'seed/user-components';
@@ -25,7 +26,6 @@ const TEMP_DIR = ".temp";
 const TEMP_EXT_STATE_INIT = "state-init";
 const TEMP_EXT_STATE_INTERFACE = "state-interface";
 const TEMP_EXT_TYPE = "type";
-const SLS_FRONT_API_URI = "https://sls-front-api.io/";
 
 /**
  * Create User Components
@@ -209,10 +209,10 @@ let _replaceFrontApi = function (targetComponents) {
     componentSet.fetch.forEach((fetch) => {
       if (!fetch.apis) return;
       fetch.apis.forEach((api) => {
-        if (api.uri && api.uri === SLS_FRONT_API_URI && frontApiEndPoint === false) {
+        if (api.uri && api.uri === gulpconst.slsFrontApiUri() && frontApiEndPoint === false) {
           throw new Error("Front API required! Should command: npm run create-front-api.")
         }
-        if (api.uri === SLS_FRONT_API_URI) {
+        if (api.uri === gulpconst.slsFrontApiUri()) {
           if (api.config && api.config.path) {
             api.uri = `${frontApiEndPoint}/${api.config.path}`;
           } else {
