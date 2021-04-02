@@ -2,6 +2,7 @@ const _ = require('lodash');
 const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('../gulplib/gulpfs');
+const gulpconst = require('../gulplib/gulpconst');
 const USER_PAGE_JSON = '../seed/user-pages';
 const USER_COMPONENT_JSON = '../seed/user-components';
 
@@ -19,7 +20,6 @@ gulp.task('api-update', function (done){
   if (userComponentsJSONFilePaths !== null && userComponentsJSONFilePaths.length > 0) {
     _extractFetchData(userComponentsJSONFilePaths, fetchData);
   }
-  console.log(fetchData);
   _createApiData(fetchData);
   done();
 });
@@ -37,7 +37,7 @@ gulp.task('default',
 
 let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
-    let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath);
+    let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath, false);
     _.forEach(componentConfigJSON, (value, key) => {
       if (key === 'fetch') {
         _.forEach(value, (fetch) => {
@@ -50,9 +50,11 @@ let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
 
 let _createApiData = function (fetchData) {
   _.forEach(fetchData, (fetch) => {
-    console.log(fetch.format);
     _.forEach(fetch.apis, (api) => {
-      console.log(api.uri);
+      if (gulpconst.slsFrontApiUri() === api.uri) {
+        console.log(fetch.format);
+        console.log(api.config)
+      }
     });
   });
 }
