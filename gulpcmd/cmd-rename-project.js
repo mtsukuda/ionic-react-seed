@@ -6,6 +6,19 @@ const SERVERLESS_TS = 'serverless.ts';
 const DEFAULT_SERVICE_NAME = "'sls-front-api-seed'";
 
 /**
+ * Rename Ionic project
+ */
+gulp.task('rename-ionic-project', async function (done){
+  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' rename-project ') + ' 🚀🚀🚀 ');
+  let ionicProjectPackageJSONPath = `../${PACKAGE_JSON}`;
+  let packageJSON = gulpfs.JSONdata(ionicProjectPackageJSONPath, false);
+  let dirArray = __dirname.split('/');
+  packageJSON.name = dirArray[dirArray.length - 2];
+  gulpfs.writeDistFile(ionicProjectPackageJSONPath, JSON.stringify(packageJSON, null, 2));
+  done();
+});
+
+/**
  * Rename the API project
  */
 gulp.task('rename-api-project', async function (done){
@@ -34,6 +47,7 @@ gulp.task('rename-api-project', async function (done){
  */
 gulp.task('default',
   gulp.series(gulp.parallel(
+    'rename-ionic-project',
     'rename-api-project',
   ), function (done) {
     done();
