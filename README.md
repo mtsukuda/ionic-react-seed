@@ -11,7 +11,7 @@ Ionic React seed project.
 
 ### Clone this repository
 
-`clone https://github.com/mtsukuda/ionic-react-seed.git`
+`clone https://github.com/mtsukuda/ionic-react-seed.git <YourProjectName>`
 
 ### Install ionic
 
@@ -24,6 +24,22 @@ Ionic React seed project.
 #### Enter the ionic-react-seed directory, and run npm install
 
 `npm install`
+
+#### Init Firebase Hosting
+
+`firebase init`
+
+- select `Hosting: Configure and deploy Firebase Hosting site`.
+- select `Create a new project`.
+- enter your project name.
+- `? What do you want to use as your public directory?` --> `build`.
+- `? Configure as a single-page app (rewrite all urls to /index.html)?` --> `no`.
+- `? File build/404.html already exists. Overwrite?` --> `no`.
+- `? File build/index.html already exists. Overwrite?` --> `no`.
+
+#### Overwrite Firebase JSON
+
+`npm run firebase-json-overwrite`
 
 #### Configure General Amplify
 
