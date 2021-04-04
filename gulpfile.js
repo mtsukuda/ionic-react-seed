@@ -568,11 +568,11 @@ let _componentFetchData = function (componentSet) {
   if (_isSet(componentSet, 'fetch', functionName) === false) return '';
   let componentFetchData = '';
   _.forEach(componentSet.fetch, (fetch) => {
-    if (_isSet(fetch, 'format', functionName) === false) return '';
+    if (_isSet(fetch, 'method', functionName) === false) return '';
     if (_isSet(fetch, 'apis', functionName) === false) return '';
-    if (fetch.format === 'get') {
+    if (fetch.method === 'get') {
       componentFetchData += _componentFetchGet(componentSet.name, fetch)
-    } else if (fetch.format === 'post') {
+    } else if (fetch.method === 'post') {
       componentFetchData += _componentFetchPost(componentSet.name, fetch)
     }
   });
@@ -581,7 +581,7 @@ let _componentFetchData = function (componentSet) {
 
 let _componentFetchGet = function (componentName, fetch) {
   let functionName = '_componentFetchGet()';
-  let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.format}.ts.tpl`;
+  let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.method}.ts.tpl`;
   let type = '';
   let fetchApi = '';
   _.forEach(fetch.apis, (api) => {
@@ -594,7 +594,7 @@ let _componentFetchGet = function (componentName, fetch) {
 
 let _componentFetchPost = function (componentName, fetch) {
   let functionName = '_componentFetchPost()';
-  let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.format}.ts.tpl`;
+  let templateFetchDataFilePath = `${USER_COMMON_TEMPLATE}/fetch-${fetch.method}.ts.tpl`;
   let type = '';
   let fetchApi = '';
   let postType = '';
