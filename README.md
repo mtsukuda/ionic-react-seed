@@ -33,7 +33,7 @@ Ionic React seed project.
 - select `Create a new project`.
 - `? Please specify a unique project id` --> your project name.
 - `? What would you like to call your project?` --> blank / your project name.
-- all skip after questions.
+- skip all subsequent questions.
 
 #### Overwrite Firebase JSON
 
