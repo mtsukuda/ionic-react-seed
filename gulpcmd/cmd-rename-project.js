@@ -6,10 +6,10 @@ const SERVERLESS_TS = 'serverless.ts';
 const DEFAULT_SERVICE_NAME = "'sls-front-api-seed'";
 
 /**
- * Rename the project
+ * Rename the API project
  */
-gulp.task('rename-project', async function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' rename-project ') + ' 🚀🚀🚀 ');
+gulp.task('rename-api-project', async function (done){
+  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' rename-api-project ') + ' 🚀🚀🚀 ');
   let packageJSON = gulpfs.JSONdata(`../${PACKAGE_JSON}`, false);
   let newProjectName = `${packageJSON.name}-api`;
   let newProjectPackageJSONPath = `../../${newProjectName}/${PACKAGE_JSON}`;
@@ -34,7 +34,7 @@ gulp.task('rename-project', async function (done){
  */
 gulp.task('default',
   gulp.series(gulp.parallel(
-    'rename-project',
+    'rename-api-project',
   ), function (done) {
     done();
   })
