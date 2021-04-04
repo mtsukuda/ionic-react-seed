@@ -34,7 +34,7 @@
     "buildndeploy": "npm run gulp && react-scripts build && npm run deploy",
     "gulp": "gulp && npm run src",
     "src": "prettier --write src/App.tsx && prettier --write src/components/** && prettier --write src/user-components/*.tsx && prettier --write src/user-pages/*.tsx",
-    "create-front-api": "gulp -f gulpsh/sh-frontapi-git-clone.js && gulp -f gulpcmd/cmd-rename-project.js && gulp -f gulpsh/sh-frontapi-yarn.js && gulp -f gulpsh/sh-frontapi-deploy.js && gulp -f gulpcmd/cmd-pull-endpoint.js",
+    "create-front-api": "gulp -f gulpcmd/cmd-rename-package-name.js && gulp -f gulpsh/sh-frontapi-git-clone.js && gulp -f gulpcmd/cmd-rename-project.js && gulp -f gulpsh/sh-frontapi-yarn.js && gulp -f gulpsh/sh-frontapi-deploy.js && gulp -f gulpcmd/cmd-pull-endpoint.js",
     "api-update": "gulp -f gulpcmd/cmd-api-update.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
