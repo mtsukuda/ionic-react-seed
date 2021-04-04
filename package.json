@@ -38,7 +38,7 @@
     "api-update": "gulp -f gulpcmd/cmd-api-update.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "createsample": "gulp -f gulpfile-createsample.js"
+    "create-sample": "gulp -f gulpfile-createsample.js"
   },
   "eslintConfig": {
     "extends": "react-app"

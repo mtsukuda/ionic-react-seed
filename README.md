@@ -39,7 +39,7 @@ Ionic React seed project.
 
 #### Run Npm Command to Create Sample Apps
 
-`npm run createsample`
+`npm run create-sample`
 
 #### Create Front API
 
