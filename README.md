@@ -11,7 +11,7 @@ Ionic React seed project.
 
 ### Clone this repository
 
-`clone https://github.com/mtsukuda/ionic-react-seed.git <YourProjectName>`
+`git clone https://github.com/mtsukuda/ionic-react-seed.git <YourProjectName>`
 
 ### Install ionic
 
