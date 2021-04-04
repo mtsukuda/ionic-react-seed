@@ -64,7 +64,7 @@
   ],
   "fetch": [
     {
-      "format": "post",
+      "method": "post",
       "name": "postMessage",
       "codeFirst": "console.log('This is it.')",
       "codeLast": "this.setState({modal: {isOpen: true}})",

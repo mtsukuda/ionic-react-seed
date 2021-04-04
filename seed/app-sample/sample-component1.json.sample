@@ -52,7 +52,7 @@
   ],
   "fetch": [
     {
-      "format": "get",
+      "method": "get",
       "name": "fetchAll",
       "apis": [
         {
@@ -68,7 +68,7 @@
       ]
     },
     {
-      "format": "get",
+      "method": "get",
       "name": "fetchOther",
       "apis": [
         {
