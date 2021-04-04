@@ -55,8 +55,8 @@ let _createApiData = function (fetchData, functionJSON) {
     _.forEach(fetch.apis, (api) => {
       if (gulpconst.slsFrontApiUri() === api.uri) {
         if (api.config.path === undefined) throw new Error("Could not find 'api.config.path'!");
-        let functionConfig = { method: fetch.format, path: api.config.path }
-        console.log(fetch.format);
+        let functionConfig = { method: fetch.method, path: api.config.path }
+        console.log(fetch.method);
         console.log(api.config)
         functionJSON.functions.push(functionConfig);
       }
