@@ -12,8 +12,7 @@ gulp.task('rename-package-name', async function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' rename-package-name ') + ' 🚀🚀🚀 ');
   let ionicProjectPackageJSONPath = `../${PACKAGE_JSON}`;
   let packageJSON = gulpfs.JSONdata(ionicProjectPackageJSONPath, false);
-  let dirArray = __dirname.split('/');
-  let newPackageName = dirArray[dirArray.length - 2];
+  let newPackageName = _newPackageName();
   console.log(`RENAMED PACKAGE: ${packageJSON.name} ==> ${newPackageName}`);
   packageJSON.name = newPackageName;
   gulpfs.writeDistFile(ionicProjectPackageJSONPath, JSON.stringify(packageJSON, null, 2));
@@ -27,8 +26,7 @@ gulp.task('rename-ionic-config-name', async function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' rename-ionic-config-name ') + ' 🚀🚀🚀 ');
   let ionicConfigJSONPath = `../${IONIC_CONFIG_JSON}`;
   let configJSON = gulpfs.JSONdata(ionicConfigJSONPath, false);
-  let dirArray = __dirname.split('/');
-  let newPackageName = dirArray[dirArray.length - 2];
+  let newPackageName = _newPackageName();
   console.log(`RENAMED IONIC CONFIG: ${configJSON.name} ==> ${newPackageName}`);
   configJSON.name = newPackageName;
   gulpfs.writeDistFile(ionicConfigJSONPath, JSON.stringify(configJSON, null, 2));
@@ -42,8 +40,7 @@ gulp.task('rename-firebase-resource-name', async function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' rename-firebase-resource-name ') + ' 🚀🚀🚀 ');
   let firebaseResourceJSONPath = `../${FIREBASE_RESOURCE_JSON}`;
   let firebaseResourceJSON = gulpfs.JSONdata(firebaseResourceJSONPath, false);
-  let dirArray = __dirname.split('/');
-  let newPackageName = dirArray[dirArray.length - 2];
+  let newPackageName = _newPackageName();
   console.log(`RENAMED FIREBASE RESOURCE: ${firebaseResourceJSON.projects.default} ==> ${newPackageName}`);
   firebaseResourceJSON.projects.default = newPackageName;
   gulpfs.writeDistFile(firebaseResourceJSONPath, JSON.stringify(firebaseResourceJSON, null, 2));
@@ -62,3 +59,8 @@ gulp.task('default',
     done();
   })
 );
+
+let _newPackageName = function () {
+  let dirArray = __dirname.split('/');
+  return dirArray[dirArray.length - 2];
+}
