@@ -38,7 +38,7 @@
     "api-update": "gulp -f gulpcmd/cmd-api-update.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "firebase-json-overwrite": "gulp -f cmd-overwrite-fireabase-json.js",
+    "firebase-json-overwrite": "gulp -f gulpcmd/cmd-overwrite-fireabase-json.js",
     "create-sample": "gulp -f gulpfile-createsample.js"
   },
   "eslintConfig": {
