@@ -59,7 +59,7 @@ Ionic React seed project.
     * props []
   * lifeCycleMethods
   * fetch []
-    * format `get | post`
+    * method `get | post`
     * name `fetch method name`
     * codeFirst `insert code`
     * codeLast `insert code`
