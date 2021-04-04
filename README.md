@@ -31,11 +31,9 @@ Ionic React seed project.
 
 - select `Hosting: Configure and deploy Firebase Hosting site`.
 - select `Create a new project`.
-- enter your project name.
-- `? What do you want to use as your public directory?` --> `build`.
-- `? Configure as a single-page app (rewrite all urls to /index.html)?` --> `no`.
-- `? File build/404.html already exists. Overwrite?` --> `no`.
-- `? File build/index.html already exists. Overwrite?` --> `no`.
+- `? Please specify a unique project id` --> your project name.
+- `? What would you like to call your project?` --> blank / your project name.
+- all skip after questions.
 
 #### Overwrite Firebase JSON
 
