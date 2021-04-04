@@ -29,7 +29,7 @@ Ionic React seed project.
 
 `amplify configure`
 
-- make configure with ci and web browser.
+- make amplify configure with ci and web browser.
 
 #### Init Amplify
 
@@ -40,6 +40,10 @@ Ionic React seed project.
 #### Run Npm Command to Create Sample Apps
 
 `npm run createsample`
+
+#### Create Front API
+
+`npm run create-front-api`
 
 #### Then Build and Deploy Sample Apps!!
 
