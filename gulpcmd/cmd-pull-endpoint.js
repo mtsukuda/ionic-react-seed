@@ -29,21 +29,21 @@ gulp.task('default',
 );
 
 let _checkFrontApiConfigPath = function (defaultApiPath) {
-  let frontApiConfigPath = { FrontApiProjectPath: defaultApiPath, FrontApiEndPoint: ""};
+  let frontApiConfig = { FrontApiProjectPath: defaultApiPath, FrontApiEndPoint: ""};
   if(gulpfs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
-    gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(frontApiConfigPath, null, 2));
+    gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(frontApiConfig, null, 2));
   }
-  frontApiConfigPath = JSON.parse(gulpfs.readWholeFile(FRONT_API_CONFIG_JSON_PATH));
-  if (frontApiConfigPath.FrontApiProjectPath) {
-    if (gulpfs.fileExists(`${frontApiConfigPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`) === false) {
-      throw new Error(`Could not find SLS stack -> ${frontApiConfigPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`);
+  frontApiConfig = JSON.parse(gulpfs.readWholeFile(FRONT_API_CONFIG_JSON_PATH));
+  if (frontApiConfig.FrontApiProjectPath) {
+    if (gulpfs.fileExists(`${frontApiConfig.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`) === false) {
+      throw new Error(`Could not find SLS stack -> ${frontApiConfig.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`);
     }
-    let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${frontApiConfigPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`));
+    let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${frontApiConfig.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`));
     if (!slsStackJSON.ServiceEndpoint) {
       throw new Error("Require ServiceEndpoint in stack file");
     }
-    frontApiConfigPath['FrontApiEndPoint'] = slsStackJSON.ServiceEndpoint;
-    gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(frontApiConfigPath, null, 2));
+    frontApiConfig['FrontApiEndPoint'] = slsStackJSON.ServiceEndpoint;
+    gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(frontApiConfig, null, 2));
   } else {
     throw new Error(`Require SLS path -> ${FRONT_API_CONFIG_JSON_PATH}`);
   }
