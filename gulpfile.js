@@ -229,11 +229,11 @@ let _frontApiEndPointExist = function () {
   if(gulpfs.fileExists(pullEndPoint.frontApiConfigJsonPath()) === false) {
     return false;
   }
-  let slsPath = JSON.parse(gulpfs.readWholeFile(pullEndPoint.frontApiConfigJsonPath()));
-  if (!slsPath.FrontApiEndPoint) {
+  let frontApiConfigJson = JSON.parse(gulpfs.readWholeFile(pullEndPoint.frontApiConfigJsonPath()));
+  if (!frontApiConfigJson.FrontApiEndPoint) {
     return false;
   }
-  return slsPath.FrontApiEndPoint;
+  return frontApiConfigJson.FrontApiEndPoint;
 }
 
 let _ownCss = function (cssSeedDirectory, cssDist, configCssName, name) {
