@@ -6,6 +6,7 @@ const gulpconst = require('../gulplib/gulpconst');
 const pullEndPoint = require('../gulpcmd/cmd-pull-endpoint');
 const USER_PAGE_JSON = '../seed/user-pages';
 const USER_COMPONENT_JSON = '../seed/user-components';
+const FRONT_API_FUNCTIONS_CONFIG = 'seed/functions/config.json';
 
 /**
  * API update
@@ -28,6 +29,8 @@ gulp.task('api-update', function (done){
   let functionJSON = { functions: [] };
   _createApiData(fetchData, functionJSON);
   console.log(functionJSON);
+  let frontApiFunctionsPath = `${projectPath}/${FRONT_API_FUNCTIONS_CONFIG}`;
+  gulpfs.writeDistFile(frontApiFunctionsPath, JSON.stringify(functionJSON, null, 2));
   done();
 });
 
