@@ -1,13 +1,13 @@
 const gulp = require('gulp');
 const FS = require('fs');
 const chalk = require('chalk');
-const MENU_SAMPLE_CONFIG_JSON = 'seed/app/menu.json.sample';
-const MENU_CONFIG_JSON = 'seed/app/menu.json';
+const MENU_SAMPLE_CONFIG_JSON = '../seed/app/menu.json.sample';
+const MENU_CONFIG_JSON = '../seed/app/menu.json';
 const SAMPLE_CONFIG_EXT = 'json.sample';
-const SAMPLE_CONFIG_JSON = 'seed/app-sample';
-const PAGE_SAMPLE_CONFIG_JSON_DIST = 'seed/user-pages';
+const SAMPLE_CONFIG_JSON = '../seed/app-sample';
+const PAGE_SAMPLE_CONFIG_JSON_DIST = '../seed/user-pages';
 const PAGE_SAMPLE_CONFIG_JSON_NAME = 'sample-page';
-const COMPONENT_SAMPLE_CONFIG_JSON_DIST = 'seed/user-components';
+const COMPONENT_SAMPLE_CONFIG_JSON_DIST = '../seed/user-components';
 const COMPONENT_SAMPLE_CONFIG_JSON_NAME = 'sample-component';
 
 /**
