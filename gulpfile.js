@@ -6,6 +6,7 @@ const path = require('path');
 const gulpfs = require('./gulplib/gulpfs');
 const gulpconst = require('./gulplib/gulpconst');
 const pullEndPoint = require('./gulpcmd/cmd-pull-endpoint');
+const DEBUG = false;
 const USER_COMMON_TEMPLATE = 'seed/user-common-templates';
 const USER_COMPONENT_JSON = 'seed/user-components';
 const USER_COMPONENT_TEMPLATE_FILE_PATH = 'seed/user-components-templates/user-component-basic.js.tpl';
@@ -31,7 +32,7 @@ const TEMP_EXT_TYPE = "type";
  * Create User Components
  */
 gulp.task('create-user-components', function (done) {
-  console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-user-components ') + ' 🚀🚀🚀 ');
+  console.log(' 🚀🚀🚀 ' + chalk.black.bgCyanBright(' create-user-components ') + ' 🚀🚀🚀 ');
   gulpfs.cleanDirectories(TEMP_DIR);
   gulpfs.cleanDirectories(USER_COMPONENT_DIST);
   let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
@@ -52,7 +53,7 @@ gulp.task('create-user-components', function (done) {
  * Create User Pages
  */
 gulp.task('create-user-pages', function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-user-pages ') + ' 🚀🚀🚀 ');
+  console.log(' 🚀🚀🚀 ' + chalk.black.bgCyanBright(' create-user-pages ') + ' 🚀🚀🚀 ');
   gulpfs.cleanDirectories(USER_PAGE_DIST);
   let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
   console.log(userPagesJSONFilePaths);
@@ -72,13 +73,13 @@ gulp.task('create-user-pages', function (done){
  * Create App
  */
 gulp.task('create-app', function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-app ') + ' 🚀🚀🚀 ');
+  console.log(' 🚀🚀🚀 ' + chalk.black.bgCyanBright(' create-app ') + ' 🚀🚀🚀 ');
   const target = 'App';
   if(FS.existsSync(MENU_CONFIG_JSON) === false) {
     done(`Could not find ${MENU_CONFIG_JSON}.`);
     return;
   }
-  let menuConfigJSON = gulpfs.JSONdata(MENU_CONFIG_JSON);
+  let menuConfigJSON = gulpfs.JSONdata(MENU_CONFIG_JSON, DEBUG);
   let routeInfo = [];
   let redirect = '';
   _.forEach(menuConfigJSON.menu, (menu) => {
@@ -93,7 +94,7 @@ gulp.task('create-app', function (done){
   if (redirect === '') {
     redirect = routeInfo[0].url;
   }
-  console.log(routeInfo);
+  if (DEBUG) console.log(routeInfo);
   let appTemplateFileBuffer = gulpfs.readWholeFile(APP_TEMPLATE_PATH);
   let importPages = _importPages(routeInfo);
   appTemplateFileBuffer = _replaceTag('IMPORT_PAGES', importPages, appTemplateFileBuffer);
@@ -107,7 +108,7 @@ gulp.task('create-app', function (done){
  * Create Menu
  */
 gulp.task('create-menu', function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgRed(' create-menu ') + ' 🚀🚀🚀 ');
+  console.log(' 🚀🚀🚀 ' + chalk.black.bgCyanBright(' create-menu ') + ' 🚀🚀🚀 ');
   const target = 'Menu';
   if(FS.existsSync(MENU_TEMPLATE_PATH) === false || FS.existsSync(MENU_CONFIG_JSON) === false) {
     if (FS.existsSync(`${APP_COMPONENTS_DIST}${target}.tsx`)) FS.unlinkSync(`${APP_COMPONENTS_DIST}${target}.tsx`);
@@ -115,7 +116,7 @@ gulp.task('create-menu', function (done){
     done();
     return;
   }
-  let menuConfigJSON = gulpfs.JSONdata(MENU_CONFIG_JSON);
+  let menuConfigJSON = gulpfs.JSONdata(MENU_CONFIG_JSON, DEBUG);
   let buildMenu = [];
   let menuIcons = [];
   _.forEach(menuConfigJSON.menu, (menu) => {
@@ -185,7 +186,7 @@ let _readTemp = function (name, ext) {
 
 let _componentBuild = function (componentConfigJSONFilePaths, cssSeedDirectory, cssDist, buildComponents) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
-    let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath);
+    let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath, DEBUG);
     let componentName = _componentName(componentConfigJSON.name);
     let tags = [];
     _htmlTagRecursive(componentConfigJSON, tags);
@@ -791,7 +792,7 @@ let _componentRenderBeforeReturn = function (componentSet) {
 
 let _replaceTag = function (tagString, replaceString, buffer, startWith='') {
   tagString = new RegExp(startWith + '<!--@@' + tagString + '-->','g');
-  console.log('REPLACE: ' + tagString + ' ==> ' + replaceString);
+  if (DEBUG) console.log('REPLACE: ' + tagString + ' ==> ' + replaceString);
   // console.log(buffer);
   return buffer.replace(tagString, replaceString);
 };
