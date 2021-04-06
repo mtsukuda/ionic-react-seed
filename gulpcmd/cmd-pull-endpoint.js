@@ -13,7 +13,7 @@ gulp.task('pull-endpoint', function (done){
   dirArray.pop();
   let defaultApiPath = dirArray.join('/') + '-api';
   console.log(defaultApiPath);
-  _checkSlsPath(defaultApiPath);
+  _checkFrontApiConfigPath(defaultApiPath);
   done();
 });
 
@@ -28,22 +28,22 @@ gulp.task('default',
   })
 );
 
-let _checkSlsPath = function (defaultApiPath) {
+let _checkFrontApiConfigPath = function (defaultApiPath) {
+  let frontApiConfigPath = { FrontApiProjectPath: defaultApiPath, FrontApiEndPoint: ""};
   if(gulpfs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
-    let slsPath = { FrontApiProjectPath: defaultApiPath, FrontApiEndPoint: ""};
-    gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(slsPath, null, 2));
+    gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(frontApiConfigPath, null, 2));
   }
-  let slsPath = JSON.parse(gulpfs.readWholeFile(FRONT_API_CONFIG_JSON_PATH));
-  if (slsPath.FrontApiProjectPath) {
-    if (gulpfs.fileExists(`${slsPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`) === false) {
-      throw new Error(`Could not find SLS stack -> ${slsPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`);
+  frontApiConfigPath = JSON.parse(gulpfs.readWholeFile(FRONT_API_CONFIG_JSON_PATH));
+  if (frontApiConfigPath.FrontApiProjectPath) {
+    if (gulpfs.fileExists(`${frontApiConfigPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`) === false) {
+      throw new Error(`Could not find SLS stack -> ${frontApiConfigPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`);
     }
-    let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${slsPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`));
+    let slsStackJSON = JSON.parse(gulpfs.readWholeFile(`${frontApiConfigPath.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`));
     if (!slsStackJSON.ServiceEndpoint) {
       throw new Error("Require ServiceEndpoint in stack file");
     }
-    slsPath['FrontApiEndPoint'] = slsStackJSON.ServiceEndpoint;
-    gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(slsPath, null, 2));
+    frontApiConfigPath['FrontApiEndPoint'] = slsStackJSON.ServiceEndpoint;
+    gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(frontApiConfigPath, null, 2));
   } else {
     throw new Error(`Require SLS path -> ${FRONT_API_CONFIG_JSON_PATH}`);
   }
