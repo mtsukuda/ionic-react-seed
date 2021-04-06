@@ -39,7 +39,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "firebase-json-overwrite": "gulp -f gulpcmd/cmd-overwrite-fireabase-json.js",
-    "create-sample": "gulp -f gulpfile-createsample.js"
+    "create-sample": "gulp -f gulpcmd/cmd-file-create-sample.js"
   },
   "eslintConfig": {
     "extends": "react-app"
