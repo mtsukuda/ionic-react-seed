@@ -3,6 +3,7 @@ const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('../gulplib/gulpfs');
 const gulpconst = require('../gulplib/gulpconst');
+const pullEndPoint = require('../gulpcmd/cmd-pull-endpoint');
 const USER_PAGE_JSON = '../seed/user-pages';
 const USER_COMPONENT_JSON = '../seed/user-components';
 
@@ -11,6 +12,10 @@ const USER_COMPONENT_JSON = '../seed/user-components';
  */
 gulp.task('api-update', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' api-update ') + ' 🚀🚀🚀 ');
+  let projectPath = _frontApiProjectPath();
+  if (projectPath === false) {
+    throw new Error("Could not find API project file.");
+  }
   let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
   let fetchData = [];
   if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
@@ -36,6 +41,18 @@ gulp.task('default',
     done();
   })
 );
+
+let _frontApiProjectPath = function () {
+  let frontApiConfigJsonPath = `../${pullEndPoint.frontApiConfigJsonPath()}`;
+  if(gulpfs.fileExists(frontApiConfigJsonPath) === false) {
+    return false;
+  }
+  let frontApiConfigJson = JSON.parse(gulpfs.readWholeFile(frontApiConfigJsonPath));
+  if (!frontApiConfigJson) {
+    return false;
+  }
+  return frontApiConfigJson.FrontApiProjectPath;
+}
 
 let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
