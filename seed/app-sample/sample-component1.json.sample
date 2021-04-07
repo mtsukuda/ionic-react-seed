@@ -73,10 +73,24 @@
       "apis": [
         {
           "uri": "https://sls-front-api.io/",
-          "responseTypeName": "slsFrontApi",
+          "responseTypeName": "slsFrontApiHello",
           "responseType": "res1: string, res2: string",
           "config": {
             "path": "hello"
+          }
+        },
+        {
+          "uri": "https://sls-front-api.io/",
+          "responseTypeName": "slsFrontApiEcho",
+          "responseType": "message: string",
+          "config": {
+            "path": "echo",
+            "schema": {
+              "properties": {
+                "name": { "type": "string" }
+              },
+              "required": ["name"]
+            }
           }
         }
       ]
