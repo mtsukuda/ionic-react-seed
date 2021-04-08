@@ -47,7 +47,7 @@
   "lifeCycleMethods": [
     {
       "methodName": "componentDidMount",
-      "code": "this.fetchAll();this.fetchOther();"
+      "code": "this.fetchAll();this.fetchGet();this.fetchPost({'name': 'hoge'});"
     }
   ],
   "fetch": [
@@ -69,7 +69,7 @@
     },
     {
       "method": "get",
-      "name": "fetchOther",
+      "name": "fetchGet",
       "apis": [
         {
           "uri": "https://sls-front-api.io/",
@@ -78,9 +78,21 @@
           "config": {
             "path": "hello"
           }
-        },
+        }
+      ]
+    },
+    {
+      "method": "post",
+      "name": "fetchPost",
+      "apis": [
         {
           "uri": "https://sls-front-api.io/",
+          "args": [
+            "postData: slsFrontApiEchoPost"
+          ],
+          "postTypeName": "slsFrontApiEchoPost",
+          "postType": "name: string",
+          "postBody": "postData",
           "responseTypeName": "slsFrontApiEcho",
           "responseType": "message: string",
           "config": {
