@@ -600,6 +600,8 @@ let _componentFetchPost = function (componentName, fetch) {
   let fetchApi = '';
   let postType = '';
   _.forEach(fetch.apis, (api) => {
+    if (!api.postTypeName) throw new Error(`Could not find fetch -> apis[] -> postTypeName@${fetch.name}.`);
+    if (!api.postType) throw new Error(`Could not find fetch -> apis[] -> postType@${fetch.name}.`);
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.uri}'${(api.init?', '+api.init:'')}, ${_componentFetchPostBody(api)})`;
