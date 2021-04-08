@@ -71,10 +71,10 @@
       "apis": [
         {
           "uri": "https://api.mocklets.com/mock68049/update1",
-          "args": ["message: string", "something: string"],
+          "args": ["message: bodyPostMessage"],
           "postTypeName": "bodyPostMessage",
           "postType": "msg: string",
-          "postBody": ["msg: message"],
+          "postBody": "message",
           "responseTypeName": "resultPostMessage",
           "responseType": "result: string"
         }
@@ -183,8 +183,7 @@
                             "eventName": "onclick",
                             "call": "postMessage",
                             "args": [
-                              "'HOGE'",
-                              "'PIYO'"
+                              "{ msg: \"HOGE\"}"
                             ]
                           }
                         ],
