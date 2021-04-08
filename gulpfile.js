@@ -602,9 +602,10 @@ let _componentFetchPost = function (componentName, fetch) {
   _.forEach(fetch.apis, (api) => {
     if (!api.postTypeName) throw new Error(`Could not find fetch -> apis[] -> postTypeName@${fetch.name}.`);
     if (!api.postType) throw new Error(`Could not find fetch -> apis[] -> postType@${fetch.name}.`);
+    if (!api.postBody) throw new Error(`Could not find fetch -> apis[] -> postBody@${fetch.name}.`);
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
     type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
-    fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.uri}'${(api.init?', '+api.init:'')}, ${_componentFetchPostBody(api)})`;
+    fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.uri}'${(api.init?', '+api.init:'')}, ${api.postBody})`;
     postType += (postType?'|': '') + api.postTypeName;
   });
   _componentFetchAppendTemp(componentName, type, fetch);
@@ -627,15 +628,6 @@ let _componentFetchDataReplacement = function (templateFetchDataFilePath, fetchA
   fetchDataBuffer = _replaceTag('CODE_FIRST', (fetch.codeFirst ? fetch.codeFirst : ''), fetchDataBuffer);
   fetchDataBuffer = _replaceTag('CODE_LAST', (fetch.codeLast ? fetch.codeLast : ''), fetchDataBuffer);
   return fetchDataBuffer;
-}
-
-let _componentFetchPostBody = function (api) {
-  if (api.postBody === undefined) return '';
-  let result = '';
-  _.forEach(api.postBody, (postBody) => {
-    result += (result ? ',': '') + postBody;
-  });
-  return `{${result}}`;
 }
 
 let _componentFetchStateInterface = function (fetch) {
