@@ -57,7 +57,7 @@ Ionic React seed project.
 
 #### Create Front API
 
-`npm run create-front-api`
+`npm run create-front-api-init`
 
 #### Then Build and Deploy Sample Apps!!
 
