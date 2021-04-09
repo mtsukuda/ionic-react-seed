@@ -2,8 +2,6 @@ const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('../gulplib/gulpfs');
 const PACKAGE_JSON = 'package.json';
-const SERVERLESS_TS = 'serverless.ts';
-const DEFAULT_SERVICE_NAME = "'sls-front-api-seed'";
 
 /**
  * Rename the API project
