@@ -32,6 +32,7 @@
     "build": "react-scripts build",
     "deploy": "firebase deploy",
     "buildndeploy": "npm run gulp && react-scripts build && npm run deploy",
+    "create-front-api": "npm run configre-front-api && npm run create-front-api-functions && gulp -f gulpsh/sh-frontapi-deploy.js",
     "gulp": "gulp && npm run src",
     "src": "prettier --write src/App.tsx && prettier --write src/components/** && prettier --write src/user-components/*.tsx && prettier --write src/user-pages/*.tsx",
     "pull-endpoint": "gulp -f gulpcmd/cmd-pull-endpoint.js",
@@ -39,7 +40,7 @@
     "eject": "react-scripts eject",
     "firebase-json-overwrite": "gulp -f gulpcmd/cmd-overwrite-fireabase-json.js",
     "create-sample": "gulp -f gulpcmd/cmd-file-create-sample.js",
-    "create-front-api": "gulp -f gulpcmd/cmd-rename-package-name.js && gulp -f gulpsh/sh-frontapi-git-clone.js && gulp -f gulpcmd/cmd-rename-api-project.js && gulp -f gulpsh/sh-frontapi-yarn.js && gulp -f gulpsh/sh-frontapi-deploy.js && gulp -f gulpcmd/cmd-pull-endpoint.js",
+    "create-front-api-init": "gulp -f gulpcmd/cmd-rename-package-name.js && gulp -f gulpsh/sh-frontapi-git-clone.js && gulp -f gulpcmd/cmd-rename-api-project.js && gulp -f gulpsh/sh-frontapi-yarn.js && npm run configre-front-api && npm run create-front-api-functions && gulp -f gulpsh/sh-frontapi-deploy.js && gulp -f gulpcmd/cmd-pull-endpoint.js",
     "configre-front-api": "gulp -f gulpcmd/cmd-api-update.js",
     "create-front-api-functions": "gulp -f gulpsh/sh-frontapi-yarn-run-create-functions.js"
   },
