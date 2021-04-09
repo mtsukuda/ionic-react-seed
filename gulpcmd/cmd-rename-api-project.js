@@ -13,19 +13,12 @@ gulp.task('rename-api-project', async function (done){
   let packageJSON = gulpfs.JSONdata(`../${PACKAGE_JSON}`, false);
   let newProjectName = `${packageJSON.name}-api`;
   let newProjectPackageJSONPath = `../../${newProjectName}/${PACKAGE_JSON}`;
-  let serverlessTsPath = `../../${newProjectName}/${SERVERLESS_TS}`
   if(gulpfs.fileExists(newProjectPackageJSONPath) === false) {
     throw new Error(`Could not find project or package.json file. -> ${newProjectName}`);
-  }
-  if(gulpfs.fileExists(serverlessTsPath) === false) {
-    throw new Error(`Could not find ${SERVERLESS_TS}. -> ${serverlessTsPath}`);
   }
   let newProjectPackageJSON = gulpfs.JSONdata(newProjectPackageJSONPath, false);
   newProjectPackageJSON.name = newProjectName;
   gulpfs.writeDistFile(newProjectPackageJSONPath, JSON.stringify(newProjectPackageJSON, null, 2));
-  let appTsFileBuffer = gulpfs.readWholeFile(serverlessTsPath);
-  appTsFileBuffer = _replaceString(DEFAULT_SERVICE_NAME, `'${newProjectName}'`, appTsFileBuffer);
-  gulpfs.writeDistFile(serverlessTsPath, appTsFileBuffer);
   done();
 });
 
