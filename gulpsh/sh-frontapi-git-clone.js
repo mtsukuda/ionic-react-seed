@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const chalk = require('chalk');
 const exec = require("exec-sh").promise;
 const gulpfs = require('../gulplib/gulpfs');
+const pullEndPoint = require('../gulpcmd/cmd-pull-endpoint');
 
 /**
  * Front Api Seed git clone
@@ -25,6 +26,7 @@ gulp.task('git-clone', async function (done){
     return e;
   }
   console.log(out);
+  pullEndPoint.createDefaultFrontApiConfigJson();
   done();
 });
 
