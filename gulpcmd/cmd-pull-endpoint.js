@@ -9,11 +9,7 @@ const SLS_STACK_JSON_PATH = '.serverless/stack.json';
  */
 gulp.task('pull-endpoint', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' pull-endpoint ') + ' 🚀🚀🚀 ');
-  let dirArray = __dirname.split('/');
-  dirArray.pop();
-  let defaultApiPath = dirArray.join('/') + '-api';
-  console.log(defaultApiPath);
-  _checkFrontApiConfigPath(defaultApiPath);
+  _checkFrontApiConfigPath();
   done();
 });
 
@@ -28,9 +24,9 @@ gulp.task('default',
   })
 );
 
-let _checkFrontApiConfigPath = function (defaultApiPath) {
+let _checkFrontApiConfigPath = function () {
   if(gulpfs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
-    module.exports.createDefaultFrontApiConfigJson(defaultApiPath);
+    module.exports.createDefaultFrontApiConfigJson();
   }
   let frontApiConfig = JSON.parse(gulpfs.readWholeFile(FRONT_API_CONFIG_JSON_PATH));
   if (frontApiConfig.FrontApiProjectPath) {
@@ -48,9 +44,17 @@ let _checkFrontApiConfigPath = function (defaultApiPath) {
   }
 };
 
-module.exports.createDefaultFrontApiConfigJson = (defaultFrontApiPath) => {
+let createDefaultFrontApiPath = () => {
+  let dirArray = __dirname.split('/');
+  dirArray.pop();
+  let defaultFrontApiPath = dirArray.join('/') + '-api';
+  console.log(`default front API: ${defaultFrontApiPath}`);
+  return defaultFrontApiPath;
+};
+
+module.exports.createDefaultFrontApiConfigJson = () => {
   if(gulpfs.fileExists(FRONT_API_CONFIG_JSON_PATH)) throw new Error(`Front API config is exist! ${FRONT_API_CONFIG_JSON_PATH}`);
-  let frontApiConfig = { FrontApiProjectPath: defaultFrontApiPath, FrontApiEndPoint: ""};
+  let frontApiConfig = { FrontApiProjectPath: createDefaultFrontApiPath(), FrontApiEndPoint: ""};
   gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(frontApiConfig, null, 2));
 };
 
