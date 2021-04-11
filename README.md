@@ -1,13 +1,19 @@
 # ionic-react-seed
 
-Ionic React seed project.
+Ionic React seed project with front API project.
 
 ## Requirement Cloud Account
 
 - AWS (Cognito)
 - Firebase
 
-## Prerequisites
+## Build and Deploy Example Project 
+
+https://docs.amplify.aws/cli
+
+### Install firebase cli
+
+https://firebase.google.com/docs/cli
 
 ### Clone this repository
 
