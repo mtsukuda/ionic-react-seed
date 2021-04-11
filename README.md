@@ -21,7 +21,7 @@ Ionic React seed project.
 
 `npm install -g @aws-amplify/cli`
 
-#### Enter the ionic-react-seed directory, and run npm install
+#### Enter your cloned project directory, and run npm install
 
 `npm install`
 
