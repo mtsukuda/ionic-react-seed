@@ -60,7 +60,11 @@
           "responseTypeName": "slsFrontApiTitle",
           "responseType": "title: string, subTitle: string",
           "config": {
-            "path": "title"
+            "path": "title",
+            "mock": {
+              "title": "Sample Card Title",
+              "subTitle": "Sample Card Subtitle"
+            }
           }
         },
         {
