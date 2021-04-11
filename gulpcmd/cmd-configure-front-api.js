@@ -9,10 +9,10 @@ const USER_COMPONENT_JSON = '../seed/user-components';
 const FRONT_API_FUNCTIONS_CONFIG = 'seed/functions/config.json';
 
 /**
- * API update
+ * Configure Front API
  */
-gulp.task('api-update', function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' api-update ') + ' 🚀🚀🚀 ');
+gulp.task('configure-front-api', function (done){
+  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' configure-front-api ') + ' 🚀🚀🚀 ');
   let projectPath = _frontApiProjectPath();
   if (projectPath === false) {
     throw new Error("Could not find API project file.");
@@ -39,7 +39,7 @@ gulp.task('api-update', function (done){
  */
 gulp.task('default',
   gulp.series(gulp.parallel(
-    'api-update',
+    'configure-front-api',
   ), function (done) {
     done();
   })

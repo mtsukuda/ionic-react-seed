@@ -41,7 +41,7 @@
     "firebase-json-overwrite": "gulp -f gulpcmd/cmd-overwrite-fireabase-json.js",
     "create-sample": "gulp -f gulpcmd/cmd-file-create-sample.js",
     "create-front-api-init": "gulp -f gulpcmd/cmd-rename-package-name.js && gulp -f gulpsh/sh-frontapi-git-clone.js && gulp -f gulpcmd/cmd-rename-api-project.js && gulp -f gulpsh/sh-frontapi-yarn.js && npm run configre-front-api && npm run create-front-api-functions && gulp -f gulpsh/sh-frontapi-deploy.js && gulp -f gulpcmd/cmd-pull-endpoint.js",
-    "configre-front-api": "gulp -f gulpcmd/cmd-api-update.js",
+    "configre-front-api": "gulp -f gulpcmd/cmd-configure-front-api.js",
     "create-front-api-functions": "gulp -f gulpsh/sh-frontapi-yarn-run-create-functions.js"
   },
   "eslintConfig": {
