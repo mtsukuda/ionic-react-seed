@@ -89,6 +89,7 @@ https://firebase.google.com/docs/cli
         * properties [] `property for post body -> post format required`
           * key `key of property`
           * require `yes`
+        * mock `mock json code`
       * args [] `fetch method arguments`
       * uri `uri of api`
       * postTypeName `post format only: name of post type`
