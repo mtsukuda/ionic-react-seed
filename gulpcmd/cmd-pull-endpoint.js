@@ -29,11 +29,10 @@ gulp.task('default',
 );
 
 let _checkFrontApiConfigPath = function (defaultApiPath) {
-  let frontApiConfig = { FrontApiProjectPath: defaultApiPath, FrontApiEndPoint: ""};
   if(gulpfs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
-    gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(frontApiConfig, null, 2));
+    module.exports.createDefaultFrontApiConfigJson(defaultApiPath);
   }
-  frontApiConfig = JSON.parse(gulpfs.readWholeFile(FRONT_API_CONFIG_JSON_PATH));
+  let frontApiConfig = JSON.parse(gulpfs.readWholeFile(FRONT_API_CONFIG_JSON_PATH));
   if (frontApiConfig.FrontApiProjectPath) {
     if (gulpfs.fileExists(`${frontApiConfig.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`) === false) {
       throw new Error(`Could not find SLS stack -> ${frontApiConfig.FrontApiProjectPath}/${SLS_STACK_JSON_PATH}`);
@@ -49,6 +48,12 @@ let _checkFrontApiConfigPath = function (defaultApiPath) {
   }
 };
 
-exports.frontApiConfigJsonPath = () => {
+module.exports.createDefaultFrontApiConfigJson = (defaultFrontApiPath) => {
+  if(gulpfs.fileExists(FRONT_API_CONFIG_JSON_PATH)) throw new Error(`Front API config is exist! ${FRONT_API_CONFIG_JSON_PATH}`);
+  let frontApiConfig = { FrontApiProjectPath: defaultFrontApiPath, FrontApiEndPoint: ""};
+  gulpfs.writeDistFile(FRONT_API_CONFIG_JSON_PATH, JSON.stringify(frontApiConfig, null, 2));
+};
+
+module.exports.frontApiConfigJsonPath = () => {
   return FRONT_API_CONFIG_JSON_PATH.replace('../', '');
-}
+};
