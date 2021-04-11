@@ -47,18 +47,21 @@
   "lifeCycleMethods": [
     {
       "methodName": "componentDidMount",
-      "code": "this.fetchAll();this.fetchGet();this.fetchPost({'name': 'hoge'});"
+      "code": "this.fetchPage();this.fetchGet();this.fetchPost({'name': 'hoge'});"
     }
   ],
   "fetch": [
     {
       "method": "get",
-      "name": "fetchAll",
+      "name": "fetchPage",
       "apis": [
         {
-          "uri": "https://api.mocklets.com/mock68049/files",
-          "responseTypeName": "files",
-          "responseType": "files: Array<{link: string,name: string,size: string,}>"
+          "uri": "https://sls-front-api.io/",
+          "responseTypeName": "slsFrontApiTitle",
+          "responseType": "title: string, subTitle: string",
+          "config": {
+            "path": "title"
+          }
         },
         {
           "uri": "https://api.github.com/search/users?q=edeng23",
