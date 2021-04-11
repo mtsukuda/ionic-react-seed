@@ -5,7 +5,7 @@ const FRONT_API_CONFIG_JSON_PATH = '../seed/app/front-api-config.json';
 const SLS_STACK_JSON_PATH = '.serverless/stack.json';
 
 /**
- * Pull API Endpoint
+ * Pull Front API Endpoint
  */
 gulp.task('pull-endpoint', function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' pull-endpoint ') + ' 🚀🚀🚀 ');
