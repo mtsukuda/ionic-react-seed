@@ -76,6 +76,9 @@ let _createApiData = function (fetchData, functionJSON) {
       if (gulpconst.slsFrontApiUri() === api.uri) {
         if (api.config.path === undefined) throw new Error("Could not find 'api.config.path'!");
         let functionConfig = { method: fetch.method, path: api.config.path };
+        if (api.config.mock) {
+          functionConfig['mock'] = api.config.mock;
+        }
         if (api.config.schema) {
           functionConfig['schema'] = api.config.schema;
         }
