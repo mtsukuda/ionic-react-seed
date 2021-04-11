@@ -30,10 +30,3 @@ gulp.task('default',
     done();
   })
 );
-
-let _replaceString = function (targetString, replacedString, buffer) {
-  targetString = new RegExp(targetString,'g');
-  console.log('REPLACE: ' + targetString + ' ==> ' + replacedString);
-  return buffer.replace(targetString, replacedString);
-};
-
