@@ -95,8 +95,9 @@ https://firebase.google.com/docs/cli
       * postTypeName `post format only: name of post type`
       * postType `post format only: type of post`
       * postBody `post format only: body of post data`
+      * responseTypeStrict `true / false`
       * responseTypeName `name of response type`
-      * responseType `type of response`
+      * responseType `type of response: responseTypeStrict = true -> json, responseTypeStrict = false -> strings`
   * renderBeforeReturn []
   * defaultProps []
     * name
