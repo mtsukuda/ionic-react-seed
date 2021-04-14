@@ -55,7 +55,7 @@ let _frontApiProjectPath = function () {
     return false;
   }
   return frontApiConfigJson.FrontApiProjectPath;
-}
+};
 
 let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
@@ -68,7 +68,7 @@ let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
       }
     });
   });
-}
+};
 
 let _createApiData = function (fetchData, functionJSON) {
   _.forEach(fetchData, (fetch) => {
@@ -88,4 +88,4 @@ let _createApiData = function (fetchData, functionJSON) {
       }
     });
   });
-}
+};
