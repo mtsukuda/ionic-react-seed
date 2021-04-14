@@ -586,7 +586,7 @@ let _componentFetchGet = function (componentName, fetch) {
   let type = '';
   let fetchApi = '';
   _.forEach(fetch.apis, (api) => {
-    type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
+    type += (type?'\n': '') + `type ${api.responseTypeName} = ${_responseType(api)};`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.get<${api.responseTypeName}>('${api.uri}'${(api.init?', '+api.init:'')})`;
   });
   _componentFetchAppendTemp(componentName, type, fetch);
@@ -604,12 +604,21 @@ let _componentFetchPost = function (componentName, fetch) {
     if (!api.postType) throw new Error(`Could not find fetch -> apis[] -> postType@${fetch.name}.`);
     if (!api.postBody) throw new Error(`Could not find fetch -> apis[] -> postBody@${fetch.name}.`);
     type += (type?'\n': '') + `type ${api.postTypeName} = {${api.postType}};`;
-    type += (type?'\n': '') + `type ${api.responseTypeName} = {${api.responseType}};`;
+    type += (type?'\n': '') + `type ${api.responseTypeName} = ${_responseType(api)};`;
     fetchApi += (fetchApi?', ': '') + `() => fetch.post<${api.postTypeName}, ${api.responseTypeName}>('${api.uri}'${(api.init?', '+api.init:'')}, ${api.postBody})`;
     postType += (postType?'|': '') + api.postTypeName;
   });
   _componentFetchAppendTemp(componentName, type, fetch);
   return _componentFetchDataReplacement(templateFetchDataFilePath, fetchApi, fetch);
+}
+
+let _responseType = function (api) {
+  let functionName = '_responseType()';
+  if (api.responseTypeStrict && api.responseTypeStrict === true)
+  {
+    return JSON.stringify(api.responseType);
+  }
+  return `{${api.responseType}}`;
 }
 
 let _componentFetchAppendTemp = function (componentName, type, fetch) {
