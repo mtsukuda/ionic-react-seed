@@ -35,6 +35,23 @@ gulp.task('configure-front-api', function (done){
 });
 
 /**
+ * Verify Front API Response Type
+ */
+gulp.task('verify-front-api-response-type', function (done){
+  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' verify-front-api-response-type ') + ' 🚀🚀🚀 ');
+  let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
+  let fetchData = [];
+  if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
+    _extractFetchData(userPagesJSONFilePaths, fetchData);
+  }
+  let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
+  if (userComponentsJSONFilePaths !== null && userComponentsJSONFilePaths.length > 0) {
+    _extractFetchData(userComponentsJSONFilePaths, fetchData);
+  }
+  _compareResponseType(fetchData);
+  done();
+});
+/**
  * gulp default task
  */
 gulp.task('default',
@@ -88,4 +105,35 @@ let _createApiData = function (fetchData, functionJSON) {
       }
     });
   });
+};
+
+let _compareResponseType = function (fetchData) {
+  _.forEach(fetchData, (fetch) => {
+    _.forEach(fetch.apis, (api) => {
+      if (!api.responseTypeStrict) return;
+      if (api.responseTypeStrict === false) return;
+      if (!api.config || !api.config.mock) return;
+      let responseType = api.responseType;
+      let mockData = api.config.mock;
+      let flatArrayResponseType = [];
+      let flatArrayMockData = [];
+      _extractArrayKeys(responseType, flatArrayResponseType);
+      _extractArrayKeys(mockData, flatArrayMockData);
+      flatArrayResponseType.sort();
+      flatArrayMockData.sort();
+      if (_.isEqual(flatArrayResponseType, flatArrayMockData) === false) {
+        throw new Error(`Could not mach between response type and mock data: ${api.responseTypeName}`);
+      }
+    });
+  });
+  return true;
+};
+
+let _extractArrayKeys = function (responseType, flatArray, parentKey='') {
+  _.forEach(responseType, (value, key) => {
+    if (_.isObject(value)) {
+      _extractArrayKeys(value, flatArray, (parentKey?`${parentKey}-`:'') + key);
+    }
+    flatArray.push((parentKey ? `${parentKey}-` : '') + key);
+  })
 };
