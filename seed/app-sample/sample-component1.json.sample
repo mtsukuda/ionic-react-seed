@@ -85,9 +85,17 @@
         {
           "uri": "https://sls-front-api.io/",
           "responseTypeName": "slsFrontApiHello",
-          "responseType": "res1: string, res2: string",
+          "responseTypeStrict": true,
+          "responseType": {
+            "res1": "string",
+            "res2": "string"
+          },
           "config": {
-            "path": "hello"
+            "path": "hello",
+            "mock": {
+              "res1": "Hello my darling❤️",
+              "res2": "How is going?"
+            }
           }
         }
       ]
