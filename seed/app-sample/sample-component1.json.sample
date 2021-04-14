@@ -58,7 +58,11 @@
         {
           "uri": "https://sls-front-api.io/",
           "responseTypeName": "slsFrontApiTitle",
-          "responseType": "title: string, subTitle: string",
+          "responseTypeStrict": true,
+          "responseType": {
+            "title": "string",
+            "subTitle": "string"
+          },
           "config": {
             "path": "title",
             "mock": {
