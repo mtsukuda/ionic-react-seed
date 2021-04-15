@@ -57,17 +57,21 @@
       "apis": [
         {
           "uri": "https://sls-front-api.io/",
-          "responseTypeName": "slsFrontApiTitle",
+          "responseTypeName": "slsFrontApiPage",
           "responseTypeStrict": true,
           "responseType": {
-            "title": "string",
-            "subTitle": "string"
+            "title1": "string",
+            "subTitle1": "string",
+            "title2": "string",
+            "subTitle2": "string"
           },
           "config": {
-            "path": "title",
+            "path": "samplePage1",
             "mock": {
-              "title": "Sample Card Title",
-              "subTitle": "Sample Card Subtitle"
+              "title1": "Sample Card Title",
+              "subTitle1": "Sample Card Subtitle",
+              "title2": "Sample Card Title 2",
+              "subTitle2": "Sample Card Subtitle 2"
             }
           }
         },
@@ -146,13 +150,13 @@
                         "tag": "IonCardTitle",
                         "noCR": "yes",
                         "props": [],
-                        "content": "Sample Card Title"
+                        "content": "{!(this.state.slsFrontApiPage.isLoading) ? this.state.slsFrontApiPage.data.title1:''}"
                       },
                       {
                         "tag": "IonCardSubtitle",
                         "noCR": "yes",
                         "props": [],
-                        "content": "Sample Card Subtitle"
+                        "content": "{!(this.state.slsFrontApiPage.isLoading) ? this.state.slsFrontApiPage.data.subTitle1:''}"
                       }
                     ]
                   }
@@ -179,13 +183,13 @@
                         "tag": "IonCardTitle",
                         "noCR": "yes",
                         "props": [],
-                        "content": "Sample Card Title"
+                        "content": "{!(this.state.slsFrontApiPage.isLoading) ? this.state.slsFrontApiPage.data.title2:''}"
                       },
                       {
                         "tag": "IonCardSubtitle",
                         "noCR": "yes",
                         "props": [],
-                        "content": "Sample Card Subtitle"
+                        "content": "{!(this.state.slsFrontApiPage.isLoading) ? this.state.slsFrontApiPage.data.subTitle2:''}"
                       }
                     ]
                   }
