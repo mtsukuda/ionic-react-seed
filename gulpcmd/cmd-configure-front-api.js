@@ -3,6 +3,7 @@ const gulp = require('gulp');
 const chalk = require('chalk');
 const gulpfs = require('../gulplib/gulpfs');
 const gulpconst = require('../gulplib/gulpconst');
+const gulplog = require('../gulplib/gulplog');
 const pullEndPoint = require('../gulpcmd/cmd-pull-endpoint');
 const USER_PAGE_JSON = '../seed/user-pages';
 const USER_COMPONENT_JSON = '../seed/user-components';
@@ -28,7 +29,7 @@ gulp.task('configure-front-api', function (done){
   }
   let functionJSON = { functions: [] };
   _createApiData(fetchData, functionJSON);
-  console.log(functionJSON);
+  _configureLog(functionJSON);
   let frontApiFunctionsPath = `${projectPath}/${FRONT_API_FUNCTIONS_CONFIG}`;
   gulpfs.writeDistFile(frontApiFunctionsPath, JSON.stringify(functionJSON, null, 2));
   done();
@@ -99,8 +100,6 @@ let _createApiData = function (fetchData, functionJSON) {
         if (api.config.schema) {
           functionConfig['schema'] = api.config.schema;
         }
-        console.log(fetch.method);
-        console.log(api.config)
         functionJSON.functions.push(functionConfig);
       }
     });
@@ -137,4 +136,15 @@ let _extractArrayKeys = function (responseType, flatArray, parentKey='') {
     }
     flatArray.push((parentKey ? `${parentKey}-` : '') + key);
   })
+};
+
+let _configureLog = function (functionJSON) {
+  console.log(chalk.green(`functions: `));
+  functionJSON.functions.forEach((func) => {
+    let log = `${gulplog.logKeyVal('path', func.path)} `
+            + `${gulplog.logKeyVal('method', func.method)} `
+            + `${gulplog.logKeyValYesNo('mock', func.mock)} `
+            + `${gulplog.logKeyValYesNo('schema', func.schema)} `;
+    console.log('  ' + log);
+  });
 };
