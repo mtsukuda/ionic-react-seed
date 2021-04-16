@@ -52,6 +52,7 @@ gulp.task('verify-front-api-response-type', function (done){
   _compareResponseType(fetchData);
   done();
 });
+
 /**
  * gulp default task
  */
