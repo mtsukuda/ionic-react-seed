@@ -124,7 +124,7 @@ let _compareResponseType = function (fetchData) {
       if (_.isEqual(flatArrayResponseType, flatArrayMockData) === false) {
         throw new Error(`Could not mach between response type and mock data: ${api.responseTypeName}`);
       }
-      console.log(chalk.greenBright(`✓ ${api.responseTypeName}`))
+      console.log(chalk.greenBright(`✓ `) + `${api.responseTypeName}`);
     });
   });
   return true;
