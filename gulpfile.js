@@ -3,7 +3,7 @@ const chalk = require("chalk");
 const gulp = require("gulp");
 const FS = require("fs");
 const path = require("path");
-const gulpfs = require("./gulplib/gulpfs");
+const gulpFs = require("./gulplib/gulpfs");
 const gulpconst = require("./gulplib/gulpconst");
 const gulpHeadLine = require("./gulplib/gulpheadline");
 const pullEndPoint = require("./gulpcmd/cmd-pull-endpoint");
@@ -36,9 +36,9 @@ const TEMP_EXT_TYPE = "type";
  */
 gulp.task("create-user-components", function (done) {
   gulpHeadLine.taskNameWrite("create-user-components");
-  gulpfs.cleanDirectories(TEMP_DIR);
-  gulpfs.cleanDirectories(USER_COMPONENT_DIST);
-  let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
+  gulpFs.cleanDirectories(TEMP_DIR);
+  gulpFs.cleanDirectories(USER_COMPONENT_DIST);
+  let userComponentsJSONFilePaths = gulpFs.jsonFilePaths(USER_COMPONENT_JSON);
   console.log(userComponentsJSONFilePaths);
   if (
     userComponentsJSONFilePaths === null ||
@@ -65,8 +65,8 @@ gulp.task("create-user-components", function (done) {
  */
 gulp.task("create-user-pages", function (done) {
   gulpHeadLine.taskNameWrite("create-user-pages");
-  gulpfs.cleanDirectories(USER_PAGE_DIST);
-  let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
+  gulpFs.cleanDirectories(USER_PAGE_DIST);
+  let userPagesJSONFilePaths = gulpFs.jsonFilePaths(USER_PAGE_JSON);
   console.log(userPagesJSONFilePaths);
   if (userPagesJSONFilePaths === null || userPagesJSONFilePaths.length === 0) {
     console.log(chalk.black.bgGreen("  There is no user pages...  "));
@@ -95,7 +95,7 @@ gulp.task("create-app", function (done) {
     done(`Could not find ${MENU_CONFIG_JSON}.`);
     return;
   }
-  let menuConfigJSON = gulpfs.JSONdata(MENU_CONFIG_JSON, DEBUG);
+  let menuConfigJSON = gulpFs.JSONdata(MENU_CONFIG_JSON, DEBUG);
   let routeInfo = [];
   let redirect = "";
   _.forEach(menuConfigJSON.menu, (menu) => {
@@ -111,7 +111,7 @@ gulp.task("create-app", function (done) {
     redirect = routeInfo[0].url;
   }
   if (DEBUG) console.log(routeInfo);
-  let appTemplateFileBuffer = gulpfs.readWholeFile(APP_TEMPLATE_PATH);
+  let appTemplateFileBuffer = gulpFs.readWholeFile(APP_TEMPLATE_PATH);
   let importPages = _importPages(routeInfo);
   appTemplateFileBuffer = _replaceTag(
     "IMPORT_PAGES",
@@ -124,7 +124,7 @@ gulp.task("create-app", function (done) {
     routeTags,
     appTemplateFileBuffer
   );
-  gulpfs.writeDistFile(`${APP_DIST}${target}.tsx`, appTemplateFileBuffer);
+  gulpFs.writeDistFile(`${APP_DIST}${target}.tsx`, appTemplateFileBuffer);
   done();
 });
 
@@ -145,7 +145,7 @@ gulp.task("create-menu", function (done) {
     done();
     return;
   }
-  let menuConfigJSON = gulpfs.JSONdata(MENU_CONFIG_JSON, DEBUG);
+  let menuConfigJSON = gulpFs.JSONdata(MENU_CONFIG_JSON, DEBUG);
   let buildMenu = [];
   let menuIcons = [];
   _.forEach(menuConfigJSON.menu, (menu) => {
@@ -163,7 +163,7 @@ gulp.task("create-menu", function (done) {
       }
     });
   });
-  let menuTemplateFileBuffer = gulpfs.readWholeFile(MENU_TEMPLATE_PATH);
+  let menuTemplateFileBuffer = gulpFs.readWholeFile(MENU_TEMPLATE_PATH);
   let menuHeaderTitle =
     menuConfigJSON.header && menuConfigJSON.header.strTitle
       ? menuConfigJSON.header.strTitle
@@ -209,12 +209,12 @@ gulp.task("create-menu", function (done) {
     _tagToHtml(tags),
     menuTemplateFileBuffer
   );
-  gulpfs.writeDistFile(
+  gulpFs.writeDistFile(
     `${APP_COMPONENTS_DIST}${target}.tsx`,
     menuTemplateFileBuffer
   );
-  let menuCssFileBuffer = gulpfs.readWholeFile(`${APP_CSS_DIR}${target}.css`);
-  gulpfs.writeDistFile(
+  let menuCssFileBuffer = gulpFs.readWholeFile(`${APP_CSS_DIR}${target}.css`);
+  gulpFs.writeDistFile(
     `${APP_COMPONENTS_DIST}${target}.css`,
     menuCssFileBuffer
   );
@@ -245,7 +245,7 @@ let _componentName = function (component) {
 
 let _appendTemp = function (name, ext, buffer) {
   let tempStateFilePath = `${TEMP_DIR}/${name}.${ext}`;
-  gulpfs.appendDistFile(tempStateFilePath, buffer);
+  gulpFs.appendDistFile(tempStateFilePath, buffer);
 };
 
 let _readTemp = function (name, ext) {
@@ -253,7 +253,7 @@ let _readTemp = function (name, ext) {
   if (FS.existsSync(tempStateFilePath) === false) {
     return "";
   }
-  let tempBuffer = gulpfs.readWholeFile(tempStateFilePath);
+  let tempBuffer = gulpFs.readWholeFile(tempStateFilePath);
   return tempBuffer;
 };
 
@@ -264,7 +264,7 @@ let _componentBuild = function (
   buildComponents
 ) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
-    let componentConfigJSON = gulpfs.JSONdata(
+    let componentConfigJSON = gulpFs.JSONdata(
       componentConfigJSONFilePath,
       DEBUG
     );
@@ -323,11 +323,11 @@ let _replaceFrontApi = function (targetComponents) {
 };
 
 let _frontApiEndPointExist = function () {
-  if (gulpfs.fileExists(pullEndPoint.frontApiConfigJsonPath()) === false) {
+  if (gulpFs.fileExists(pullEndPoint.frontApiConfigJsonPath()) === false) {
     return false;
   }
   let frontApiConfigJson = JSON.parse(
-    gulpfs.readWholeFile(pullEndPoint.frontApiConfigJsonPath())
+    gulpFs.readWholeFile(pullEndPoint.frontApiConfigJsonPath())
   );
   if (!frontApiConfigJson.FrontApiEndPoint) {
     return false;
@@ -348,8 +348,8 @@ let _ownCss = function (cssSeedDirectory, cssDist, configCssName, name) {
 
 let _createOwnCss = function (ownCss) {
   if (ownCss === null) return;
-  let cssFileBuffer = gulpfs.readWholeFile(ownCss.seed);
-  gulpfs.writeDistFile(ownCss.dist, cssFileBuffer);
+  let cssFileBuffer = gulpFs.readWholeFile(ownCss.seed);
+  gulpFs.writeDistFile(ownCss.dist, cssFileBuffer);
 };
 
 let _htmlTagRecursive = function (sauceJSON, tags, closeTag, type) {
@@ -417,7 +417,7 @@ let _componentEvents = function (component) {
     if (FS.existsSync(templateEventFilePath) === false) {
       throw `Could not find ${templateEventFilePath} for ${event.eventName}`;
     }
-    let eventBuffer = gulpfs.readWholeFile(templateEventFilePath);
+    let eventBuffer = gulpFs.readWholeFile(templateEventFilePath);
     let eventCode = _componentEventCallFunction(event);
     eventBuffer = _replaceTag("EVENT_CODE", eventCode, eventBuffer);
     events += eventBuffer;
@@ -723,7 +723,7 @@ let _createComponentFile = function (
   componentDist,
   prefix = ""
 ) {
-  let orgFileBuffer = gulpfs.readWholeFile(templateFilePath);
+  let orgFileBuffer = gulpFs.readWholeFile(templateFilePath);
   targetComponents.forEach((componentSet) => {
     let componentFilePath = componentDist + "/" + componentSet.name + ".tsx";
     let fileBuffer = _replaceTag(
@@ -805,7 +805,7 @@ let _createComponentFile = function (
       fetchData ? "<{}, State>" : "",
       fileBuffer
     );
-    gulpfs.writeDistFile(_distFilePath(componentFilePath), fileBuffer);
+    gulpFs.writeDistFile(_distFilePath(componentFilePath), fileBuffer);
     _createOwnCss(componentSet.ownCss);
   });
 };
@@ -922,7 +922,7 @@ let _componentFetchDataReplacement = function (
   fetchApi,
   fetch
 ) {
-  let fetchDataBuffer = gulpfs.readWholeFile(templateFetchDataFilePath);
+  let fetchDataBuffer = gulpFs.readWholeFile(templateFetchDataFilePath);
   fetchDataBuffer = _replaceTag("METHOD_NAME", fetch.name, fetchDataBuffer);
   fetchDataBuffer = _replaceTag(
     "ARGS",
@@ -1073,14 +1073,14 @@ let _componentMethod = function (componentSet) {
   return result;
 };
 let _userFunction = function (template, componentMethod) {
-  let methodParams = gulpfs.readWholeFile(
+  let methodParams = gulpFs.readWholeFile(
     `${USER_COMPONENT_METHOD}/${template}.param`
   );
   console.log(`${USER_COMPONENT_METHOD}/${template}.param`);
   if (methodParams === null) {
     throw `Could not find method params file: ${template}`;
   }
-  let methodTemplate = gulpfs.readWholeFile(
+  let methodTemplate = gulpFs.readWholeFile(
     `${USER_COMPONENT_METHOD}/${template}.method.tpl`
   );
   if (methodTemplate === null) {
