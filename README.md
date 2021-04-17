@@ -92,6 +92,10 @@ https://firebase.google.com/docs/cli
         * mock `mock json code`
       * args [] `fetch method arguments`
       * uri `uri of api`
+      * queryStrings [] `query strings`
+        * parameter `parameter of query string`
+        * value `value of query string`
+        * type `fixed | args`
       * postTypeName `post format only: name of post type`
       * postType `post format only: type of post`
       * postBody `post format only: body of post data`
