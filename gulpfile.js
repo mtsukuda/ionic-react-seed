@@ -5,6 +5,7 @@ const FS = require("fs");
 const path = require("path");
 const gulpfs = require("./gulplib/gulpfs");
 const gulpconst = require("./gulplib/gulpconst");
+const gulpHeadLine = require("./gulplib/gulpheadline");
 const pullEndPoint = require("./gulpcmd/cmd-pull-endpoint");
 const DEBUG = false;
 const USER_COMMON_TEMPLATE = "seed/user-common-templates";
@@ -34,11 +35,7 @@ const TEMP_EXT_TYPE = "type";
  * Create User Components
  */
 gulp.task("create-user-components", function (done) {
-  console.log(
-    " 🚀🚀🚀 " +
-      chalk.black.bgCyanBright(" create-user-components ") +
-      " 🚀🚀🚀 "
-  );
+  gulpHeadLine.taskNameWrite("create-user-components");
   gulpfs.cleanDirectories(TEMP_DIR);
   gulpfs.cleanDirectories(USER_COMPONENT_DIST);
   let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
@@ -67,9 +64,7 @@ gulp.task("create-user-components", function (done) {
  * Create User Pages
  */
 gulp.task("create-user-pages", function (done) {
-  console.log(
-    " 🚀🚀🚀 " + chalk.black.bgCyanBright(" create-user-pages ") + " 🚀🚀🚀 "
-  );
+  gulpHeadLine.taskNameWrite("create-user-pages");
   gulpfs.cleanDirectories(USER_PAGE_DIST);
   let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
   console.log(userPagesJSONFilePaths);
@@ -94,9 +89,7 @@ gulp.task("create-user-pages", function (done) {
  * Create App
  */
 gulp.task("create-app", function (done) {
-  console.log(
-    " 🚀🚀🚀 " + chalk.black.bgCyanBright(" create-app ") + " 🚀🚀🚀 "
-  );
+  gulpHeadLine.taskNameWrite("create-app");
   const target = "App";
   if (FS.existsSync(MENU_CONFIG_JSON) === false) {
     done(`Could not find ${MENU_CONFIG_JSON}.`);
@@ -139,9 +132,7 @@ gulp.task("create-app", function (done) {
  * Create Menu
  */
 gulp.task("create-menu", function (done) {
-  console.log(
-    " 🚀🚀🚀 " + chalk.black.bgCyanBright(" create-menu ") + " 🚀🚀🚀 "
-  );
+  gulpHeadLine.taskNameWrite("create-menu");
   const target = "Menu";
   if (
     FS.existsSync(MENU_TEMPLATE_PATH) === false ||
