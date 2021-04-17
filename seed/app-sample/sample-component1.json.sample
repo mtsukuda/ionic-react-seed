@@ -44,9 +44,9 @@
       "props": []
     },
     {
-      "name": "Loader",
-      "from": "react-loader-spinner",
-      "type": "default",
+      "name": "Loading",
+      "from": "../components/loading",
+      "type": "package",
       "props": []
     }
   ],
@@ -138,7 +138,7 @@
     }
   ],
   "renderBeforeReturn": [
-    "if (this.state.slsFrontApiPage.isLoading) { return (<div style={{ marginTop: '130px', textAlign: 'center' }}><Loader type='Rings' color='#A9A9A9' height={60} width={60} /></div>);}"
+    "if (this.state.slsFrontApiPage.isLoading) { return (<Loading />); }"
   ],
   "tags": [
     {
