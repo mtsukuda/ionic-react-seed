@@ -4,7 +4,7 @@ const gulp = require("gulp");
 const FS = require("fs");
 const path = require("path");
 const gulpFs = require("./gulplib/gulpfs");
-const gulpconst = require("./gulplib/gulpconst");
+const gulpConst = require("./gulplib/gulpconst");
 const gulpHeadLine = require("./gulplib/gulpheadline");
 const pullEndPoint = require("./gulpcmd/cmd-pull-endpoint");
 const DEBUG = false;
@@ -301,14 +301,14 @@ let _replaceFrontApi = function (targetComponents) {
       fetch.apis.forEach((api) => {
         if (
           api.uri &&
-          api.uri === gulpconst.slsFrontApiUri() &&
+          api.uri === gulpConst.slsFrontApiUri() &&
           frontApiEndPoint === false
         ) {
           throw new Error(
             "Front API required! Should command: npm run create-front-api."
           );
         }
-        if (api.uri === gulpconst.slsFrontApiUri()) {
+        if (api.uri === gulpConst.slsFrontApiUri()) {
           if (api.config && api.config.path) {
             api.uri = `${frontApiEndPoint}/${api.config.path}`;
           } else {
