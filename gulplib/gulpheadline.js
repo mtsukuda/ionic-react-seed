@@ -1,6 +1,6 @@
 const chalk = require("chalk");
 
-module.exports.headLine = (gulpTaskName) => {
+module.exports.taskNameWrite = (gulpTaskName) => {
   console.log(
     " 🚀🚀🚀 " + chalk.black.bgCyanBright(` ${gulpTaskName} `) + " 🚀🚀🚀 "
   );
