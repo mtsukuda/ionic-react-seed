@@ -89,5 +89,5 @@ module.exports.mkDir = (dirPath) => {
 };
 
 module.exports.copyFile = (filePath, newFilePath) => {
-  gulpFs.copyFile(filePath, newFilePath);
+  FS.copyFileSync(filePath, newFilePath);
 };
