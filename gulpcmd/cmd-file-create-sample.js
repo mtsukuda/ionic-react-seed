@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const FS = require('fs');
+const gulpFs = require("../gulplib/gulpfs");
 const gulpHeadLine = require("./gulplib/gulpheadline");
 const MENU_SAMPLE_CONFIG_JSON = '../seed/app/menu.json.sample';
 const MENU_CONFIG_JSON = '../seed/app/menu.json';
@@ -15,7 +15,7 @@ const COMPONENT_SAMPLE_CONFIG_JSON_NAME = 'sample-component';
  */
 gulp.task('copy-menu', function (done){
   gulpHeadLine.taskNameWrite("copy-menu");
-  FS.copyFileSync(MENU_SAMPLE_CONFIG_JSON, MENU_CONFIG_JSON);
+  gulpFs.copyFile(MENU_SAMPLE_CONFIG_JSON, MENU_CONFIG_JSON);
   done();
 });
 
@@ -34,7 +34,7 @@ gulp.task('copy-sample-pages', function (done){
     }
   });
   samplePages.forEach((samplePage) => {
-    FS.copyFileSync(`${SAMPLE_CONFIG_JSON}/${samplePage}.${SAMPLE_CONFIG_EXT}`, `${PAGE_SAMPLE_CONFIG_JSON_DIST}/${samplePage}.json`);
+    gulpFs.copyFile(`${SAMPLE_CONFIG_JSON}/${samplePage}.${SAMPLE_CONFIG_EXT}`, `${PAGE_SAMPLE_CONFIG_JSON_DIST}/${samplePage}.json`);
   });
   done();
 });
@@ -55,7 +55,7 @@ gulp.task('copy-sample-components', function (done){
     }
   });
   sampleComponents.forEach((sampleComponent) => {
-    FS.copyFileSync(`${SAMPLE_CONFIG_JSON}/${sampleComponent}.${SAMPLE_CONFIG_EXT}`, `${COMPONENT_SAMPLE_CONFIG_JSON_DIST}/${sampleComponent}.json`);
+    gulpFs.copyFile(`${SAMPLE_CONFIG_JSON}/${sampleComponent}.${SAMPLE_CONFIG_EXT}`, `${COMPONENT_SAMPLE_CONFIG_JSON_DIST}/${sampleComponent}.json`);
   });
   done();
 });
