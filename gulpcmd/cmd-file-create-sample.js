@@ -1,6 +1,6 @@
 const gulp = require("gulp");
 const gulpFs = require("../gulplib/gulpfs");
-const gulpHeadLine = require("./gulplib/gulpheadline");
+const gulpHeadLine = require("../gulplib/gulpheadline");
 const MENU_SAMPLE_CONFIG_JSON = "../seed/app/menu.json.sample";
 const MENU_CONFIG_JSON = "../seed/app/menu.json";
 const SAMPLE_CONFIG_EXT = "json.sample";
@@ -30,7 +30,7 @@ gulp.task("copy-sample-pages", function (done) {
   ];
   samplePages.forEach((samplePage) => {
     if (
-      FS.existsSync(
+      gulpFs.fileExists(
         `${SAMPLE_CONFIG_JSON}/${samplePage}.${SAMPLE_CONFIG_EXT}`
       ) === false
     ) {
@@ -59,7 +59,7 @@ gulp.task("copy-sample-components", function (done) {
   ];
   sampleComponents.forEach((sampleComponent) => {
     if (
-      FS.existsSync(
+      gulpFs.fileExists(
         `${SAMPLE_CONFIG_JSON}/${sampleComponent}.${SAMPLE_CONFIG_EXT}`
       ) === false
     ) {
