@@ -1,9 +1,10 @@
 const _ = require('lodash');
 const gulp = require('gulp');
 const chalk = require('chalk');
-const gulpfs = require('../gulplib/gulpfs');
-const gulpconst = require('../gulplib/gulpconst');
-const gulplog = require('../gulplib/gulplog');
+const gulpFs = require('../gulplib/gulpfs');
+const gulpConst = require('../gulplib/gulpconst');
+const gulpLog = require('../gulplib/gulplog');
+const gulpHeadLine = require("./gulplib/gulpheadline");
 const pullEndPoint = require('../gulpcmd/cmd-pull-endpoint');
 const USER_PAGE_JSON = '../seed/user-pages';
 const USER_COMPONENT_JSON = '../seed/user-components';
@@ -13,17 +14,17 @@ const FRONT_API_FUNCTIONS_CONFIG = 'seed/functions/config.json';
  * Configure Front API
  */
 gulp.task('configure-front-api', function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' configure-front-api ') + ' 🚀🚀🚀 ');
+  gulpHeadLine.taskNameWrite("configure-front-api");
   let projectPath = _frontApiProjectPath();
   if (projectPath === false) {
     throw new Error("Could not find API project file.");
   }
-  let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
+  let userPagesJSONFilePaths = gulpFs.jsonFilePaths(USER_PAGE_JSON);
   let fetchData = [];
   if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
     _extractFetchData(userPagesJSONFilePaths, fetchData);
   }
-  let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
+  let userComponentsJSONFilePaths = gulpFs.jsonFilePaths(USER_COMPONENT_JSON);
   if (userComponentsJSONFilePaths !== null && userComponentsJSONFilePaths.length > 0) {
     _extractFetchData(userComponentsJSONFilePaths, fetchData);
   }
@@ -31,7 +32,7 @@ gulp.task('configure-front-api', function (done){
   _createApiData(fetchData, functionJSON);
   _configureLog(functionJSON);
   let frontApiFunctionsPath = `${projectPath}/${FRONT_API_FUNCTIONS_CONFIG}`;
-  gulpfs.writeDistFile(frontApiFunctionsPath, JSON.stringify(functionJSON, null, 2));
+  gulpFs.writeDistFile(frontApiFunctionsPath, JSON.stringify(functionJSON, null, 2));
   done();
 });
 
@@ -39,13 +40,13 @@ gulp.task('configure-front-api', function (done){
  * Verify Front API Response Type
  */
 gulp.task('verify-front-api-response-type', function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' verify-front-api-response-type ') + ' 🚀🚀🚀 ');
-  let userPagesJSONFilePaths = gulpfs.jsonFilePaths(USER_PAGE_JSON);
+  gulpHeadLine.taskNameWrite("verify-front-api-response-type");
+  let userPagesJSONFilePaths = gulpFs.jsonFilePaths(USER_PAGE_JSON);
   let fetchData = [];
   if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
     _extractFetchData(userPagesJSONFilePaths, fetchData);
   }
-  let userComponentsJSONFilePaths = gulpfs.jsonFilePaths(USER_COMPONENT_JSON);
+  let userComponentsJSONFilePaths = gulpFs.jsonFilePaths(USER_COMPONENT_JSON);
   if (userComponentsJSONFilePaths !== null && userComponentsJSONFilePaths.length > 0) {
     _extractFetchData(userComponentsJSONFilePaths, fetchData);
   }
@@ -66,10 +67,10 @@ gulp.task('default',
 
 let _frontApiProjectPath = function () {
   let frontApiConfigJsonPath = `../${pullEndPoint.frontApiConfigJsonPath()}`;
-  if(gulpfs.fileExists(frontApiConfigJsonPath) === false) {
+  if(gulpFs.fileExists(frontApiConfigJsonPath) === false) {
     return false;
   }
-  let frontApiConfigJson = JSON.parse(gulpfs.readWholeFile(frontApiConfigJsonPath));
+  let frontApiConfigJson = JSON.parse(gulpFs.readWholeFile(frontApiConfigJsonPath));
   if (!frontApiConfigJson) {
     return false;
   }
@@ -78,7 +79,7 @@ let _frontApiProjectPath = function () {
 
 let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
   _.forEach(componentConfigJSONFilePaths, (componentConfigJSONFilePath) => {
-    let componentConfigJSON = gulpfs.JSONdata(componentConfigJSONFilePath, false);
+    let componentConfigJSON = gulpFs.JSONdata(componentConfigJSONFilePath, false);
     _.forEach(componentConfigJSON, (value, key) => {
       if (key === 'fetch') {
         _.forEach(value, (fetch) => {
@@ -92,7 +93,7 @@ let _extractFetchData = function (componentConfigJSONFilePaths, fetchData) {
 let _createApiData = function (fetchData, functionJSON) {
   _.forEach(fetchData, (fetch) => {
     _.forEach(fetch.apis, (api) => {
-      if (gulpconst.slsFrontApiUri() === api.uri) {
+      if (gulpConst.slsFrontApiUri() === api.uri) {
         if (api.config.path === undefined) throw new Error("Could not find 'api.config.path'!");
         let functionConfig = { method: fetch.method, path: api.config.path };
         if (api.config.mock) {
@@ -142,10 +143,10 @@ let _extractArrayKeys = function (responseType, flatArray, parentKey='') {
 let _configureLog = function (functionJSON) {
   console.log(chalk.green(`functions: `));
   functionJSON.functions.forEach((func) => {
-    let log = `${gulplog.logKeyVal('path', func.path)} `
-            + `${gulplog.logKeyVal('method', func.method)} `
-            + `${gulplog.logKeyValYesNo('mock', func.mock)} `
-            + `${gulplog.logKeyValYesNo('schema', func.schema)} `;
+    let log = `${gulpLog.logKeyVal('path', func.path)} `
+            + `${gulpLog.logKeyVal('method', func.method)} `
+            + `${gulpLog.logKeyValYesNo('mock', func.mock)} `
+            + `${gulpLog.logKeyValYesNo('schema', func.schema)} `;
     console.log('  ' + log);
   });
 };
