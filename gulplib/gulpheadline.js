@@ -5,3 +5,7 @@ module.exports.taskNameWrite = (gulpTaskName) => {
     " 🚀🚀🚀 " + chalk.bgBlueBright(` ${gulpTaskName} `) + " 🚀🚀🚀 "
   );
 };
+
+module.exports.checkGreenWrite = (target) => {
+  console.log(chalk.greenBright(`✓ `) + `${target}`);
+};
