@@ -1,6 +1,6 @@
 const gulp = require('gulp');
-const chalk = require('chalk');
 const gulpFs = require('../gulplib/gulpfs');
+const gulpHeadLine = require("../gulplib/gulpheadline");
 const FRONT_API_CONFIG_JSON_PATH = '../seed/app/front-api-config.json';
 const SLS_STACK_JSON_PATH = '.serverless/stack.json';
 
@@ -8,7 +8,7 @@ const SLS_STACK_JSON_PATH = '.serverless/stack.json';
  * Pull Front API Endpoint
  */
 gulp.task('pull-endpoint', function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' pull-endpoint ') + ' 🚀🚀🚀 ');
+  gulpHeadLine.taskNameWrite("pull-endpoint");
   _checkFrontApiConfigPath();
   done();
 });
