@@ -25,6 +25,7 @@ gulp.task(
 
 let _checkFrontApiConfigPath = function () {
   if (gulpFs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
+    gulpHeadLine.workingWrite(`could not find '${FRONT_API_CONFIG_JSON_PATH}'`);
     module.exports.createDefaultFrontApiConfigJson();
   }
   let frontApiConfig = JSON.parse(
@@ -52,6 +53,16 @@ let _checkFrontApiConfigPath = function () {
     gulpFs.writeDistFile(
       FRONT_API_CONFIG_JSON_PATH,
       JSON.stringify(frontApiConfig, null, 2)
+    );
+    gulpHeadLine.workingWrite(
+      "",
+      "FrontApiProjectPath: ",
+      frontApiConfig.FrontApiProjectPath
+    );
+    gulpHeadLine.workingWrite(
+      "",
+      "FrontApiEndPoint: ",
+      frontApiConfig.FrontApiEndPoint
     );
   } else {
     throw new Error(`Require SLS path -> ${FRONT_API_CONFIG_JSON_PATH}`);
