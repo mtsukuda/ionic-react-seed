@@ -3,12 +3,13 @@ const chalk = require('chalk');
 const exec = require("exec-sh").promise;
 const gulpFs = require('../gulplib/gulpfs');
 const pullEndPoint = require('../gulpcmd/cmd-pull-endpoint');
+const gulpHeadLine = require("../gulplib/gulpheadline");
 
 /**
  * Front Api Seed git clone
  */
 gulp.task('git-clone', async function (done){
-  console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' git-clone ') + ' 🚀🚀🚀 ');
+  gulpHeadLine.taskNameWrite("git-clone");
   let packageJSON = gulpFs.JSONdata('../package.json', false);
   let clonedName = `${packageJSON.name}-api`;
   if(gulpFs.fileExists(`../../${clonedName}`)) {
