@@ -1,14 +1,14 @@
 const gulp = require('gulp');
 const chalk = require('chalk');
 const exec = require("exec-sh").promise;
-const gulpfs = require('../gulplib/gulpfs');
+const gulpFs = require('../gulplib/gulpfs');
 
 /**
  * Front Api deploy
  */
 gulp.task('front-api-deploy', async function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' front-api-deploy ') + ' 🚀🚀🚀 ');
-  let packageJSON = gulpfs.JSONdata('../package.json', false);
+  let packageJSON = gulpFs.JSONdata('../package.json', false);
   let apiPath = `../../${packageJSON.name}-api`;
   let out;
   try {
