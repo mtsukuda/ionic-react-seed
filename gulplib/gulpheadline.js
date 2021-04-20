@@ -6,6 +6,10 @@ module.exports.taskNameWrite = (gulpTaskName) => {
   );
 };
 
+module.exports.noteWrite = (gulpNote) => {
+  console.log(" 📣🥸 " + chalk.green(` ${gulpNote} `));
+};
+
 module.exports.checkGreenWrite = (target) => {
   console.log(chalk.greenBright(`✓ `) + `${target}`);
 };
