@@ -1,5 +1,4 @@
 const _ = require("lodash");
-const chalk = require("chalk");
 const gulp = require("gulp");
 const FS = require("fs");
 const path = require("path");
@@ -39,12 +38,11 @@ gulp.task("create-user-components", function (done) {
   gulpFs.cleanDirectories(TEMP_DIR);
   gulpFs.cleanDirectories(USER_COMPONENT_DIST);
   let userComponentsJSONFilePaths = gulpFs.jsonFilePaths(USER_COMPONENT_JSON);
-  console.log(userComponentsJSONFilePaths);
   if (
     userComponentsJSONFilePaths === null ||
     userComponentsJSONFilePaths.length === 0
   ) {
-    console.log(chalk.black.bgGreen("  There is no user component...  "));
+    console.log(gulpHeadLine.workingWrite("  There is no user component...  "));
     done();
     return;
   }
@@ -69,7 +67,7 @@ gulp.task("create-user-pages", function (done) {
   let userPagesJSONFilePaths = gulpFs.jsonFilePaths(USER_PAGE_JSON);
   console.log(userPagesJSONFilePaths);
   if (userPagesJSONFilePaths === null || userPagesJSONFilePaths.length === 0) {
-    console.log(chalk.black.bgGreen("  There is no user pages...  "));
+    console.log(gulpHeadLine.workingWrite("  There is no user pages...  "));
     done();
     return;
   }
@@ -339,10 +337,11 @@ let _ownCss = function (cssSeedDirectory, cssDist, configCssName, name) {
   const path = `${cssSeedDirectory}/${configCssName}`;
   const dist = `${cssDist}/${name}.css`;
   const importCss = `import './${name}.css';`;
-  console.log(chalk.red(path));
+  gulpHeadLine.workingWrite("", "finding: ", `${path}...`);
   if (FS.existsSync(path)) {
     return { seed: path, dist: dist, import: importCss };
   }
+  gulpHeadLine.workingWrite("", "could not find: ", `${path}`);
   return null;
 };
 
@@ -708,7 +707,11 @@ let _routeTags = function (routeInfo, redirect) {
 let _importPages = function (routeInfo) {
   let result = "";
   _.forEach(routeInfo, (route) => {
-    console.log(route.component.toLowerCase());
+    gulpHeadLine.workingWrite(
+      "",
+      "import page: ",
+      `${route.component.toLowerCase()}`
+    );
     if (route.component.toLowerCase() === "default") return;
     result +=
       (result ? "\n" : "") +
