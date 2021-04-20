@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const chalk = require('chalk');
 const exec = require("exec-sh").promise;
-const gulpfs = require('../gulplib/gulpfs');
+const gulpFs = require('../gulplib/gulpfs');
 const FRONT_API_CONFIG_JSON_PATH = '../seed/app/front-api-config.json';
 
 /**
@@ -9,10 +9,10 @@ const FRONT_API_CONFIG_JSON_PATH = '../seed/app/front-api-config.json';
  */
 gulp.task('front-api-yarn-run-create-functions', async function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' front-api-yarn-run-create-functions ') + ' 🚀🚀🚀 ');
-  if(gulpfs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
+  if(gulpFs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
     throw new Error(`Could not find api config json: ${FRONT_API_CONFIG_JSON_PATH}.`);
   }
-  let frontApiConfig = JSON.parse(gulpfs.readWholeFile(FRONT_API_CONFIG_JSON_PATH));
+  let frontApiConfig = JSON.parse(gulpFs.readWholeFile(FRONT_API_CONFIG_JSON_PATH));
   if (!frontApiConfig.FrontApiProjectPath) {
     throw new Error(`Could not find the entory of FrontApiProjectPath from api config json.`);
   }
