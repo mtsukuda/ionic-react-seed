@@ -10,6 +10,19 @@ module.exports.noteWrite = (gulpNote) => {
   console.log(" 📣🥸 " + chalk.green(` ${gulpNote} `));
 };
 
+module.exports.workingWrite = (
+  gulpWorking,
+  gulpWorkingKey = "",
+  gulpWorkingVal = ""
+) => {
+  console.log(
+    " ⚙️🛠 " +
+      chalk.green(` ${gulpWorking}`) +
+      chalk.whiteBright(gulpWorkingKey) +
+      chalk.green(`${gulpWorkingVal} `)
+  );
+};
+
 module.exports.checkGreenWrite = (target) => {
   console.log(chalk.greenBright(`✓ `) + `${target}`);
 };
