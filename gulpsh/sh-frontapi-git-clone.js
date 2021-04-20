@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const chalk = require('chalk');
 const exec = require("exec-sh").promise;
-const gulpfs = require('../gulplib/gulpfs');
+const gulpFs = require('../gulplib/gulpfs');
 const pullEndPoint = require('../gulpcmd/cmd-pull-endpoint');
 
 /**
@@ -9,9 +9,9 @@ const pullEndPoint = require('../gulpcmd/cmd-pull-endpoint');
  */
 gulp.task('git-clone', async function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' git-clone ') + ' 🚀🚀🚀 ');
-  let packageJSON = gulpfs.JSONdata('../package.json', false);
+  let packageJSON = gulpFs.JSONdata('../package.json', false);
   let clonedName = `${packageJSON.name}-api`;
-  if(gulpfs.fileExists(`../../${clonedName}`)) {
+  if(gulpFs.fileExists(`../../${clonedName}`)) {
     console.log(chalk.red(`Already exist front API -> ${clonedName}`));
     done();
     return;
