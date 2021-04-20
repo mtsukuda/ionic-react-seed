@@ -37,7 +37,7 @@
     "gulp": "gulp && npm run src-format",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "gulpcmd-format": "prettier --write gulpcmd/*.js && prettier --write gulplib/*.js && prettier --write gulpsh/*.js",
+    "gulpcmd-format": "prettier --write gulpfile.js && prettier --write gulpcmd/*.js && prettier --write gulplib/*.js && prettier --write gulpsh/*.js",
     "src-format": "prettier --write src/App.tsx && prettier --write src/components/** && prettier --write src/user-components/*.tsx && prettier --write src/user-pages/*.tsx",
     "firebase-json-overwrite": "gulp -f gulpcmd/cmd-overwrite-fireabase-json.js",
     "create-sample": "gulp -f gulpcmd/cmd-file-create-sample.js",
