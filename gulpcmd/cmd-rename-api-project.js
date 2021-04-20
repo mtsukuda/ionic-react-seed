@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const chalk = require('chalk');
-const gulpfs = require('../gulplib/gulpfs');
+const gulpFs = require('../gulplib/gulpfs');
 const PACKAGE_JSON = 'package.json';
 
 /**
@@ -8,15 +8,15 @@ const PACKAGE_JSON = 'package.json';
  */
 gulp.task('rename-api-project', async function (done){
   console.log(' 🚀🚀🚀 ' + chalk.bgBlue(' rename-api-project ') + ' 🚀🚀🚀 ');
-  let packageJSON = gulpfs.JSONdata(`../${PACKAGE_JSON}`, false);
+  let packageJSON = gulpFs.JSONdata(`../${PACKAGE_JSON}`, false);
   let newProjectName = `${packageJSON.name}-api`;
   let newProjectPackageJSONPath = `../../${newProjectName}/${PACKAGE_JSON}`;
-  if(gulpfs.fileExists(newProjectPackageJSONPath) === false) {
+  if(gulpFs.fileExists(newProjectPackageJSONPath) === false) {
     throw new Error(`Could not find project or package.json file. -> ${newProjectName}`);
   }
-  let newProjectPackageJSON = gulpfs.JSONdata(newProjectPackageJSONPath, false);
+  let newProjectPackageJSON = gulpFs.JSONdata(newProjectPackageJSONPath, false);
   newProjectPackageJSON.name = newProjectName;
-  gulpfs.writeDistFile(newProjectPackageJSONPath, JSON.stringify(newProjectPackageJSON, null, 2));
+  gulpFs.writeDistFile(newProjectPackageJSONPath, JSON.stringify(newProjectPackageJSON, null, 2));
   done();
 });
 
