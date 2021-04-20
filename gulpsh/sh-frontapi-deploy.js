@@ -1,22 +1,22 @@
-const gulp = require('gulp');
+const gulp = require("gulp");
 const exec = require("exec-sh").promise;
-const gulpFs = require('../gulplib/gulpfs');
+const gulpFs = require("../gulplib/gulpfs");
 const gulpHeadLine = require("../gulplib/gulpheadline");
 
 /**
  * Front Api deploy
  */
-gulp.task('front-api-deploy', async function (done){
+gulp.task("front-api-deploy", async function (done) {
   gulpHeadLine.taskNameWrite("front-api-deploy");
-  let packageJSON = gulpFs.JSONdata('../package.json', false);
+  let packageJSON = gulpFs.JSONdata("../package.json", false);
   let apiPath = `../../${packageJSON.name}-api`;
   let out;
   try {
     out = await exec(`yarn --cwd ${apiPath} sls deploy`, true);
   } catch (e) {
-    console.log('Error: ', e);
-    console.log('Stderr: ', e.stderr);
-    console.log('Stdout: ', e.stdout);
+    console.log("Error: ", e);
+    console.log("Stderr: ", e.stderr);
+    console.log("Stdout: ", e.stdout);
     return e;
   }
   console.log(out);
@@ -26,11 +26,9 @@ gulp.task('front-api-deploy', async function (done){
 /**
  * gulp default task
  */
-gulp.task('default',
-  gulp.series(gulp.parallel(
-    'front-api-deploy',
-  ), function (done) {
+gulp.task(
+  "default",
+  gulp.series(gulp.parallel("front-api-deploy"), function (done) {
     done();
   })
 );
-
