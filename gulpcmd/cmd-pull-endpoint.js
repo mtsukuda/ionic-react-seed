@@ -1,6 +1,6 @@
 const gulp = require("gulp");
 const gulpFs = require("../gulplib/gulpfs");
-const gulpHeadLine = require("../gulplib/gulpheadline");
+const gulpWrite = require("../gulplib/gulpwrite");
 const FRONT_API_CONFIG_JSON_PATH = "../seed/app/front-api-config.json";
 const SLS_STACK_JSON_PATH = ".serverless/stack.json";
 
@@ -8,7 +8,7 @@ const SLS_STACK_JSON_PATH = ".serverless/stack.json";
  * Pull Front API Endpoint
  */
 gulp.task("pull-endpoint", function (done) {
-  gulpHeadLine.taskNameWrite("pull-endpoint");
+  gulpWrite.taskNameWrite("pull-endpoint");
   _checkFrontApiConfigPath();
   done();
 });
@@ -25,7 +25,7 @@ gulp.task(
 
 let _checkFrontApiConfigPath = function () {
   if (gulpFs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
-    gulpHeadLine.workingWrite(`could not find '${FRONT_API_CONFIG_JSON_PATH}'`);
+    gulpWrite.workingWrite(`could not find '${FRONT_API_CONFIG_JSON_PATH}'`);
     module.exports.createDefaultFrontApiConfigJson();
   }
   let frontApiConfig = JSON.parse(
@@ -54,12 +54,12 @@ let _checkFrontApiConfigPath = function () {
       FRONT_API_CONFIG_JSON_PATH,
       JSON.stringify(frontApiConfig, null, 2)
     );
-    gulpHeadLine.workingWrite(
+    gulpWrite.workingWrite(
       "",
       "FrontApiProjectPath: ",
       frontApiConfig.FrontApiProjectPath
     );
-    gulpHeadLine.workingWrite(
+    gulpWrite.workingWrite(
       "",
       "FrontApiEndPoint: ",
       frontApiConfig.FrontApiEndPoint

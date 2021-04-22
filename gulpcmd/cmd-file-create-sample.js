@@ -1,6 +1,6 @@
 const gulp = require("gulp");
 const gulpFs = require("../gulplib/gulpfs");
-const gulpHeadLine = require("../gulplib/gulpheadline");
+const gulpWrite = require("../gulplib/gulpwrite");
 const MENU_SAMPLE_CONFIG_JSON = "../seed/app/menu.json.sample";
 const MENU_CONFIG_JSON = "../seed/app/menu.json";
 const SAMPLE_CONFIG_EXT = "json.sample";
@@ -14,7 +14,7 @@ const COMPONENT_SAMPLE_CONFIG_JSON_NAME = "sample-component";
  * Copy Menu
  */
 gulp.task("copy-menu", function (done) {
-  gulpHeadLine.taskNameWrite("copy-menu");
+  gulpWrite.taskNameWrite("copy-menu");
   gulpFs.copyFile(MENU_SAMPLE_CONFIG_JSON, MENU_CONFIG_JSON);
   done();
 });
@@ -23,7 +23,7 @@ gulp.task("copy-menu", function (done) {
  * Copy Sample Pages
  */
 gulp.task("copy-sample-pages", function (done) {
-  gulpHeadLine.taskNameWrite("copy-sample-pages");
+  gulpWrite.taskNameWrite("copy-sample-pages");
   let samplePages = [
     `${PAGE_SAMPLE_CONFIG_JSON_NAME}1`,
     `${PAGE_SAMPLE_CONFIG_JSON_NAME}2`,
@@ -52,7 +52,7 @@ gulp.task("copy-sample-pages", function (done) {
  * Copy Sample Components
  */
 gulp.task("copy-sample-components", function (done) {
-  gulpHeadLine.taskNameWrite("copy-sample-components");
+  gulpWrite.taskNameWrite("copy-sample-components");
   let sampleComponents = [
     `${COMPONENT_SAMPLE_CONFIG_JSON_NAME}1`,
     `${COMPONENT_SAMPLE_CONFIG_JSON_NAME}2`,
@@ -85,10 +85,10 @@ gulp.task(
   gulp.series(
     gulp.parallel("copy-menu", "copy-sample-pages", "copy-sample-components"),
     function (done) {
-      gulpHeadLine.noteWrite(
+      gulpWrite.noteWrite(
         "'sample-page*.json' and 'sample-component*.json' are ignore in this project."
       );
-      gulpHeadLine.noteWrite(
+      gulpWrite.noteWrite(
         "if you would like to track sample files on git, modify '.gitignore' file. "
       );
       done();

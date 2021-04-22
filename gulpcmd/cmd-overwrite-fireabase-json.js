@@ -1,13 +1,13 @@
 const gulp = require("gulp");
 const gulpFs = require("../gulplib/gulpfs");
-const gulpHeadLine = require("../gulplib/gulpheadline");
+const gulpWrite = require("../gulplib/gulpwrite");
 const FIREBASE_JSON = "firebase.json";
 
 /**
  * Overwrite Firebase JSON File
  */
 gulp.task("overwrite-firebase-json", async function (done) {
-  gulpHeadLine.taskNameWrite("overwrite-firebase-json");
+  gulpWrite.taskNameWrite("overwrite-firebase-json");
   let packageJSON = gulpFs.JSONdata(`../seed/config/${FIREBASE_JSON}`, false);
   gulpFs.writeDistFile(
     `../${FIREBASE_JSON}`,

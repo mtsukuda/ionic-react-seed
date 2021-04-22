@@ -1,13 +1,13 @@
 const gulp = require("gulp");
 const gulpFs = require("../gulplib/gulpfs");
-const gulpHeadLine = require("../gulplib/gulpheadline");
+const gulpWrite = require("../gulplib/gulpwrite");
 const PACKAGE_JSON = "package.json";
 
 /**
  * Rename the API project
  */
 gulp.task("rename-api-project", async function (done) {
-  gulpHeadLine.taskNameWrite("rename-api-project");
+  gulpWrite.taskNameWrite("rename-api-project");
   let packageJSON = gulpFs.JSONdata(`../${PACKAGE_JSON}`, false);
   let newProjectName = `${packageJSON.name}-api`;
   let newProjectPackageJSONPath = `../../${newProjectName}/${PACKAGE_JSON}`;

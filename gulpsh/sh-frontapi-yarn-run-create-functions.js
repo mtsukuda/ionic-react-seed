@@ -1,14 +1,14 @@
 const gulp = require("gulp");
 const exec = require("exec-sh").promise;
 const gulpFs = require("../gulplib/gulpfs");
-const gulpHeadLine = require("../gulplib/gulpheadline");
+const gulpWrite = require("../gulplib/gulpwrite");
 const FRONT_API_CONFIG_JSON_PATH = "../seed/app/front-api-config.json";
 
 /**
  * Front Api yarn: run create-functions
  */
 gulp.task("front-api-yarn-run-create-functions", async function (done) {
-  gulpHeadLine.taskNameWrite("front-api-yarn-run-create-functions");
+  gulpWrite.taskNameWrite("front-api-yarn-run-create-functions");
   if (gulpFs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
     throw new Error(
       `Could not find api config json: ${FRONT_API_CONFIG_JSON_PATH}.`

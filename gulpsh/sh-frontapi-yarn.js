@@ -1,13 +1,13 @@
 const gulp = require("gulp");
 const exec = require("exec-sh").promise;
 const gulpFs = require("../gulplib/gulpfs");
-const gulpHeadLine = require("../gulplib/gulpheadline");
+const gulpWrite = require("../gulplib/gulpwrite");
 
 /**
  * Front Api yarn
  */
 gulp.task("front-api-yarn", async function (done) {
-  gulpHeadLine.taskNameWrite("front-api-yarn");
+  gulpWrite.taskNameWrite("front-api-yarn");
   let packageJSON = gulpFs.JSONdata("../package.json", false);
   let apiPath = `../../${packageJSON.name}-api`;
   let out;

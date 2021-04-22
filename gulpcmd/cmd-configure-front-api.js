@@ -4,7 +4,7 @@ const chalk = require("chalk");
 const gulpFs = require("../gulplib/gulpfs");
 const gulpConst = require("../gulplib/gulpconst");
 const gulpLog = require("../gulplib/gulplog");
-const gulpHeadLine = require("../gulplib/gulpheadline");
+const gulpWrite = require("../gulplib/gulpwrite");
 const pullEndPoint = require("../gulpcmd/cmd-pull-endpoint");
 const USER_PAGE_JSON = "../seed/user-pages";
 const USER_COMPONENT_JSON = "../seed/user-components";
@@ -14,7 +14,7 @@ const FRONT_API_FUNCTIONS_CONFIG = "seed/functions/config.json";
  * Configure Front API
  */
 gulp.task("configure-front-api", function (done) {
-  gulpHeadLine.taskNameWrite("configure-front-api");
+  gulpWrite.taskNameWrite("configure-front-api");
   let projectPath = _frontApiProjectPath();
   if (projectPath === false) {
     throw new Error("Could not find API project file.");
@@ -46,7 +46,7 @@ gulp.task("configure-front-api", function (done) {
  * Verify Front API Response Type
  */
 gulp.task("verify-front-api-response-type", function (done) {
-  gulpHeadLine.taskNameWrite("verify-front-api-response-type");
+  gulpWrite.taskNameWrite("verify-front-api-response-type");
   let userPagesJSONFilePaths = gulpFs.jsonFilePaths(USER_PAGE_JSON);
   let fetchData = [];
   if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
@@ -141,7 +141,7 @@ let _compareResponseType = function (fetchData) {
           `Could not mach between response type and mock data: ${api.responseTypeName}`
         );
       }
-      gulpHeadLine.checkGreenWrite(api.responseTypeName);
+      gulpWrite.checkGreenWrite(api.responseTypeName);
     });
   });
   return true;
