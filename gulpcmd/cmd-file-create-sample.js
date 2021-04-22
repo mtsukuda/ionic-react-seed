@@ -85,10 +85,10 @@ gulp.task(
   gulp.series(
     gulp.parallel("copy-menu", "copy-sample-pages", "copy-sample-components"),
     function (done) {
-      gulpWrite.noteWrite(
+      gulpWrite.note(
         "'sample-page*.json' and 'sample-component*.json' are ignore in this project."
       );
-      gulpWrite.noteWrite(
+      gulpWrite.note(
         "if you would like to track sample files on git, modify '.gitignore' file. "
       );
       done();

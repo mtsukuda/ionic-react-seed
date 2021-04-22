@@ -6,7 +6,7 @@ module.exports.taskName = (gulpTaskName) => {
   );
 };
 
-module.exports.noteWrite = (gulpNote) => {
+module.exports.note = (gulpNote) => {
   console.log(" 📣🥸 " + chalk.green(` ${gulpNote} `));
 };
 
