@@ -10,7 +10,7 @@ module.exports.note = (gulpNote) => {
   console.log(" 📣🥸 " + chalk.green(` ${gulpNote} `));
 };
 
-module.exports.workingWrite = (
+module.exports.working = (
   gulpWorking,
   gulpWorkingKey = "",
   gulpWorkingVal = ""

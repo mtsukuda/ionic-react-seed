@@ -42,7 +42,7 @@ gulp.task("create-user-components", function (done) {
     userComponentsJSONFilePaths === null ||
     userComponentsJSONFilePaths.length === 0
   ) {
-    console.log(gulpHeadLine.workingWrite("  There is no user component...  "));
+    console.log(gulpHeadLine.working("  There is no user component...  "));
     done();
     return;
   }
@@ -67,7 +67,7 @@ gulp.task("create-user-pages", function (done) {
   let userPagesJSONFilePaths = gulpFs.jsonFilePaths(USER_PAGE_JSON);
   console.log(userPagesJSONFilePaths);
   if (userPagesJSONFilePaths === null || userPagesJSONFilePaths.length === 0) {
-    console.log(gulpHeadLine.workingWrite("  There is no user pages...  "));
+    console.log(gulpHeadLine.working("  There is no user pages...  "));
     done();
     return;
   }
@@ -337,11 +337,11 @@ let _ownCss = function (cssSeedDirectory, cssDist, configCssName, name) {
   const path = `${cssSeedDirectory}/${configCssName}`;
   const dist = `${cssDist}/${name}.css`;
   const importCss = `import './${name}.css';`;
-  gulpHeadLine.workingWrite("", "finding: ", `${path}...`);
+  gulpHeadLine.working("", "finding: ", `${path}...`);
   if (FS.existsSync(path)) {
     return { seed: path, dist: dist, import: importCss };
   }
-  gulpHeadLine.workingWrite("", "could not find: ", `${path}`);
+  gulpHeadLine.working("", "could not find: ", `${path}`);
   return null;
 };
 
@@ -707,7 +707,7 @@ let _routeTags = function (routeInfo, redirect) {
 let _importPages = function (routeInfo) {
   let result = "";
   _.forEach(routeInfo, (route) => {
-    gulpHeadLine.workingWrite(
+    gulpHeadLine.working(
       "",
       "import page: ",
       `${route.component.toLowerCase()}`

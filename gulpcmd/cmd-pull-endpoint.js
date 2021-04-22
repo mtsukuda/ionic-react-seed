@@ -25,7 +25,7 @@ gulp.task(
 
 let _checkFrontApiConfigPath = function () {
   if (gulpFs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
-    gulpWrite.workingWrite(`could not find '${FRONT_API_CONFIG_JSON_PATH}'`);
+    gulpWrite.working(`could not find '${FRONT_API_CONFIG_JSON_PATH}'`);
     module.exports.createDefaultFrontApiConfigJson();
   }
   let frontApiConfig = JSON.parse(
@@ -54,12 +54,12 @@ let _checkFrontApiConfigPath = function () {
       FRONT_API_CONFIG_JSON_PATH,
       JSON.stringify(frontApiConfig, null, 2)
     );
-    gulpWrite.workingWrite(
+    gulpWrite.working(
       "",
       "FrontApiProjectPath: ",
       frontApiConfig.FrontApiProjectPath
     );
-    gulpWrite.workingWrite(
+    gulpWrite.working(
       "",
       "FrontApiEndPoint: ",
       frontApiConfig.FrontApiEndPoint
