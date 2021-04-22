@@ -23,6 +23,6 @@ module.exports.working = (
   );
 };
 
-module.exports.checkGreenWrite = (target) => {
+module.exports.checkGreen = (target) => {
   console.log(chalk.greenBright(`✓ `) + `${target}`);
 };

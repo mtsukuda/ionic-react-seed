@@ -141,7 +141,7 @@ let _compareResponseType = function (fetchData) {
           `Could not mach between response type and mock data: ${api.responseTypeName}`
         );
       }
-      gulpWrite.checkGreenWrite(api.responseTypeName);
+      gulpWrite.checkGreen(api.responseTypeName);
     });
   });
   return true;
