@@ -8,7 +8,7 @@ const SLS_STACK_JSON_PATH = ".serverless/stack.json";
  * Pull Front API Endpoint
  */
 gulp.task("pull-endpoint", function (done) {
-  gulpWrite.taskNameWrite("pull-endpoint");
+  gulpWrite.taskName("pull-endpoint");
   _checkFrontApiConfigPath();
   done();
 });

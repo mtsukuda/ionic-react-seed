@@ -7,7 +7,7 @@ const gulpWrite = require("../gulplib/gulpwrite");
  * Front Api yarn
  */
 gulp.task("front-api-yarn", async function (done) {
-  gulpWrite.taskNameWrite("front-api-yarn");
+  gulpWrite.taskName("front-api-yarn");
   let packageJSON = gulpFs.JSONdata("../package.json", false);
   let apiPath = `../../${packageJSON.name}-api`;
   let out;

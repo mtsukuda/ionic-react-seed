@@ -7,7 +7,7 @@ const gulpWrite = require("../gulplib/gulpwrite");
  * Front Api deploy
  */
 gulp.task("front-api-deploy", async function (done) {
-  gulpWrite.taskNameWrite("front-api-deploy");
+  gulpWrite.taskName("front-api-deploy");
   let packageJSON = gulpFs.JSONdata("../package.json", false);
   let apiPath = `../../${packageJSON.name}-api`;
   let out;

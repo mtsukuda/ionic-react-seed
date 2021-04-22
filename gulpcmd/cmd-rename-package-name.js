@@ -8,7 +8,7 @@ const IONIC_CONFIG_JSON = "ionic.config.json";
  * Rename Package Name
  */
 gulp.task("rename-package-name", async function (done) {
-  gulpWrite.taskNameWrite("rename-package-name");
+  gulpWrite.taskName("rename-package-name");
   let ionicProjectPackageJSONPath = `../${PACKAGE_JSON}`;
   let packageJSON = gulpFs.JSONdata(ionicProjectPackageJSONPath, false);
   let newPackageName = _newPackageName();
@@ -25,7 +25,7 @@ gulp.task("rename-package-name", async function (done) {
  * Rename Ionic Config Name
  */
 gulp.task("rename-ionic-config-name", async function (done) {
-  gulpWrite.taskNameWrite("rename-ionic-config-name");
+  gulpWrite.taskName("rename-ionic-config-name");
   let ionicConfigJSONPath = `../${IONIC_CONFIG_JSON}`;
   let configJSON = gulpFs.JSONdata(ionicConfigJSONPath, false);
   let newPackageName = _newPackageName();

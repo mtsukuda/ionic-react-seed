@@ -7,7 +7,7 @@ const PACKAGE_JSON = "package.json";
  * Rename the API project
  */
 gulp.task("rename-api-project", async function (done) {
-  gulpWrite.taskNameWrite("rename-api-project");
+  gulpWrite.taskName("rename-api-project");
   let packageJSON = gulpFs.JSONdata(`../${PACKAGE_JSON}`, false);
   let newProjectName = `${packageJSON.name}-api`;
   let newProjectPackageJSONPath = `../../${newProjectName}/${PACKAGE_JSON}`;

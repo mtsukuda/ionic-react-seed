@@ -8,7 +8,7 @@ const FRONT_API_CONFIG_JSON_PATH = "../seed/app/front-api-config.json";
  * Front Api yarn: run create-functions
  */
 gulp.task("front-api-yarn-run-create-functions", async function (done) {
-  gulpWrite.taskNameWrite("front-api-yarn-run-create-functions");
+  gulpWrite.taskName("front-api-yarn-run-create-functions");
   if (gulpFs.fileExists(FRONT_API_CONFIG_JSON_PATH) === false) {
     throw new Error(
       `Could not find api config json: ${FRONT_API_CONFIG_JSON_PATH}.`

@@ -7,7 +7,7 @@ const FIREBASE_JSON = "firebase.json";
  * Overwrite Firebase JSON File
  */
 gulp.task("overwrite-firebase-json", async function (done) {
-  gulpWrite.taskNameWrite("overwrite-firebase-json");
+  gulpWrite.taskName("overwrite-firebase-json");
   let packageJSON = gulpFs.JSONdata(`../seed/config/${FIREBASE_JSON}`, false);
   gulpFs.writeDistFile(
     `../${FIREBASE_JSON}`,

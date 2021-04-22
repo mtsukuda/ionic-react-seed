@@ -9,7 +9,7 @@ const gulpWrite = require("../gulplib/gulpwrite");
  * Front Api Seed git clone
  */
 gulp.task("git-clone", async function (done) {
-  gulpWrite.taskNameWrite("git-clone");
+  gulpWrite.taskName("git-clone");
   let packageJSON = gulpFs.JSONdata("../package.json", false);
   let clonedName = `${packageJSON.name}-api`;
   if (gulpFs.fileExists(`../../${clonedName}`)) {

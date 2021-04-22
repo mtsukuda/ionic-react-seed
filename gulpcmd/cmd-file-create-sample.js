@@ -14,7 +14,7 @@ const COMPONENT_SAMPLE_CONFIG_JSON_NAME = "sample-component";
  * Copy Menu
  */
 gulp.task("copy-menu", function (done) {
-  gulpWrite.taskNameWrite("copy-menu");
+  gulpWrite.taskName("copy-menu");
   gulpFs.copyFile(MENU_SAMPLE_CONFIG_JSON, MENU_CONFIG_JSON);
   done();
 });
@@ -23,7 +23,7 @@ gulp.task("copy-menu", function (done) {
  * Copy Sample Pages
  */
 gulp.task("copy-sample-pages", function (done) {
-  gulpWrite.taskNameWrite("copy-sample-pages");
+  gulpWrite.taskName("copy-sample-pages");
   let samplePages = [
     `${PAGE_SAMPLE_CONFIG_JSON_NAME}1`,
     `${PAGE_SAMPLE_CONFIG_JSON_NAME}2`,
@@ -52,7 +52,7 @@ gulp.task("copy-sample-pages", function (done) {
  * Copy Sample Components
  */
 gulp.task("copy-sample-components", function (done) {
-  gulpWrite.taskNameWrite("copy-sample-components");
+  gulpWrite.taskName("copy-sample-components");
   let sampleComponents = [
     `${COMPONENT_SAMPLE_CONFIG_JSON_NAME}1`,
     `${COMPONENT_SAMPLE_CONFIG_JSON_NAME}2`,

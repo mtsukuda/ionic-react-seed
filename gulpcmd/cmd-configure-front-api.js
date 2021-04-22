@@ -14,7 +14,7 @@ const FRONT_API_FUNCTIONS_CONFIG = "seed/functions/config.json";
  * Configure Front API
  */
 gulp.task("configure-front-api", function (done) {
-  gulpWrite.taskNameWrite("configure-front-api");
+  gulpWrite.taskName("configure-front-api");
   let projectPath = _frontApiProjectPath();
   if (projectPath === false) {
     throw new Error("Could not find API project file.");
@@ -46,7 +46,7 @@ gulp.task("configure-front-api", function (done) {
  * Verify Front API Response Type
  */
 gulp.task("verify-front-api-response-type", function (done) {
-  gulpWrite.taskNameWrite("verify-front-api-response-type");
+  gulpWrite.taskName("verify-front-api-response-type");
   let userPagesJSONFilePaths = gulpFs.jsonFilePaths(USER_PAGE_JSON);
   let fetchData = [];
   if (userPagesJSONFilePaths !== null && userPagesJSONFilePaths.length > 0) {
