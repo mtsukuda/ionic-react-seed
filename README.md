@@ -9,6 +9,8 @@ Ionic React seed project with front API project.
 
 ## Build and Deploy Example Project 
 
+### Install AWS amplify cli
+
 https://docs.amplify.aws/cli
 
 ### Install firebase cli
