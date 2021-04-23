@@ -8,7 +8,7 @@ const gulpWrite = require("../gulplib/gulpwrite");
 const pullEndPoint = require("../gulpcmd/cmd-pull-endpoint");
 const USER_PAGE_JSON = "../seed/user-pages";
 const USER_COMPONENT_JSON = "../seed/user-components";
-const FRONT_API_FUNCTIONS_CONFIG = "seed/functions/config.json";
+const FRONT_API_FUNCTIONS_CONFIG = "seed/functions-config/front-api.json";
 
 /**
  * Configure Front API
