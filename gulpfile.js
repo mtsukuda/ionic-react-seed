@@ -150,8 +150,8 @@ gulp.task("create-menu", function (done) {
     menu["iosIcon"] = menu.icon + "Outline";
     menu["mdIcon"] = menu.icon + "Sharp";
     buildMenu.push(menu);
-    menuIcons.push(menu.iosIcon);
-    menuIcons.push(menu.mdIcon);
+    if (!menuIcons.includes(menu.iosIcon)) menuIcons.push(menu.iosIcon);
+    if (!menuIcons.includes(menu.mdIcon)) menuIcons.push(menu.mdIcon);
     delete menu.icon;
     delete menu.component;
     delete menu.redirect;
